@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+
+<script>
+	function setsubTotal(i, field, disableField) {
+		console.log("On blur called;");
+		var fieldName = "#subTotal" + i;
+		var disablefieldName = "#" + disableField + i;
+		var value = field.value;
+		var subGroupName = "#subGroup" + i;
+		var subGroupVal = $(subGroupName).val();
+
+		if (subGroupVal == 999) {
+			field.value = 0;
+			alert("Please Select Sub group first.");
+			return;
+		}
+		var subtotal = $(fieldName).val(value);
+		if (!(value == "" || value == 0))
+			$(disablefieldName).prop('disabled', true);
+		else
+			$(disablefieldName).prop('disabled', false);
+
+		validate(i);
+
+	};
+
+	function updateTotal(value) {
+		var total = 0;
+		$('.subTotal').each(function() {
+			val = parseFloat($(this).val()) | 0;
+			total = val ? (parseFloat(total + val)) : total;
+		});
+		$("#total").text(total);
+		$("#total").val(total);
+	}
+
+	function validate(i) {
+		var Credit = 0;
+		var Debit = 0;
+		var CreditGroup = false;
+		var DebitGroup = false;
+
+		$('.Debit').each(function() {
+			var val = parseFloat($(this).val()) | 0;
+			Debit = val ? (parseFloat(Debit + val)) : Debit;
+
+		});
+
+		$('.Credit').each(function() {
+			var val = parseFloat($(this).val()) | 0;
+			Credit = val ? (parseFloat(Credit + val)) : Credit;
+		});
+		$("#totalCredit").val(Credit);
+		$("#totalDebit").val(Debit);
+
+		console.log("Credit - " + Credit + " ------- Debit - " + Debit);
+		if (!(Credit == Debit))
+			$("#submit").prop('disabled', true);
+		else {
+			$("#submit").prop('disabled', false);
+
+			if (val == 999)
+				$("#submit").prop('disabled', true);
+		}
+
+	}
+</script>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">New Journal</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal" th:object="${journal}"
+							action="/Expense/Save" method="post">
+							<div class="box-body">
+
+								<div class="col-sm-3 pull-right">
+									<h2>
+										<label for="inputPassword3" class="control-label input-lg"
+											align="center">Total</label>
+									</h2>
+									<input th:field="${journal.total}" readonly="readonly"
+										class="form-control  input-lg" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label">Date</label> <input
+										type="date" class="form-control input-lg" id="myDate"
+										th:field="${journal.date}" />
+								</div>
+
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label">Ref. No</label> <input
+										type="text" class="form-control input-lg" id="refNo"
+										th:field="${journal.diaryNo}" />
+								</div>
+							</div>
+
+							<table id="table1" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>No#</th>
+										<th>Account</th>
+										<th>Description</th>
+										<th>Debit</th>
+										<th>Credit</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="i: ${#numbers.sequence(0, 5)}">
+										<td th:text="${i}"></td>
+
+										<td><select type="text" class="form-control input-lg"
+											th:id="${'subGroup' + i}"
+											th:field="${journal.JDList[__${i}__].subGroup_ID}">
+												<option value="999">Please Select</option>
+												<option th:each="asset : ${AccountGroup}"
+													th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash In hand</option>
+										</select></td>
+
+										<td><input type="text" placeholder="Enter any Memo"
+											class="form-control input-lg" /></td>
+
+										<td><input th:id="${'Debit'+i}"
+											placeholder="Enter Debit Amount"
+											th:onblur="'javascript:setsubTotal(' + ${i} + ',this,\'' + Credit + '\');'"
+											class="Debit form-control input-lg" /></td>
+
+										<td><input placeholder="Enter Credit Amount"
+											th:id="${'Credit'+i}" class="Credit form-control input-lg"
+											th:onblur="'javascript:setsubTotal(' + ${i} + ',this,\'' + Debit + '\');'" /></td>
+
+										<td><input type="hidden"
+											th:field="${journal.JDList[__${i}__].subTotal}"
+											th:id="${'subTotal' + i}" /></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><label> Total Debit:</label> <input type="text"
+											id="totalDebit" readonly="readonly"
+											class="form-control input-lg" /></td>
+										<td><label> Total Credit:</label> <input type="text"
+											id="totalCredit" readonly="readonly"
+											class="form-control input-lg" /></td>
+									</tr>
+								</tbody>
+
+							</table>
+							<div class="box-footer">
+								<button type="reset" class="btn btn-default">Cancel</button>
+								<button type="submit" id="submit"
+									class="btn btn-lg btn-primary pull-right">Save</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>
