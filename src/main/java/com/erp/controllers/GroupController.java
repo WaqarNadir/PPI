@@ -20,33 +20,40 @@ public class GroupController {
 	@Autowired
 	private AccountGroupService service;
 
+
 	@GetMapping(value = "AddGroup")
 	public String ViewPage(Model model) {
 		model.addAttribute("group", new AccountGroup());
+
 
 		return "AddGroup";
 	}
 
 	@PostMapping(value = "SaveGroup")
+	//public String SaveDetails(@ModelAttribute AccountGroup group,Errors error) 
 	public String SaveDetails(@ModelAttribute(name = "group") AccountGroup group, Errors error) {
+
+		//group = validate(group);
+
 		service.save(group);
+
 
 		return "AddGroup";
 	}
 
-	// private AccountGroup validate(AccountGroup group) {
-	//
-	// if (!(group.getIsParent() == null)) {
-	//
-	// if (group.getIsParent().equals("0"))
-	// group.setIsParent(group.getIsParent());
-	// else
-	// group.setIsParent("Child");
-	// }
-	//
-	// return group;
-	//
-	// }
+//	private AccountGroup validate(AccountGroup group) {
+//	
+//		if (!(group.getIsParent() == null)) {
+//
+//			if (group.getIsParent().equals("0"))
+//				group.setIsParent(group.getIsParent());
+//			else
+//				group.setIsParent("Child");
+//		}
+//
+//		return group;
+//
+//	}
 
 	public List<AccountGroup> getAll() {
 		return service.getAll();

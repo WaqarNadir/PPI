@@ -9,31 +9,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.TableGenerator;
 
-@Entity(name="Phone")
+@Entity(name = "Phone")
 public class Phone {
 
 	@ManyToOne
 	@JoinColumn(name = "PersonId")
 	private Person Person;
-	
+
 	@Column(name = "Type")
 	private String Type;
+
 	@Column(name = "PhoneNO")
-	private String phone;
-	
+	private String phoneNo;
+
 	@Id
-	@TableGenerator(
-	        name="PhoneID", 
-	        		 table="ID_GEN", 
-	     	        pkColumnName="GEN_KEY", 
-	     	        valueColumnName="GEN_VALUE", 
-	        pkColumnValue="PhoneID", 
-	        allocationSize=1)
-	    @GeneratedValue(strategy=GenerationType.TABLE, generator="PhoneID")
-	@Column(name="PhoneID")
+	@TableGenerator(name = "PhoneID", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "PhoneID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PhoneID")
+	@Column(name = "PhoneID")
 	private int ID;
 
-	
 	public Person getPerson() {
 		return Person;
 	}
@@ -50,12 +44,12 @@ public class Phone {
 		Type = type;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getPhoneNo() {
+		return phoneNo;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setPhoneNo(String phone) {
+		this.phoneNo = phone;
 	}
 
 	public int getID() {

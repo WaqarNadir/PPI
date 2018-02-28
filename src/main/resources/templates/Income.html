@@ -23,7 +23,7 @@
 
 	<div class="content-wrapper">
 		<div class="content-header">
-			<h1 align="center">Expense</h1>
+			<h1 align="center">Income</h1>
 		</div>
 		<!-- Main content -->
 		<section class="content">
@@ -34,9 +34,9 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
-							action="/Expense/Save" method="post">
+							action="/Income/Save" method="post">
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-1 control-label">To</label>
+								<label for="inputPassword3" class="col-sm-1 control-label">From</label>
 								<div class="col-sm-3">
 									<select class="form-control"
 										th:field="${wrapper.TrailBalance.person_ID}"
@@ -50,17 +50,17 @@
 								<label for="inputPassword3" class="col-sm-2 control-label">Bank/Credit
 									Account</label>
 								<div class="col-sm-3">
-									<div>
-										<select type="text" class="form-control" id="cash"
-											name="bankSource"
-											th:field="${wrapper.TrailBalance.bankSourceID}">
-											<option value="0">Please Select</option>
-											<option th:each="asset : ${AssetList}"
-												th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
+
+									<select type="text" class="form-control" id="cash"
+										name="bankSource"
+										th:field="${wrapper.TrailBalance.bankSourceID}">
+										<option value="0">Please Select</option>
+										<option th:each="asset : ${AssetList}"
+											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 
 
-										</select>
-									</div>
+									</select>
+
 								</div>
 
 								<div class="col-sm-2" align="right">
@@ -74,8 +74,8 @@
 
 							<div class="form-group">
 								<div class="col-sm-3">
-									<label for="date" class="control-label" align="center">Date</label>
-									<input type="date" class="form-control" id="myDate"
+									<label for="date" class="control-label" align="center">Date
+									</label> <input type="date" class="form-control" id="myDate"
 										th:field="${wrapper.TrailBalance.date}" />
 								</div>
 
@@ -84,8 +84,9 @@
 										Method</label> <select type="text" class="form-control"
 										th:field="${wrapper.paymentDetail.PM_ID}" name="paymentMethod">
 										<option th:value="0">Please Select</option>
-										<option th:each="method: ${methodList}"
+										<option th:each="method : ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+
 									</select>
 								</div>
 								<div class="col-sm-2">

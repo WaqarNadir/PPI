@@ -2,15 +2,12 @@ package com.erp.classes;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 @Entity
@@ -27,22 +24,7 @@ public class Journal implements Serializable {
 	private double total;
 	private String diaryNo;
 
-	@OneToMany(mappedBy = "journal_ID")
-	List<JournalDetails> JDList;
-
 	// -------------------------- Getter & setters -------------------------------
-
-	public Journal() {
-		JDList = new ArrayList<>();
-	}
-
-	public List<JournalDetails> getJDList() {
-		return JDList;
-	}
-
-	public void setJDList(List<JournalDetails> jDList) {
-		JDList = jDList;
-	}
 
 	public int getJournal_ID() {
 		return journal_ID;

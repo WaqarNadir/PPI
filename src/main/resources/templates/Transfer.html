@@ -23,7 +23,7 @@
 
 	<div class="content-wrapper">
 		<div class="content-header">
-			<h1 align="center">Expense</h1>
+			<h1 align="center">Transfer</h1>
 		</div>
 		<!-- Main content -->
 		<section class="content">
@@ -34,21 +34,9 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
-							action="/Expense/Save" method="post">
+							action="/Transfer/Save" method="post">
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-1 control-label">To</label>
-								<div class="col-sm-3">
-									<select class="form-control"
-										th:field="${wrapper.TrailBalance.person_ID}"
-										th:each="person : ${personList}">
-
-										<option value="0">Please Select</option>
-										<option th:value="${person.PersonID}"
-											th:text="${person.Fname +' '+person.Lname}"></option>
-									</select>
-								</div>
-								<label for="inputPassword3" class="col-sm-2 control-label">Bank/Credit
-									Account</label>
+								<label for="inputPassword3" class="col-sm-2 control-label">From</label>
 								<div class="col-sm-3">
 									<div>
 										<select type="text" class="form-control" id="cash"
@@ -62,7 +50,6 @@
 										</select>
 									</div>
 								</div>
-
 								<div class="col-sm-2" align="right">
 									<h2>
 										<label for="inputPassword3" class="control-label"

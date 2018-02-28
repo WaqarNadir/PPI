@@ -3,6 +3,18 @@
 
 <div th:replace="template:: head"></div>
 
+
+<script>
+	function updateTotal(value) {
+		var total = 0;
+		$('.subTotal').each(function() {
+			val = parseFloat($(this).val()) | 0;
+			total = val ? (parseFloat(total + val)) : total;
+		});
+		$("#total").text(total);
+		$("#total").val(total);
+	}
+</script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
@@ -24,7 +36,7 @@
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
 							action="/Expense/Save" method="post">
 							<div class="form-group">
-
+								<label for="inputPassword3" class="col-sm-1 control-label">To</label>
 								<div class="col-sm-3">
 									<select class="form-control"
 										th:field="${wrapper.TrailBalance.person_ID}"
@@ -40,7 +52,8 @@
 								<div class="col-sm-3">
 									<div>
 										<select type="text" class="form-control" id="cash"
-											name="bankSource">
+											name="bankSource"
+											th:field="${wrapper.TrailBalance.bankSourceID}">
 											<option value="0">Please Select</option>
 											<option th:each="asset : ${AssetList}"
 												th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
@@ -50,16 +63,18 @@
 									</div>
 								</div>
 
-								<div class="col-sm-3" align="right">
+								<div class="col-sm-2" align="right">
 									<h2>
 										<label for="inputPassword3" class="control-label"
-											th:field="${wrapper.TrailBalance.total}" align="center">Total</label>
+											align="center">Total</label> <input th:id="total"
+											th:field="${wrapper.TrailBalance.total}" readonly="readonly" />
 									</h2>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<div class="col-sm-3">
+									<label for="date" class="control-label" align="center">Date</label>
 									<input type="date" class="form-control" id="myDate"
 										th:field="${wrapper.TrailBalance.date}" />
 								</div>
@@ -69,15 +84,14 @@
 										Method</label> <select type="text" class="form-control"
 										th:field="${wrapper.paymentDetail.PM_ID}" name="paymentMethod">
 										<option th:value="0">Please Select</option>
-										<option th:value="1">Cheque</option>
-										<option th:value="2">Cash </option>
-										<option th:value="3">Credit Card </option>
-										<option th:value="4">Debit Card </option>
+										<option th:each="method: ${methodList}"
+											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>
 								</div>
 								<div class="col-sm-2">
-									<label for="refNo" class="control-label">Other Details</label>
-									<input type="text" class="form-control" id="paymentDetials"
+									<label for="refNo" class="control-label">Payment
+										Details</label> <input type="text" class="form-control"
+										id="paymentDetials"
 										th:field="${wrapper.paymentDetail.paymentDetail}" />
 								</div>
 
@@ -106,22 +120,32 @@
 											th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
 												<option value="0">Please Select</option>
 												<option th:each="asset : ${AssetList}"
-													th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash In hand</option>
+													th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
+													In hand</option>
 										</select></td>
 
 										<td><input
 											th:field="${wrapper.TB_DetailList[__${i}__].remarks}"
 											type="text" /></td>
-										<td></td>
 										<td><input
 											th:field="${wrapper.TB_DetailList[__${i}__].subTotal}"
-											placeholder="enter subtotal " /></td>
+											onblur="updateTotal(this.value)"
+											placeholder="enter subtotal " class="subTotal" /></td>
 
 									</tr>
 
 								</tbody>
 
 							</table>
+							<div class="form-group">
+
+								<label class="col-sm-2 control-label">Remarks:</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" rows="4" cols="4"
+										th:field="${wrapper.TrailBalance.remarks}"
+										placeholder="Enter Any details if needed"></textarea>
+								</div>
+							</div>
 							<div class="box-footer">
 								<button type="reset" class="btn btn-default">Cancel</button>
 								<button type="submit" class="btn btn-info pull-right">Save</button>

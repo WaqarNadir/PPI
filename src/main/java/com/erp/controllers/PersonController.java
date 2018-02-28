@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class PersonController {
 
 	@PostMapping(value = "SavePerson")
 	public String SaveDetails(@ModelAttribute Person person, @ModelAttribute Phone phone,
-			@ModelAttribute Address address, @ModelAttribute Email email) {
+			@ModelAttribute Address address, @ModelAttribute Email email,Errors error) {
 
 		person = validate(person);
 
@@ -51,7 +52,7 @@ public class PersonController {
 			address.setPerson(person);
 			personDetailservice.saveAddress(address);
 		}
-		if (!phone.getPhone().isEmpty()) {
+		if (!phone.getPhoneNo().isEmpty()) {
 			phone.setPerson(person);
 			personDetailservice.savePhone(phone);
 		}

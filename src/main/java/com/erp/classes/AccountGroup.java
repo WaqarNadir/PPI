@@ -21,15 +21,6 @@ public class AccountGroup implements Serializable {
 	private String accName;
 	@Column(name = "isParent")
 	private Integer parentRef;
-
-	public Integer getParentRef() {
-		return parentRef;
-	}
-
-	public void setParentRef(Integer parentRef) {
-		this.parentRef = parentRef;
-	}
-
 	private String refNo;
 	private String remarks;
 
@@ -51,6 +42,21 @@ public class AccountGroup implements Serializable {
 		this.accName = accName;
 	}
 
+	public int getIsParent() {
+		return parentRef;
+	}
+
+	public void setIsParent(int parentRef) {
+		this.parentRef = parentRef;
+	}
+
+	public Integer getParentRef() {
+		return parentRef;
+	}
+
+	public void setParentRef(Integer parentRef) {
+		this.parentRef = parentRef;
+	}
 
 	public String getRefNo() {
 		return refNo;

@@ -23,13 +23,16 @@ public class TrailBalance implements Serializable {
 	@Id
 	@TableGenerator(name = "TB_ID", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "TB_ID", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TB_ID")
+
 	@Column(name = "TB_ID")
 	private int TB_ID;
-
 	private Date date;
 	private double total;
 	private String diaryNo;
 	private String remarks;
+	
+	@Column(name = "Type")
+	private int Type; // To differentiate income , expense and transfer
 
 	@ManyToOne
 	@JoinColumn(name = "bankSourceID")
@@ -43,6 +46,14 @@ public class TrailBalance implements Serializable {
 	private List<TrailBalance> TB_DetailList;
 
 	// --------------- Getter & Setters ---------------
+
+	public int getType() {
+		return Type;
+	}
+
+	public void setType(int type) {
+		this.Type = type;
+	}
 
 	public TrailBalance() {
 		TB_DetailList = new ArrayList<>();
