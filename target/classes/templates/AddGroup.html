@@ -12,11 +12,12 @@
 					<h2 class="box-title">Enter Group Detail</h2>
 				</div>
 				<form class="form-horizontal" th:object="${group}"
-					th:action="SaveGroup" method="post">
+					th:action="SaveGroup" method="Post">
 					<div class="box-body">
+
 						<div class="form-group">
-							<label class="col-sm-2 control-label">Parent Reference
-								No. </label>
+
+							<label class="col-sm-2 control-label">Parent Reference No. </label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" th:field="*{parentRef}"
 									placeholder="Parent Reference No. " />
@@ -26,7 +27,7 @@
 							<label class="col-sm-2 control-label">Account Name: </label>
 							<div class="col-sm-10">
 								<input class="form-control" type="text" th:field="*{accName}"
-									placeholder="Account Name" />
+								placeholder="Account Name" />
 							</div>
 						</div>
 
@@ -54,7 +55,7 @@
 						</div>
 					</div>
 				</form>
-			</div>
+				</div>
 		</div>
 
 	</div>

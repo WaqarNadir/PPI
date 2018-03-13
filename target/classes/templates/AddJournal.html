@@ -6,9 +6,13 @@
 <script>
 	function setsubTotal(i, field, disableField) {
 		console.log("On blur called;");
+
 		var fieldName = "#subTotal" + i;
+		var isCreditField = "#isCredit" + i;
+
 		var disablefieldName = "#" + disableField + i;
 		var value = field.value;
+
 		var subGroupName = "#subGroup" + i;
 		var subGroupVal = $(subGroupName).val();
 
@@ -18,6 +22,13 @@
 			return;
 		}
 		var subtotal = $(fieldName).val(value);
+
+		if (disableField == "Credit")
+			var isCredit = $(isCreditField).val("0");
+		else
+			var isCredit = $(isCreditField).val("1");
+
+		alert($(isCreditField).val());
 		if (!(value == "" || value == 0))
 			$(disablefieldName).prop('disabled', true);
 		else
@@ -46,7 +57,6 @@
 		$('.Debit').each(function() {
 			var val = parseFloat($(this).val()) | 0;
 			Debit = val ? (parseFloat(Debit + val)) : Debit;
-
 		});
 
 		$('.Credit').each(function() {
@@ -61,6 +71,8 @@
 			$("#submit").prop('disabled', true);
 		else {
 			$("#submit").prop('disabled', false);
+
+			$("#total").val(Debit);
 
 			if (val == 999)
 				$("#submit").prop('disabled', true);
@@ -86,7 +98,7 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${journal}"
-							action="/Expense/Save" method="post">
+							action="/Journal/Save" method="post">
 							<div class="box-body">
 
 								<div class="col-sm-3 pull-right">
@@ -94,8 +106,8 @@
 										<label for="inputPassword3" class="control-label input-lg"
 											align="center">Total</label>
 									</h2>
-									<input th:field="${journal.total}" readonly="readonly"
-										class="form-control  input-lg" />
+									<input th:field="${journal.total}" id="total"
+										readonly="readonly" class="form-control  input-lg" />
 								</div>
 							</div>
 
@@ -138,7 +150,8 @@
 										</select></td>
 
 										<td><input type="text" placeholder="Enter any Memo"
-											class="form-control input-lg" /></td>
+											class="form-control input-lg"
+											th:field="${journal.JDList[__${i}__].description}" /></td>
 
 										<td><input th:id="${'Debit'+i}"
 											placeholder="Enter Debit Amount"
@@ -152,6 +165,11 @@
 										<td><input type="hidden"
 											th:field="${journal.JDList[__${i}__].subTotal}"
 											th:id="${'subTotal' + i}" /></td>
+
+										<td><input type="number" hidden="hidden"
+											th:field="${journal.JDList[__${i}__].isCredit}"
+											th:id="${'isCredit' + i}" /></td>
+
 									</tr>
 									<tr>
 										<td></td>

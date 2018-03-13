@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2>Profit Loss Report</h2>
+				</div>
+				<div>
+					<table class="table stripped">
+						<tr>
+							<td>
+								<h3>Income</h3>
+							</td>
+						</tr>
+
+						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 1}">
+							<td th:text="${PF.name}"></td>
+							<td th:text="${PF.subTotal}"></td>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<td><strong>Total Income</strong></td>
+							<td th:text="${incomeSum}"></td>
+						</tr>
+						<tr>
+							<td>
+								<h3>Expense</h3>
+							</td>
+						</tr>
+
+						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 2}">
+							<td th:text="${PF.name}"></td>
+							<td th:text="${PF.subTotal}"></td>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<td><strong>Total Expense</strong></td>
+							<td th:text="${expenseSum}"></td>
+						</tr>
+
+						<tr>
+							<td><h3>Net Equity</h3></td>
+							<td><h3 th:text="${netEquity}"></h3></td>
+						</tr>
+					</table>
+				</div>
+
+
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

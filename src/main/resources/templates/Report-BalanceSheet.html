@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2>Balance Sheet</h2>
+				</div>
+
+				<div class="box-body no-padding">
+					<div class="col-md-5">
+						<table class="table stripped">
+							<tr>
+								<td>
+									<h3>Assets</h3>
+								</td>
+							</tr>
+
+							<tr th:each="item : ${assets.childList}">
+								<td width="10px"></td>
+								<td width="140px" th:text="${item.accName}"></td>
+								<td th:text="${item.amount}"></td>
+
+							</tr>
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total Assets</strong></td>
+								<td></td>
+								<td class="custom-td"><strong th:text="${assets.remarks}"></strong></td>
+							</tr>
+
+							<tr>
+								<td>
+									<h3>Liability</h3>
+								</td>
+							</tr>
+
+							<tr th:each="item : ${liability.childList}">
+								<td width="10px"></td>
+								<td th:text="${item.accName}"></td>
+								<td th:text="${item.amount}"></td>
+
+							</tr>
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total Assets</strong></td>
+								<td></td>
+								<td class="custom-td"><strong
+									th:text="${liability.remarks}"></strong></td>
+							</tr>
+							<tr>
+								<td>
+									<h3>Equity</h3>
+								</td>
+							</tr>
+
+							<tr th:each="item : ${equity.childList}">
+								<td width="10px"></td>
+								<td th:text="${item.accName}"></td>
+								<td th:text="${item.amount}"></td>
+
+							</tr>
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total Assets</strong></td>
+								<td></td>
+								<td class="custom-td"><strong th:text="${equity.remarks}"></strong></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

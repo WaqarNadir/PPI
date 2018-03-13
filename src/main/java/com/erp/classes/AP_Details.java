@@ -23,14 +23,12 @@ public class AP_Details implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "APD_ID")
 	@Column(name = "APD_ID")
 	private int APDetail_ID;
-	private double amount_Paid;
+	private double amountPayable;
 	private String Remarks;
-	private Date paid_Date;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Acc_ID")
 	private AccountGroup subGroup_ID;
-	
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AP_ID")
@@ -43,6 +41,7 @@ public class AP_Details implements Serializable {
 	public void setAP_ID(Account_Payable aP_ID) {
 		AP_ID = aP_ID;
 	}
+
 	public int getAPDetail_ID() {
 		return APDetail_ID;
 	}
@@ -51,21 +50,12 @@ public class AP_Details implements Serializable {
 		APDetail_ID = aPDetail_ID;
 	}
 
-	public Date getPaid_Date() {
-		return paid_Date;
+	public double getAmountPayable() {
+		return amountPayable;
 	}
 
-	public void setPaid_Date(Date paid_Date) {
-		this.paid_Date = paid_Date;
-	}
-
-
-	public double getAmount_Paid() {
-		return amount_Paid;
-	}
-
-	public void setAmount_Paid(double amount_Paid) {
-		this.amount_Paid = amount_Paid;
+	public void setAmountPayable(double amountPayable) {
+		this.amountPayable = amountPayable;
 	}
 
 	public String getRemarks() {
@@ -84,8 +74,6 @@ public class AP_Details implements Serializable {
 		this.subGroup_ID = subGroup_ID;
 	}
 
-
 	// --------------- Getter & Setters ---------------
 
 }
-

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Journal Detail</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal" th:object="${journal}"
+							action="/Journal/Save" method="post">
+							<div class="box-body">
+
+								<div class="col-sm-3 pull-right">
+									<h2>
+										<label for="inputPassword3" class="control-label input-lg"
+											align="center">Total</label>
+									</h2>
+									<input th:field="${journal.total}" id="total"
+										readonly="readonly" class="form-control  input-lg" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label">Date</label> <input
+										type="date" class="form-control input-lg" id="myDate"
+										th:field="${journal.date}" />
+								</div>
+
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label">Ref No</label> <input
+										type="text" class="form-control input-lg" id="refNo"
+										th:field="${journal.diaryNo}" />
+								</div>
+							</div>
+
+							<table id="table1" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>No#</th>
+										<th>Account</th>
+										<th>Description</th>
+										<th>Sub Total</th>
+										<th>Type</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="item ,iterStat: ${journal.JDList}">
+										<td th:text="${iterStat.index +1}"></td>
+
+										<td><select class="form-control ">
+												<option th:text="${item.subGroup_ID.accName}">Cash In hand</option>
+										</select></td>
+
+										<td><input class="form-control "
+											th:value="${item.description}" /></td>
+
+										<td><input class="form-control "
+											th:value="${item.subTotal}" /></td>
+										<td th:text="${item.isCredit == 1 ? 'Credit' : 'Debit'}"></td>
+									</tr>
+
+								</tbody>
+
+							</table>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

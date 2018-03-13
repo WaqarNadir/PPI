@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.erp.classes.AP_Details;
-import com.erp.classes.AR_Details;
+//import com.erp.classes.AR_Details;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
@@ -22,13 +23,14 @@ import com.erp.classes.TrailBalanceWrapper;
 import com.erp.classes.PaymentDetails;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
+import com.erp.classes.ProfitLoss;
 import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
 import com.erp.services.AP_DetailsService;
-import com.erp.services.AR_DetailsService;
+//import com.erp.services.AR_DetailsService;
 import com.erp.services.AccountGroupService;
 import com.erp.services.Account_PayableService;
-import com.erp.services.Account_ReceivableService;
+//import com.erp.services.Account_ReceivableService;
 import com.erp.services.PaymentDetailService;
 import com.erp.services.PaymentMethodService;
 import com.erp.services.PersonService;
@@ -54,10 +56,10 @@ public class ExpenseContoller {
 	private Account_PayableService AP_Service;
 	@Autowired
 	private AP_DetailsService APD_Service;
-	@Autowired
-	private Account_ReceivableService AR_Service;
-	@Autowired
-	private AR_DetailsService ARD_Service;
+	// @Autowired
+	// private Account_ReceivableService AR_Service;
+	// @Autowired
+	// private AR_DetailsService ARD_Service;
 	// ---- Variables -------------
 	private List<AccountGroup> AG_List;
 
@@ -66,8 +68,7 @@ public class ExpenseContoller {
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("AssetList", getCurrentAsset());
-		model.addAttribute("wrapper", new TrailBalanceWrapper());
-
+		// List<ProfitLoss> reportList = TB_service.profitLossReport();
 		return "Expense";
 	}
 
@@ -76,6 +77,7 @@ public class ExpenseContoller {
 		save(data, Constants.isExpense);
 		return "redirect:/Expense/Add";
 	}
+
 	@GetMapping("Income/Add")
 	public String IncomeHome(Model model) {
 		model.addAttribute("personList", getPerson());
@@ -91,7 +93,7 @@ public class ExpenseContoller {
 		save(data, Constants.isIncome);
 		return "redirect:/Income/Add";
 	}
-	
+
 	@GetMapping("Transfer/Add")
 	public String TransferHome(Model model) {
 		model.addAttribute("methodList", getMethods());
@@ -106,7 +108,7 @@ public class ExpenseContoller {
 		save(data, Constants.isTransfer);
 		return "redirect:/Transfer/Add";
 	}
-	
+
 	@GetMapping("CreditNote/Add")
 	public String CreditNoteHome(Model model) {
 		model.addAttribute("personList", getPerson());
@@ -115,13 +117,13 @@ public class ExpenseContoller {
 
 		return "CreditNote";
 	}
-	
+
 	@PostMapping("/CreditNote/Save")
 	public String saveCreditNote(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
-		//save(data, Constants.isTransfer);
+		// save(data, Constants.isTransfer);
 		return "redirect:/Transfer/Add";
 	}
-	
+
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
@@ -132,26 +134,25 @@ public class ExpenseContoller {
 
 		return "Bill";
 	}
-	
+
 	@PostMapping("/Bill/Save")
 	public String saveBillNote(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
 		savePayable(data, "Partial");
 		return "redirect:/Bill/Add";
 	}
-	
+
 	private void savePayable(TrailBalanceWrapper data, String status) {
 		for (AP_Details APD : data.getAP_DetailList()) {
-			if(APD.getAmount_Paid() !=0.0) {
+			if (APD.getAmountPayable() != 0.0) {
 				data.getAccountPayable().setstatus(status);
-				APD.setPaid_Date(data.getAccountPayable().getDate());
-				//data.getAccountPayable().setPerson_ID(data.get);
+				// data.getAccountPayable().setPerson_ID(data.get);
 				APD.setAP_ID(data.getAccountPayable());
 				AP_Service.save(APD.getAP_ID());
 				APD_Service.save(APD);
 			}
-		}		
+		}
 	}
-	
+
 	@GetMapping("ReceiveBill/Add")
 	public String ReceiveBillHome(Model model) {
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
@@ -162,25 +163,27 @@ public class ExpenseContoller {
 
 		return "ReceiveBill";
 	}
-	
+
 	@PostMapping("/ReceiveBill/Save")
-	public String saveReceiveBillNote(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
-		saveReceivable(data, "Partial");
+	public String saveReceiveBillNote(@ModelAttribute TrailBalanceWrapper data, Errors errors,
+			HttpServletRequest request) {
+		// saveReceivable(data, "Partial");
 		return "redirect:/ReceiveBill/Add";
 	}
-	private void saveReceivable(TrailBalanceWrapper data, String status) {
-		for (AR_Details ARD : data.getAR_DetailsList()) {
-			if(ARD.getAmount_Received() !=0.0) {
-				data.getAccountReceivable().setstatus(status);
-				//data.getAccountReceivable().setstatus(status);
-				ARD.setReceived_Date(data.getAccountReceivable().getDate());
-				//data.getAccountPayable().setPerson_ID(data.get);
-				ARD.setAR_ID(data.getAccountReceivable());
-				AR_Service.save(ARD.getAR_ID());
-				ARD_Service.save(ARD);
-			}
-		}		
-	}
+
+	// private void saveReceivable(TrailBalanceWrapper data, String status) {
+	// for (AR_Details ARD : data.getAR_DetailsList()) {
+	// if (ARD.getAmount_Received() != 0.0) {
+	// data.getAccountReceivable().setstatus(status);
+	// // data.getAccountReceivable().setstatus(status);
+	// ARD.setReceived_Date(data.getAccountReceivable().getDate());
+	// // data.getAccountPayable().setPerson_ID(data.get);
+	// ARD.setAR_ID(data.getAccountReceivable());
+	// AR_Service.save(ARD.getAR_ID());
+	// ARD_Service.save(ARD);
+	// }
+	// }
+	// }
 
 	// ------------------ Utility functions ------------------------
 
@@ -204,7 +207,8 @@ public class ExpenseContoller {
 	public List<Person> getPerson() {
 		return personService.getAll();
 	}
-	public List<PaymentMethods> getMethods(){
+
+	public List<PaymentMethods> getMethods() {
 		return PM_Service.getAll();
 	}
 

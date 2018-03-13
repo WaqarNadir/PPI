@@ -8,27 +8,27 @@ public class TrailBalanceWrapper {
 	private PaymentDetails PaymentDetail;
 	private Account_Payable AccountPayable;
 	private List<AP_Details> AP_DetailList;
-	private Account_Receivable accountReceivable;
-	private List<AR_Details> AR_DetailsList;
-	
-
-	public List<AR_Details> getAR_DetailsList() {
-		return AR_DetailsList;
-	}
-
-	public void setAR_DetailsList(List<AR_Details> aR_DetailsList) {
-		AR_DetailsList = aR_DetailsList;
-	}
-
-
-
-	public Account_Receivable getAccountReceivable() {
-		return accountReceivable;
-	}
-
-	public void setAccountReceivable(Account_Receivable accountReceivable) {
-		this.accountReceivable = accountReceivable;
-	}
+//	private Account_Receivable accountReceivable;
+//	private List<AR_Details> AR_DetailsList;
+//	
+//
+//	public List<AR_Details> getAR_DetailsList() {
+//		return AR_DetailsList;
+//	}
+//
+//	public void setAR_DetailsList(List<AR_Details> aR_DetailsList) {
+//		AR_DetailsList = aR_DetailsList;
+//	}
+//
+//
+//
+//	public Account_Receivable getAccountReceivable() {
+//		return accountReceivable;
+//	}
+//
+//	public void setAccountReceivable(Account_Receivable accountReceivable) {
+//		this.accountReceivable = accountReceivable;
+//	}
 
 	public List<AP_Details> getAP_DetailList() {
 		return AP_DetailList;

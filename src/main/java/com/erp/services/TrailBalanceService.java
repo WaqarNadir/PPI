@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.erp.classes.ProfitLoss;
 import com.erp.classes.TrailBalance;
 import com.erp.repo.TrailBalanceRepo;
 
@@ -37,4 +39,9 @@ public class TrailBalanceService {
 
 	}
 
+	public List<TrailBalance> findBytype(int type) {
+		return repo.findByType(type);
+	}
+
+	
 }

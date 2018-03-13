@@ -9,3 +9,4 @@ import com.erp.classes.TrailBalance;
 @Repository
 public interface TrailBalanceDetailsRepo extends JpaRepository<TB_Details, Integer> {
 }
+

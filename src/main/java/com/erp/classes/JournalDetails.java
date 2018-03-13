@@ -23,7 +23,8 @@ public class JournalDetails implements Serializable {
 
 	private double subTotal;
 
-	private int iscredit;
+	@Column(name = "iscredit")
+	private int isCredit;
 
 	@ManyToOne
 	@JoinColumn(name = "J_ID")
@@ -33,7 +34,18 @@ public class JournalDetails implements Serializable {
 	@JoinColumn(name = "Acc_ID")
 	private AccountGroup subGroup_ID;
 
+	@Column(name = "Description")
+	private String description;
+
 	// -------------------------- Getter & setters -------------------------------
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public int getJDetail_ID() {
 		return JDetail_ID;
@@ -51,12 +63,12 @@ public class JournalDetails implements Serializable {
 		this.subTotal = subTotal;
 	}
 
-	public int getIscredit() {
-		return iscredit;
+	public int getIsCredit() {
+		return isCredit;
 	}
 
-	public void setIscredit(int iscredit) {
-		this.iscredit = iscredit;
+	public void setIsCredit(int isCredit) {
+		this.isCredit = isCredit;
 	}
 
 	public Journal getJournal_ID() {

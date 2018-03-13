@@ -38,8 +38,8 @@ public class AccountGroupService {
 
 	}
 
-	public List<AccountGroup> getWithParefRef(int parentRef) {
-		return repo.findByparentRef(parentRef);
+	public List<AccountGroup> getWithParefRef(Integer parentRef) {
+		return repo.findByIsParent(parentRef);
 
 	}
 

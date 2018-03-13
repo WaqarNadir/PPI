@@ -9,6 +9,6 @@ import com.erp.classes.AccountGroup;
 
 @Repository
 public interface AccountGroupRepo extends JpaRepository<AccountGroup, Integer> {
-	List<AccountGroup> findByparentRef(int parentRef);
+	List<AccountGroup> findByIsParent(Integer parentRef);
 
 }

@@ -3,16 +3,19 @@ package com.erp.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Journal;
+import com.erp.classes.JournalDetails;
 import com.erp.services.AccountGroupService;
 import com.erp.services.JournalDetailService;
 import com.erp.services.JournalService;
@@ -41,7 +44,36 @@ public class JournalController {
 	@PostMapping(value = "/Journal/Save")
 	public String SaveDetails(@ModelAttribute(name = "group") Journal journal, Errors error) {
 
-		return "AddGroup";
+		FilterAndSave(journal);
+
+		return "AddJournal";
+	}
+
+	private void FilterAndSave(Journal journal) {
+		service.save(journal);
+
+		for (JournalDetails JD : journal.getJDList()) {
+			if (JD.getSubTotal() != 0.0) {
+				JD.setJournal_ID(journal);
+				JDservice.save(JD);
+			}
+		}
+	}
+
+	@GetMapping("ViewAllJournal")
+	public String viewall(Model model) {
+		model.addAttribute("list", getAll());
+		return "ViewAllJournal";
+	}
+
+	@GetMapping("/Journal/View/{id}")
+	public String viewDetails(@PathVariable("id") int id, Model model) {
+		model.addAttribute("journal", find(id));
+		return "JournalDetail";
+	}
+
+	public Journal find(int id) {
+		return service.find(id);
 	}
 
 	public List<Journal> getAll() {

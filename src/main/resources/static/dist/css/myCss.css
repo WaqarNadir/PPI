@@ -1,0 +1,12 @@
+.custom-td {
+	border: 1px solid black;
+	border-left: 0;
+	border-right: 0;
+	border-top: 2px solid black !important;
+	word-wrap: break-word !important;
+}
+
+.custom-font{
+	color:black;
+	font
+}

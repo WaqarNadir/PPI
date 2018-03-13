@@ -1,12 +1,17 @@
 package com.erp.classes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 @Entity
@@ -18,13 +23,42 @@ public class AccountGroup implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "Acc_ID")
 	@Column(name = "Acc_ID")
 	private int Acc_ID;
+
+	@ManyToOne
+	@JoinColumn(name = "isParent")
+	private AccountGroup isParent;
+	private Double amount;
 	private String accName;
-	@Column(name = "isParent")
-	private Integer parentRef;
 	private String refNo;
 	private String remarks;
 
 	// -------------------------- Getter & setters -------------------------------
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public AccountGroup getIsParent() {
+		return isParent;
+	}
+
+	public void setIsParent(AccountGroup isParent) {
+		this.isParent = isParent;
+	}
+
+	@OneToMany(mappedBy = "isParent")
+	private List<AccountGroup> childList;
+
+	public List<AccountGroup> getChildList() {
+		return childList;
+	}
+
+	public void setChildList(List<AccountGroup> childList) {
+		this.childList = childList;
+	}
 
 	public int getAcc_ID() {
 		return Acc_ID;
@@ -40,22 +74,6 @@ public class AccountGroup implements Serializable {
 
 	public void setAccName(String accName) {
 		this.accName = accName;
-	}
-
-	public int getIsParent() {
-		return parentRef;
-	}
-
-	public void setIsParent(int parentRef) {
-		this.parentRef = parentRef;
-	}
-
-	public Integer getParentRef() {
-		return parentRef;
-	}
-
-	public void setParentRef(Integer parentRef) {
-		this.parentRef = parentRef;
 	}
 
 	public String getRefNo() {
@@ -74,4 +92,7 @@ public class AccountGroup implements Serializable {
 		this.remarks = remarks;
 	}
 
+	public AccountGroup() {
+		childList = new ArrayList<>();
+	}
 }

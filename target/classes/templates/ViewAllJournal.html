@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2 class="box-title">Profit Loss Report</h2>
+				</div>
+				<div>
+					<table class="table stripped">
+						<tr>
+							<th>Sr #.</th>
+							<th>Date</th>
+							<th>Journal No.</th>
+							<th>Diary No</th>
+							<th>Total</th>
+							<th>Details</th>
+						</tr>
+						<tr th:each="item,iterStat : ${list}">
+							<td th:text="${iterStat.index + 1}"></td>
+							<td th:text="${item.Date}"></td>
+							<td th:text="${item.journal_ID}"></td>
+							<td th:text="${item.diaryNo}"></td>
+							<td th:text="${item.Total}"></td>
+							<td><a th:href="'Journal/View/'+ ${item.journal_ID}"><button>View
+										Detials</button></a></td>
+						</tr>
+
+					</table>
+				</div>
+
+
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

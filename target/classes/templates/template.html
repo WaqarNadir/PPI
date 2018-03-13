@@ -14,6 +14,7 @@
 <link rel="stylesheet" th:href="@{/bootstrap/css/ionicons.min.css}" />
  -->
 <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}" />
+<link rel="stylesheet" th:href="@{/dist/css/myCss.css}" />
 <link rel="stylesheet" th:href="@{/dist/css/skins/skin-blue.min.css}" />
 <script th:src="@{/dist/js/jquery-2.2.3.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
@@ -128,8 +129,8 @@
 								<li><a href="">See All Income</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Person</span> <span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
+								<span>Person</span> <span class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
 								<li><a href="/NewPerson">New Customer</a></li>
@@ -142,9 +143,10 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="">Balance Sheet</a></li>
-								<li><a href="">Chart of Account</a></li>
-								<li><a href="">Profit and Loss Statement</a></li>
+								<li><a href="/Reports/BalanceSheet">Balance Sheet</a></li>
+								<li><a href="Reports/ChartsOfAccount">Chart of Account</a></li>
+								<li><a href="/Reports/ProfitLoss">Profit and Loss
+										Statement</a></li>
 
 
 
