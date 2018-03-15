@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+
+
+<script>
+	function updateTotal(value) {
+		var total = 0;
+		$('.subTotal').each(function() {
+			val = parseFloat($(this).val()) | 0;
+			total = val ? (parseFloat(total + val)) : total;
+		});
+		$("#total").text(total);
+		$("#total").val(total);
+	}
+</script>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Bill Payment</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal" action="/BillReciept/Save"
+							method="post">
+							<div class="box-body">
+								<label for="inputPassword3" class="col-sm-1 control-label">To</label>
+								<div class="col-sm-3">
+									<select class="form-control">
+										<option th:value="${apReciept.AP_ID.person_ID}"
+											th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="refNo" class="col-sm-1 control-label">Ref.
+									No</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="refNo"
+										th:value="${apReciept.AP_ID.diary_No}" />
+								</div>
+								<label for="refNo" class="col-sm-1 control-label">AP_ID
+								</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="apID"
+										th:field="${apReciept.AP_ID.AP_ID}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="date" class="col-sm-1 control-label" align="center">Date</label>
+								<div class="col-sm-3">
+									<input type="date" class="form-control" id="myDate"
+										th:value="${apReciept.AP_ID.date}" />
+								</div>
+								<label for="duedate" class="col-sm-1 control-label"
+									align="center">Expected Date</label>
+								<div class="col-sm-3">
+									<input type="date" class="form-control" id="myDate"
+										th:value="${apReciept.AP_ID.dueDate}" />
+								</div>
+							</div>
+							<table id="table1" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Account</th>
+										<th>Description</th>
+										<th>Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
+										<td th:value="${row.index}" th:text="${row.index+1}"></td>
+										<td><select class="form-control" id="cash">
+												<option th:value="${Detail.subGroup_ID.Acc_ID}"
+													th:text="${Detail.subGroup_ID.accName}"></option>
+										</select></td>
+
+										<td><input th:value="${Detail.remarks}" type="text" /></td>
+										<td><input th:value="${Detail.amount_Paid}" /></td>
+									</tr>
+								</tbody>
+
+							</table>
+							<div class="form-group">
+								<label class="col-sm-1 control-label">Remarks:</label>
+								<div class="col-sm-4">
+									<textarea class="form-control" cols="4"
+										th:field="${apReciept.remarks}"
+										placeholder="Enter Any details if needed"></textarea>
+								</div>
+								<label class="col-sm-1 control-label">Total:</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="total"
+										th:value="${apReciept.AP_ID.total}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Amount Paid</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control col-sm-3"
+										id="amountPaid" th:field="${apReciept.amountPaid}" />
+								</div>
+								<label for="date" class="col-sm-1 control-label" align="center">Paid
+									Date</label>
+								<div class="col-sm-3">
+									<input type="date" class="form-control" id="paidDate"
+										th:field="${apReciept.Date}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<select type="text" class="form-control" id="cash"
+									name="bankSource">
+									<option value="0">Please Select</option>
+									<option th:each="asset : ${AssetList}"
+										th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
+
+
+								</select>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Balance</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control col-sm-3" id="balance" />
+								</div>
+								<div class="col-sm-3">
+									<label for="total" class="control-label" align="center">Payment
+										Method</label> <select th:field="${apReciept.PM_ID}" type="text"
+										class="form-control" name="paymentMethod">
+										<option th:value="0">Please Select</option>
+										<option th:each="method: ${methodList}"
+											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="box-footer">
+								<button type="reset" class="btn btn-default">Cancel</button>
+								<button type="submit" class="btn btn-info pull-right">Save</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

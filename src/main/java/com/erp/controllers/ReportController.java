@@ -70,7 +70,7 @@ public class ReportController {
 	}
 
 	List<AccountGroup> getAccountGroups() {
-		return AGService.getWithParefRef(null);
+		return AGService.getWithParentRef(null);
 	}
 
 	void filterAccountGroups() {

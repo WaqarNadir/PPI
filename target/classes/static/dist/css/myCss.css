@@ -6,7 +6,12 @@
 	word-wrap: break-word !important;
 }
 
-.custom-font{
-	color:black;
-	font
+.asset-Group {
+	color: blue;
+	font-size: large;
+}
+
+.asset-SubGroup {
+	color: blue;
+	font-size: medium;
 }

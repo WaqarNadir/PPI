@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.TableGenerator;
 
-@Entity(name = "Account_Payable_Details")
+@Entity(name = "AccountPayableDetails")
 public class AP_Details implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,9 @@ public class AP_Details implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "APD_ID")
 	@Column(name = "APD_ID")
 	private int APDetail_ID;
-	private double amountPayable;
+	private double amount_Paid;
 	private String Remarks;
+	private Date paid_Date;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Acc_ID")
@@ -50,12 +51,20 @@ public class AP_Details implements Serializable {
 		APDetail_ID = aPDetail_ID;
 	}
 
-	public double getAmountPayable() {
-		return amountPayable;
+	public Date getPaid_Date() {
+		return paid_Date;
 	}
 
-	public void setAmountPayable(double amountPayable) {
-		this.amountPayable = amountPayable;
+	public void setPaid_Date(Date paid_Date) {
+		this.paid_Date = paid_Date;
+	}
+
+	public double getAmount_Paid() {
+		return amount_Paid;
+	}
+
+	public void setAmount_Paid(double amount_Paid) {
+		this.amount_Paid = amount_Paid;
 	}
 
 	public String getRemarks() {
@@ -74,6 +83,26 @@ public class AP_Details implements Serializable {
 		this.subGroup_ID = subGroup_ID;
 	}
 
+	public AP_Details(AP_Details APD) {
+		this.setAmount_Paid(APD.getAmount_Paid());
+		this.setAP_ID(APD.getAP_ID());
+		this.setPaid_Date(APD.getPaid_Date());
+		this.setRemarks(APD.getRemarks());
+		this.setSubGroup_ID(APD.getSubGroup_ID());
+
+	}
+
+	public AP_Details() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "AMount Paid = " + this.getAmount_Paid() + "\n" + "Paid Date = " + getPaid_Date() + "\n" + "Remarks = "
+				+ getRemarks() + "\n" + "Subgroup = " + getSubGroup_ID() + "\n";
+
+	}
 	// --------------- Getter & Setters ---------------
 
 }

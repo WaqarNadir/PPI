@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Expenses</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal">
+							<div class="box-body">
+								<table id="table1" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Expense ID</th>
+											<th>Diary NO.</th>
+											<th>Date</th>
+											<th>Amount</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr th:each="Detail,row : ${ExpenseList}">
+											<td th:value="${row.index}" th:text="${row.index+1}"></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.TB_ID}" readonly="readonly" /></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.diaryNo}" readonly="readonly" /></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.date}" readonly="readonly" /></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.total}" readonly="readonly" /></td>
+											<td><button>View Details</button></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

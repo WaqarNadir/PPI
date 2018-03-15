@@ -5,7 +5,7 @@
 
 <script>
 	function setsubTotal(i, field, disableField) {
-		console.log("On blur called;");
+		console.log("On blur called;" + field);
 
 		var fieldName = "#subTotal" + i;
 		var isCreditField = "#isCredit" + i;
@@ -27,8 +27,6 @@
 			var isCredit = $(isCreditField).val("0");
 		else
 			var isCredit = $(isCreditField).val("1");
-
-		alert($(isCreditField).val());
 		if (!(value == "" || value == 0))
 			$(disablefieldName).prop('disabled', true);
 		else
@@ -155,12 +153,12 @@
 
 										<td><input th:id="${'Debit'+i}"
 											placeholder="Enter Debit Amount"
-											th:onblur="'javascript:setsubTotal(' + ${i} + ',this,\'' + Credit + '\');'"
+											th:onChange="'javascript:setsubTotal(' + ${i} + ',this,\'' + Credit + '\');'"
 											class="Debit form-control input-lg" /></td>
 
 										<td><input placeholder="Enter Credit Amount"
 											th:id="${'Credit'+i}" class="Credit form-control input-lg"
-											th:onblur="'javascript:setsubTotal(' + ${i} + ',this,\'' + Debit + '\');'" /></td>
+											th:onChange="'javascript:setsubTotal(' + ${i} + ',this,\'' + Debit + '\');'" /></td>
 
 										<td><input type="hidden"
 											th:field="${journal.JDList[__${i}__].subTotal}"

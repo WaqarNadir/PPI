@@ -14,8 +14,8 @@
 <link rel="stylesheet" th:href="@{/bootstrap/css/ionicons.min.css}" />
  -->
 <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}" />
-<link rel="stylesheet" th:href="@{/dist/css/myCss.css}" />
 <link rel="stylesheet" th:href="@{/dist/css/skins/skin-blue.min.css}" />
+<link rel="stylesheet" th:href="@{/dist/css/myCss.css}" />
 <script th:src="@{/dist/js/jquery-2.2.3.min.js}"></script>
 <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/dist/js/app.min.js}"></script>
@@ -117,7 +117,7 @@
 							</span> </a>
 							<ul class="treeview-menu">
 								<li><a href="/Expense/Add">Create New Expense</a></li>
-								<li><a href="">See All Expense</a></li>
+								<li><a href="/ViewExpenses">See All Expense</a></li>
 							</ul></li>
 
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
@@ -125,16 +125,36 @@
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="">Create New Income</a></li>
-								<li><a href="">See All Income</a></li>
+								<li><a href="/Income/Add">Create New Income</a></li>
+								<li><a href="/ViewIncomes">See All Income</a></li>
 							</ul></li>
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Assets</span> <span class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/FixedAssets">Fixed Assets</a></li>
+								<li><a href="/CurrentAssets">Current Assets</a></li>
+								<li><a href="/ViewCredits">Credit Notes</a></li>
+								<li><a href="/ViewBills">View Bills</a></li>
+							</ul></li>
+
+
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Journal</span> <span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/Journal/Add">Add Journal</a></li>
+								<li><a href="/ViewAllJournal">View Journals</a></li>
+							</ul></li>
+
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Person</span> <span class="pull-right-container"> <i
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
 								<li><a href="/NewPerson">New Customer</a></li>
-								<li><a href="">See All Expense</a></li>
 							</ul></li>
 
 

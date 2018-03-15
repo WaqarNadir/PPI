@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.erp.classes.TB_Details;
-import com.erp.classes.TrailBalance;
 import com.erp.repo.TrailBalanceDetailsRepo;
 
 @Service

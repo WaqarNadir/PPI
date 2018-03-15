@@ -1,9 +1,5 @@
 package com.erp.classes;
 
-import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
-
 public class ProfitLoss {
 
 	public ProfitLoss() {

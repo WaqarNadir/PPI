@@ -9,5 +9,5 @@ public final class Constants {
 	public static String LIABILITY = "LIABILITY";
 	public static String EQUITY = "EQUITY";
 	public static String INCOME = "INCOME";
-	public static String EXPENSE = "EXPENSE";
+	public static String EXPENSE = "EXPENSES";
 }

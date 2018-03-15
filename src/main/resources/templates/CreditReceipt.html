@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+
+
+<script>
+	function updateTotal(value) {
+		var total = 0;
+		$('.subTotal').each(function() {
+			val = parseFloat($(this).val()) | 0;
+			total = val ? (parseFloat(total + val)) : total;
+		});
+		$("#total").text(total);
+		$("#total").val(total);
+	}
+</script>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Receive Credit</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal" action="/CreditReceipt/Save"
+							method="post">
+							<div class="box-body">
+								<div class="col-sm-3 pull-right">
+									<label for="inputPassword3" class="control-label input-lg">From</label>
+									<select class="form-control input-lg" readonly="readonly">
+										<option th:value="${arReciept.AR_ID.person_ID}"
+											th:text="${arReciept.AR_ID.person_ID.Fname +' '+arReciept.AR_ID.person_ID.Lname}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="col-sm-3">
+									<label for="date" class="control-label input-lg" align="center">Expected
+										Date</label> <input type="date" readonly="readonly"
+										class="form-control input-lg" id="myDate"
+										th:value="${arReciept.AR_ID.date}" />
+								</div>
+							</div>
+							<div class="box-body">
+								<table id="table1" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Account</th>
+											<th>Description</th>
+											<th>Amount</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr th:each="Detail,row : ${arReciept.AR_ID.AR_DetailList}">
+											<td th:value="${row.index}" th:text="${row.index+1}"></td>
+											<td><select class="form-control input-lg"
+												readonly="readonly" id="cash">
+													<option th:value="${Detail.subGroup_ID.Acc_ID}"
+														th:text="${Detail.subGroup_ID.accName}"></option>
+											</select></td>
+											<td><input class="form-control input-lg"
+												readonly="readonly" th:value="${Detail.remarks}" type="text" /></td>
+											<td><input readonly="readonly"
+												class="form-control input-lg"
+												th:value="${Detail.amount_Received}" /></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td><label>Amount Received</label> <input type="text"
+												class="form-control input-lg" id="amountPaid"
+												th:field="${arReciept.amountReceived}" /></td>
+											<td><label>Received Date</label> <input type="date"
+												class="form-control input-lg" id="recievedDate"
+												th:field="${arReciept.Date}" /></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td><label>Balance</label> <input type="text"
+												class="form-control input-lg" id="balance" /></td>
+											<td><label>Payment Method</label> <select
+												th:field="${arReciept.PM_ID}" type="text"
+												class="form-control input-lg" name="paymentMethod">
+													<option th:value="0">Please Select</option>
+													<option th:each="method: ${methodList}"
+														th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+											</select></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="form-group">
+
+								<label class="col-sm-2 control-label input-lg">Remarks:</label>
+								<div class="col-sm-5">
+									<textarea class="form-control input-lg" rows="4" cols="4"
+										th:field="${arReciept.remarks}"
+										placeholder="Enter Any details if needed"></textarea>
+								</div>
+							</div>
+							<div class="box-footer">
+								<button type="reset" class="btn btn-default">Cancel</button>
+								<button type="submit" class="btn btn-info pull-right">Save</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

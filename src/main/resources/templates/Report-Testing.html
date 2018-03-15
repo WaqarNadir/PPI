@@ -7,18 +7,38 @@
 	<div th:replace="template:: wrapper"></div>
 	<div class="content-wrapper">
 		<div class="content">
-			<div class="sidebar">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2>Chart of Account</h2>
+				</div>
 
-				<li class="treeview"><a ><i class="fa fa-circle-o"></i> Level Two </a>
-					<ul class="treeview-menu">
-						<li ><a >Level Three</a></li>
-						<li><a >Level Three</a></li>
-					</ul></li>
+				<div class="sidebar">
+					<li th:each="asset : ${list}" class="treeview"><a><i
+							class="fa fa-circle-o text-red"></i> <u class="asset-Group"
+							th:text="${asset.accName}"></u></a>
+
+						<ul class="treeview-menu">
+							<li th:each="item,iterStat : ${asset.childList}"><a
+								style="color: blue"
+								th:class="${not(item.childList.isEmpty())} ? 'treeview'  ">
+									<i class="fa fa-circle-o text-red"></i> <u
+									class="asset-SubGroup" th:text="${item.accName}"></u>
+							</a>
+
+								<ul class="treeview-menu" style="display: none;">
+									<li th:each="subitem : ${item.childList}"><a
+										th:text="${subitem.accName}"> <i
+											class="fa fa-circle-o text-red"></i></a></li>
+
+								</ul></li>
+
+						</ul></li>
 
 
-
+				</div>
 			</div>
 		</div>
+
 	</div>
 
 	<div th:replace="template:: footer"></div>

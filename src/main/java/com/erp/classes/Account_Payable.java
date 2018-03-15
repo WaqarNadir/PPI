@@ -1,8 +1,8 @@
 package com.erp.classes;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
-@Entity
+@Entity(name="AccountPayable")
 public class Account_Payable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,11 +26,12 @@ public class Account_Payable implements Serializable {
 	@Column(name = "AP_ID")
 	private int AP_ID;
 	private Date date;
-	@Column(name ="due_Date")
+	@Column(name = "due_Date")
 	private Date dueDate;
 	private double total;
-	
+
 	private String diary_No;
+
 	public String getDiary_No() {
 		return diary_No;
 	}
@@ -40,20 +41,20 @@ public class Account_Payable implements Serializable {
 	}
 
 	private String remarks;
-	
+
 	@Column(name = "status")
 	private String status; // To differentiate income , expense and transfer
 
-//	@ManyToOne
-//	@JoinColumn(name = "bankSourceID")
-//	private AccountGroup bankSourceID;
+	// @ManyToOne
+	// @JoinColumn(name = "bankSourceID")
+	// private AccountGroup bankSourceID;
 
 	@ManyToOne
 	@JoinColumn(name = "person_ID")
 	private Person person_ID;
 
 	@OneToMany(mappedBy = "AP_ID")
-	private List<Account_Payable> AP_DetailList;
+	private List<AP_Details> AP_DetailList;
 
 	// --------------- Getter & Setters ---------------
 
@@ -64,6 +65,7 @@ public class Account_Payable implements Serializable {
 	public void setstatus(String Status) {
 		this.status = Status;
 	}
+
 	public Date getDueDate() {
 		return dueDate;
 	}
@@ -72,16 +74,15 @@ public class Account_Payable implements Serializable {
 		this.dueDate = dueDate;
 	}
 
-
 	public Account_Payable() {
 		AP_DetailList = new ArrayList<>();
 	}
 
-	public List<Account_Payable> getAP_DetailList() {
+	public List<AP_Details> getAP_DetailList() {
 		return AP_DetailList;
 	}
 
-	public void setTB_DetailList(List<Account_Payable> aP_DetailList) {
+	public void setAP_DetailList(List<AP_Details> aP_DetailList) {
 		AP_DetailList = aP_DetailList;
 	}
 
@@ -109,7 +110,6 @@ public class Account_Payable implements Serializable {
 		this.total = total;
 	}
 
-
 	public String getRemarks() {
 		return remarks;
 	}
@@ -118,13 +118,13 @@ public class Account_Payable implements Serializable {
 		this.remarks = remarks;
 	}
 
-//	public AccountGroup getbankSourceID() {
-//		return bankSourceID;
-//	}
-//
-//	public void setbankSourceID(AccountGroup bankSourceID) {
-//		this.bankSourceID = bankSourceID;
-//	}
+	// public AccountGroup getbankSourceID() {
+	// return bankSourceID;
+	// }
+	//
+	// public void setbankSourceID(AccountGroup bankSourceID) {
+	// this.bankSourceID = bankSourceID;
+	// }
 
 	public Person getPerson_ID() {
 		return person_ID;
@@ -135,4 +135,3 @@ public class Account_Payable implements Serializable {
 	}
 
 }
-

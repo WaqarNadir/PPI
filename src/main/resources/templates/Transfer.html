@@ -36,10 +36,10 @@
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
 							action="/Transfer/Save" method="post">
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">From</label>
+								<label for="inputPassword3" class="col-sm-2 control-label input-lg">From</label>
 								<div class="col-sm-3">
 									<div>
-										<select type="text" class="form-control" id="cash"
+										<select type="text" class="form-control input-lg" id="cash"
 											name="bankSource"
 											th:field="${wrapper.TrailBalance.bankSourceID}">
 											<option value="0">Please Select</option>
@@ -102,7 +102,7 @@
 								<tbody>
 
 									<tr th:each="i: ${#numbers.sequence(0, 5)}">
-										<td></td>
+										<td th:value="${i}" th:text="${i+1}"></td>
 										<td><select type="text" class="form-control" id="cash"
 											th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
 												<option value="0">Please Select</option>

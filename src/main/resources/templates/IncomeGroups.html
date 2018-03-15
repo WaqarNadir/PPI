@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Income Groups</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal">
+							<table id="table1" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Account</th>
+										<th>Description</th>
+										<th>Amount</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="Detail,row : ${AssetList}">
+										<td th:value="${row.index}" th:text="${row.index+1}"></td>
+										<td th:value="${Detail.Acc_ID}"
+													th:text="${Detail.accName}">
+										</td>
+										<td th:value="${Detail.remarks}"></td>
+
+									</tr>
+								</tbody>
+
+							</table>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

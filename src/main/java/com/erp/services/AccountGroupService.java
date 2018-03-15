@@ -38,9 +38,16 @@ public class AccountGroupService {
 
 	}
 
-	public List<AccountGroup> getWithParefRef(Integer parentRef) {
+	public List<AccountGroup> getWithParentRef(Integer parentRef) {
 		return repo.findByIsParent(parentRef);
 
 	}
 
+	public List<AccountGroup> getAllWithRemarks(String remarks) {
+		return repo.findByremarks(remarks);
+	}
+
+	public AccountGroup findByName(String name) {
+		return repo.findByAccName(name);
+	}
 }
