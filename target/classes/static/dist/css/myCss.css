@@ -15,3 +15,14 @@
 	color: blue;
 	font-size: medium;
 }
+
+.custom-bold {
+	font-weight: bold;
+}
+
+.label-total {
+	background: transparent;
+	border: 0;
+	font-size: 25px;
+	text-align: center;
+}

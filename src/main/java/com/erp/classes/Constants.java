@@ -10,4 +10,6 @@ public final class Constants {
 	public static String EQUITY = "EQUITY";
 	public static String INCOME = "INCOME";
 	public static String EXPENSE = "EXPENSES";
+	public static String ACCOUNTPAYABLE = "ACCOUNT PAYABLE";
+	public static String ACCOUNTRECIEVABLE = "ACCOUNT RECIEVABLE";
 }

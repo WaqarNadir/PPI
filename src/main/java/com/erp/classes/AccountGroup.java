@@ -34,10 +34,14 @@ public class AccountGroup implements Serializable {
 
 	// -------------------------- Getter & setters -------------------------------
 	public Double getAmount() {
+		if (amount == null) // to cater null pointer expection
+			return 0.0;
 		return amount;
 	}
 
 	public void setAmount(Double amount) {
+		if (amount == null)
+			amount = 0.0;
 		this.amount = amount;
 	}
 

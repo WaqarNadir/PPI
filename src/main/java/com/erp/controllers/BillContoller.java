@@ -20,6 +20,7 @@ import com.erp.classes.AP_Details;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
+import com.erp.classes.JournalDetails;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.services.APRecieptService;
@@ -67,7 +68,29 @@ public class BillContoller {
 	public String saveBillNote(@ModelAttribute Account_Payable data, Errors errors, HttpServletRequest request,
 			Model model) {
 		savePayable(data, "Partial");
+		UpdateParent(data.getTotal());
 		return "redirect:/BillReceipt/" + data.getAP_ID();
+	}
+
+	private Boolean UpdateParent(double BillAmount) {
+		boolean result = false;
+		AccountGroup item = AG_service.findByName(Constants.ACCOUNTPAYABLE);
+		try {
+			while (item.getIsParent() != null) {
+				double amount = 0.0;
+				amount = BillAmount + item.getAmount();
+				item.setAmount(amount);
+				AG_service.save(item);
+				item = item.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
 	}
 
 	@GetMapping("ViewBills")
