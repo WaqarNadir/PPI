@@ -2,19 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
-
-
-<script>
-	function updateTotal(value) {
-		var total = 0;
-		$('.subTotal').each(function() {
-			val = parseFloat($(this).val()) | 0;
-			total = val ? (parseFloat(total + val)) : total;
-		});
-		$("#total").text(total);
-		$("#total").val(total);
-	}
-</script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>

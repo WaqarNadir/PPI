@@ -59,6 +59,7 @@
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
 							action="/Expense/Save" method="post">
 							<div class="box-body">
+<<<<<<< HEAD
 								<div class="col-sm-3 pull-right">
 									<label for="inputPassword3" class="control-label input-lg"
 										align="center">Total</label> <input th:id="total"
@@ -67,6 +68,8 @@
 								</div>
 							</div>
 							<div class="box-body">
+=======
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">To</label>
 									<select class="form-control input-lg"
@@ -83,9 +86,28 @@
 										id="cash" name="bankSource"
 										th:field="${wrapper.TrailBalance.bankSourceID}">
 										<option value="0">Please Select</option>
+<<<<<<< HEAD
 										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
+=======
+										<option th:each="asset : ${expense}"
+											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
+									</select>
+								</div>
+								<div class="col-sm-3 pull-right">
+									<label for="inputPassword3" class="control-label input-lg"
+										align="center">Total</label> <input th:id="total"
+										class="form-control input-lg"
+										th:field="${wrapper.TrailBalance.total}" readonly="readonly" />
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="col-sm-2 pull-right">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input class="form-control input-lg" type="text" id="refNo"
+										th:field="${wrapper.TrailBalance.diaryNo}" />
+>>>>>>> Salman-Code
 								</div>
 								<div class="col-sm-3">
 									<label for="total" class="control-label input-lg"
@@ -97,6 +119,7 @@
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>
 								</div>
+<<<<<<< HEAD
 							</div>
 
 							<div class="box-body">
@@ -104,6 +127,12 @@
 									<label for="date" class="control-label input-lg" align="center">Date</label>
 									<input type="date" class="form-control input-lg" id="myDate"
 										th:field="${wrapper.TrailBalance.date}" />
+=======
+								<div class="col-sm-3">
+									<label for="date" class="control-label input-lg" align="center">Payment
+										Date</label> <input type="date" class="form-control input-lg"
+										id="myDate" th:field="${wrapper.TrailBalance.date}" />
+>>>>>>> Salman-Code
 								</div>
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Payment
@@ -111,11 +140,15 @@
 										id="paymentDetials"
 										th:field="${wrapper.paymentDetail.paymentDetail}" />
 								</div>
+<<<<<<< HEAD
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input class="form-control input-lg" type="text" id="refNo"
 										th:field="${wrapper.TrailBalance.diaryNo}" />
 								</div>
+=======
+
+>>>>>>> Salman-Code
 							</div>
 							<div class="box-body">
 								<table id="table1" class="table table-bordered table-hover">

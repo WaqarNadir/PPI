@@ -17,7 +17,11 @@
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
 		$.ajax({
+<<<<<<< HEAD
 			url : "/getSubType",
+=======
+			url : "/getSubTypeIncome",
+>>>>>>> Salman-Code
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -59,6 +63,7 @@
 						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
 							action="/Income/Save" method="post">
 							<div class="box-body">
+<<<<<<< HEAD
 								<div class="col-sm-3 pull-right">
 									<label for="inputPassword3" class="control-label input-lg"
 										align="center">Total</label> <input th:id="total"
@@ -69,6 +74,8 @@
 
 
 							<div class="box-body">
+=======
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">From</label>
 									<select class="form-control input-lg"
@@ -89,6 +96,22 @@
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
+<<<<<<< HEAD
+=======
+								<div class="col-sm-3 pull-right">
+									<label for="inputPassword3" class="control-label input-lg"
+										align="center">Total</label> <input th:id="total"
+										class="form-control input-lg"
+										th:field="${wrapper.TrailBalance.total}" readonly="readonly" />
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="col-sm-2 pull-right">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
+										th:field="${wrapper.TrailBalance.diaryNo}" />
+								</div>
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="total" class="control-label input-lg"
 										align="center">Payment Method</label> <select type="text"
@@ -100,14 +123,21 @@
 
 									</select>
 								</div>
+<<<<<<< HEAD
 							</div>
 
 							<div class="box-body">
+=======
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="date" class="control-label input-lg" align="center">Date
 									</label> <input type="date" class="form-control input-lg" id="myDate"
 										th:field="${wrapper.TrailBalance.date}" />
 								</div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Payment
 										Details</label> <input type="text" class="form-control input-lg"
@@ -115,11 +145,15 @@
 										th:field="${wrapper.paymentDetail.paymentDetail}" />
 								</div>
 
+<<<<<<< HEAD
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input type="text" class="form-control input-lg" id="refNo"
 										th:field="${wrapper.TrailBalance.diaryNo}" />
 								</div>
+=======
+
+>>>>>>> Salman-Code
 							</div>
 							<div class="box-body">
 								<table id="table1" class="table table-bordered table-hover">

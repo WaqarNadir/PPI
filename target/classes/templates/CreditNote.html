@@ -41,9 +41,6 @@
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
-
-
-
 	<div class="content-wrapper">
 		<div class="content-header">
 			<h1 align="center">Credit Note</h1>
@@ -59,6 +56,7 @@
 						<form class="form-horizontal" action="/CreditNote/Save"
 							method="post">
 							<div class="box-body">
+<<<<<<< HEAD
 								<div class="col-sm-3 pull-right">
 									<label for="inputPassword3" class="control-label input-lg"
 										align="center">Total</label> <input th:id="total"
@@ -67,6 +65,8 @@
 								</div>
 							</div>
 							<div class="box-body">
+=======
+>>>>>>> Salman-Code
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">From</label>
 
@@ -78,10 +78,20 @@
 											th:text="${person.Fname +' '+person.Lname}"></option>
 									</select>
 								</div>
+<<<<<<< HEAD
 							</div>
 
 
 
+=======
+								<div class="col-sm-3 pull-right">
+									<label for="inputPassword3" class="control-label input-lg"
+										align="center">Total</label> <input th:id="total"
+										class="form-control input-lg"
+										th:field="${AccountRecievable.total}" readonly="readonly" />
+								</div>
+							</div>
+>>>>>>> Salman-Code
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="date" class="control-label input-lg" align="center">Credit
