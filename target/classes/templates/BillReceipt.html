@@ -36,115 +36,109 @@
 						<form class="form-horizontal" action="/BillReciept/Save"
 							method="post">
 							<div class="box-body">
-								<label for="inputPassword3" class="col-sm-1 control-label">To</label>
 								<div class="col-sm-3">
-									<select class="form-control">
+									<label for="inputPassword3" class="control-label input-lg">To</label>
+									<select class="form-control input-lg">
 										<option th:value="${apReciept.AP_ID.person_ID}"
+											th:if="${apReciept.AP_ID.person_ID} !=null"
 											th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
 									</select>
 								</div>
-							</div>
-							<div class="form-group">
-								<label for="refNo" class="col-sm-1 control-label">Ref.
-									No</label>
 								<div class="col-sm-3">
-									<input type="text" class="form-control" id="refNo"
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
 										th:value="${apReciept.AP_ID.diary_No}" />
 								</div>
-								<label for="refNo" class="col-sm-1 control-label">AP_ID
-								</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control" id="apID"
-										th:field="${apReciept.AP_ID.AP_ID}" />
-								</div>
 							</div>
-							<div class="form-group">
-								<label for="date" class="col-sm-1 control-label" align="center">Date</label>
+							<div class="box-body">
 								<div class="col-sm-3">
-									<input type="date" class="form-control" id="myDate"
+									<label for="date" class="control-label input-lg" align="center">Date</label>
+
+									<input type="date" id="myDate" class="form-control input-lg"
 										th:value="${apReciept.AP_ID.date}" />
 								</div>
-								<label for="duedate" class="col-sm-1 control-label"
-									align="center">Expected Date</label>
 								<div class="col-sm-3">
-									<input type="date" class="form-control" id="myDate"
+									<label for="duedate" class="control-label input-lg"
+										align="center">Expected Date</label> <input type="date"
+										class="form-control input-lg" id="myDate"
 										th:value="${apReciept.AP_ID.dueDate}" />
 								</div>
 							</div>
-							<table id="table1" class="table table-bordered table-hover">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th>Account</th>
-										<th>Description</th>
-										<th>Amount</th>
-									</tr>
-								</thead>
-								<tbody>
+							<div class="box-body">
+								<table id="table1" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Account</th>
+											<th>Sub Group</th>
+											<th>Description</th>
+											<th>Amount</th>
+										</tr>
+									</thead>
+									<tbody>
 
-									<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
-										<td th:value="${row.index}" th:text="${row.index+1}"></td>
-										<td><select class="form-control" id="cash">
-												<option th:value="${Detail.subGroup_ID.Acc_ID}"
-													th:text="${Detail.subGroup_ID.accName}"></option>
-										</select></td>
+										<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
+											<td th:value="${row.index}" th:text="${row.index+1}"></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.subGroup_ID.isParent.accName}" /></td>
+											<td><select class="form-control input-lg" id="cash">
+													<option th:value="${Detail.subGroup_ID.Acc_ID}"
+														th:text="${Detail.subGroup_ID.accName}"></option>
+											</select></td>
 
-										<td><input th:value="${Detail.remarks}" type="text" /></td>
-										<td><input th:value="${Detail.amount_Paid}" /></td>
-									</tr>
-								</tbody>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.remarks}" type="text" /></td>
+											<td><input class="form-control input-lg"
+												th:value="${Detail.amount_Paid}" /></td>
+										</tr>
 
-							</table>
-							<div class="form-group">
-								<label class="col-sm-1 control-label">Remarks:</label>
+
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><label>Total:</label> <input type="text"
+												class="form-control input-lg" id="total"
+												th:value="${apReciept.AP_ID.total}" /></td>
+										</tr>
+
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><label>Balance</label> <input type="text"
+												class="form-control input-lg" id="balance" /></td>
+											<td><label>Payment Method</label> <select
+												th:field="${apReciept.PM_ID}" type="text"
+												class="form-control input-lg" name="paymentMethod">
+													<option th:value="0">Please Select</option>
+													<option th:each="method: ${methodList}"
+														th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td><label>Paid Date</label><input type="date"
+												class="form-control input-lg" id="paidDate"
+												th:field="${apReciept.Date}" /></td>
+											<td><label>Amount Paid</label> <input type="text"
+												class="form-control input-lg" id="amountPaid"
+												th:field="${apReciept.amountPaid}" /></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+							<div class="box-body">
+								<label class="col-sm-2 control-label input-lg">Remarks:</label>
 								<div class="col-sm-4">
-									<textarea class="form-control" cols="4"
+									<textarea class="form-control input-lg" cols="4"
 										th:field="${apReciept.remarks}"
 										placeholder="Enter Any details if needed"></textarea>
 								</div>
-								<label class="col-sm-1 control-label">Total:</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control" id="total"
-										th:value="${apReciept.AP_ID.total}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Amount Paid</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control col-sm-3"
-										id="amountPaid" th:field="${apReciept.amountPaid}" />
-								</div>
-								<label for="date" class="col-sm-1 control-label" align="center">Paid
-									Date</label>
-								<div class="col-sm-3">
-									<input type="date" class="form-control" id="paidDate"
-										th:field="${apReciept.Date}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<select type="text" class="form-control" id="cash"
-									name="bankSource">
-									<option value="0">Please Select</option>
-									<option th:each="asset : ${AssetList}"
-										th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 
-
-								</select>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Balance</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control col-sm-3" id="balance" />
-								</div>
-								<div class="col-sm-3">
-									<label for="total" class="control-label" align="center">Payment
-										Method</label> <select th:field="${apReciept.PM_ID}" type="text"
-										class="form-control" name="paymentMethod">
-										<option th:value="0">Please Select</option>
-										<option th:each="method: ${methodList}"
-											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
-									</select>
-								</div>
 							</div>
 
 							<div class="box-footer">
