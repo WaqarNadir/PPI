@@ -48,12 +48,17 @@ public class ExpenseContoller {
 	private List<AccountGroup> AG_List;
 	private List<TrailBalance> TB_List;
 	TrailBalanceWrapper wrapper = null;
+	AccountGroup expense = null;
 
 	@GetMapping("Expense/Add")
 	public String ExpenseHome(Model model) {
+		expense = new AccountGroup();
+		expense = AG_service.findByName(Constants.EXPENSE);
+
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
-		model.addAttribute("AssetList", getCurrentAsset());
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
+		model.addAttribute("expense", expense);
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
 
 		return "Expense";
@@ -62,7 +67,50 @@ public class ExpenseContoller {
 	@PostMapping("/Expense/Save")
 	public String saveExpense(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isExpense);
+		updateParent(data.getTrailBalance().getTotal());
+		updateBankSource(data.getTrailBalance().getbankSourceID(), data.getTrailBalance().getTotal());
 		return "redirect:/Expense/Add";
+	}
+
+	private Boolean updateParent(double BillAmount) {
+		boolean result = false;
+		AccountGroup item = expense;
+		try {
+			while (item.getIsParent() != null) {
+				double amount = 0.0;
+				amount = BillAmount + item.getAmount();
+				item.setAmount(amount);
+				AG_service.save(item);
+				item = item.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
+	}
+
+	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
+		boolean result = false;
+		try {
+			while (bankSource.getIsParent() != null) {
+				double amount = 0.0;
+				amount = bankSource.getAmount() - BillAmount;
+				bankSource.setAmount(amount);
+				AG_service.save(bankSource);
+				bankSource = bankSource.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
+		}
+		return result;
+
 	}
 
 	@GetMapping("ViewExpenses")
@@ -111,26 +159,26 @@ public class ExpenseContoller {
 		TB_List = TB_service.findByType(num);
 	}
 
-	public List<AccountGroup> getCurrentAsset() {
-		List<AccountGroup> result = new ArrayList<>();
-		populateAccountGroupList();
-		for (AccountGroup AG : AG_List) {
-			result.add(AG);
-		}
-		return result;
-	}
-
-	public void populateAccountGroupList() {
-		AG_List = new ArrayList<>();
-		AG_List = AG_service.getWithParentRef(142);
-
-	}
+	// public List<AccountGroup> getCurrentAsset() {
+	// List<AccountGroup> result = new ArrayList<>();
+	// populateAccountGroupList();
+	// for (AccountGroup AG : AG_List) {
+	// result.add(AG);
+	// }
+	// return result;
+	// }
+	//
+	// public void populateAccountGroupList() {
+	// AG_List = new ArrayList<>();
+	// AG_List = AG_service.getWithParentRef(142);
+	//
+	// }
 
 	@PostMapping("/getSubType")
 	public @ResponseBody List<String[]> getSubType(@RequestBody String data) {
 		int Id = Integer.parseInt(data);
 		List<String[]> resultList = new ArrayList<>();
-		//List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
+		// List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
 		List<AccountGroup> AGList = AG_service.find(Id).getChildList();
 
 		for (AccountGroup AG : AGList) {

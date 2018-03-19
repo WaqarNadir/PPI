@@ -27,6 +27,10 @@ public class AccountGroup implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "isParent")
 	private AccountGroup isParent;
+
+	@OneToMany(mappedBy = "isParent")
+	private List<AccountGroup> childList;
+
 	private Double amount;
 	private String accName;
 	private String refNo;
@@ -52,9 +56,6 @@ public class AccountGroup implements Serializable {
 	public void setIsParent(AccountGroup isParent) {
 		this.isParent = isParent;
 	}
-
-	@OneToMany(mappedBy = "isParent")
-	private List<AccountGroup> childList;
 
 	public List<AccountGroup> getChildList() {
 		return childList;

@@ -19,7 +19,7 @@
 							</td>
 						</tr>
 
-						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 1}">
+						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 2}">
 							<td th:text="${PF.name}"></td>
 							<td th:text="${PF.subTotal}"></td>
 						</tr>
@@ -36,7 +36,7 @@
 							</td>
 						</tr>
 
-						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 2}">
+						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 1}">
 							<td th:text="${PF.name}"></td>
 							<td th:text="${PF.subTotal}"></td>
 						</tr>

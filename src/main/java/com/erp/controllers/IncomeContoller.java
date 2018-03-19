@@ -49,12 +49,14 @@ public class IncomeContoller {
 	private List<TrailBalance> TB_List;
 	private List<AccountGroup> AG_List;
 	TrailBalanceWrapper wrapper = null;
+	AccountGroup income = null;
 
 	@GetMapping("Income/Add")
 	public String IncomeHome(Model model) {
+		income = AG_service.findByName(Constants.INCOME);
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
-		model.addAttribute("AssetList", getCurrentAsset());
+		model.addAttribute("income", income);
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
 
 		return "Income";
@@ -63,7 +65,51 @@ public class IncomeContoller {
 	@PostMapping("/Income/Save")
 	public String saveIncome(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isIncome);
+		updateParent(data.getTrailBalance().getTotal());
+		updateBankSource(data.getTrailBalance().getbankSourceID(), data.getTrailBalance().getTotal());
+
 		return "redirect:/Income/Add";
+	}
+
+	private Boolean updateParent(double BillAmount) {
+		boolean result = false;
+		AccountGroup item = income;
+		try {
+			while (item.getIsParent() != null) {
+				double amount = 0.0;
+				amount = BillAmount + item.getAmount();
+				item.setAmount(amount);
+				AG_service.save(item);
+				item = item.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
+	}
+
+	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
+		boolean result = false;
+		try {
+			while (bankSource.getIsParent() != null) {
+				double amount = 0.0;
+				amount = bankSource.getAmount() + BillAmount;
+				bankSource.setAmount(amount);
+				AG_service.save(bankSource);
+				bankSource = bankSource.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
+		}
+		return result;
+
 	}
 
 	@GetMapping("ViewIncomes")
@@ -72,20 +118,20 @@ public class IncomeContoller {
 		return "ViewIncomes";
 	}
 
-	@PostMapping("/getSubTypeIncome")
-	public @ResponseBody List<String[]> getSubType(@RequestBody String data) {
-		int Id = Integer.parseInt(data);
-		List<String[]> resultList = new ArrayList<>();
-		List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
-
-		for (AccountGroup AG : AGList) {
-			String[] result = new String[4];
-			result[1] = AG.getAccName();
-			result[0] = AG.getAcc_ID() + "";
-			resultList.add(result);
-		}
-		return resultList;
-	}
+	// @PostMapping("/getSubTypeIncome")
+	// public @ResponseBody List<String[]> getSubType(@RequestBody String data) {
+	// int Id = Integer.parseInt(data);
+	// List<String[]> resultList = new ArrayList<>();
+	// List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
+	//
+	// for (AccountGroup AG : AGList) {
+	// String[] result = new String[4];
+	// result[1] = AG.getAccName();
+	// result[0] = AG.getAcc_ID() + "";
+	// resultList.add(result);
+	// }
+	// return resultList;
+	// }
 
 	// ------------------ Utility functions ------------------------
 

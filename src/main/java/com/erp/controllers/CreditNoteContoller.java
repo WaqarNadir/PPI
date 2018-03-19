@@ -20,6 +20,7 @@ import com.erp.classes.ARReciept;
 import com.erp.classes.AR_Details;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Receivable;
+import com.erp.classes.Constants;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TrailBalanceWrapper;
@@ -55,7 +56,7 @@ public class CreditNoteContoller {
 		wrapper = new TrailBalanceWrapper();
 		model.addAttribute("wrapper", wrapper);
 		model.addAttribute("personList", getPerson());
-		model.addAttribute("AssetList", getCurrentAsset());
+		model.addAttribute("AssetList", AG_service.findByName(Constants.EXPENSE));
 		model.addAttribute("AccountRecievable", new Account_Receivable());
 
 		return "CreditNote";
@@ -65,17 +66,31 @@ public class CreditNoteContoller {
 	public String saveCreditNote(@ModelAttribute Account_Receivable data, Errors errors, HttpServletRequest request,
 			Model model) {
 		saveReceivable(data, "Open");
-		// return ReceiveCreditNoteHome(model);
+		UpdateParent(data.getTotal());
 		return "redirect:/CreditReceipt/" + data.getAR_ID();
 	}
 
-	/*
-	 * @GetMapping("CreditReceipt/Add") public String ReceiveCreditNoteHome(Model
-	 * model) { model.addAttribute("personList", getPerson());
-	 * model.addAttribute("AssetList", getCurrentAsset());
-	 * //model.addAttribute("wrapper", new TrailBalanceWrapper());
-	 * model.addAttribute("arReciept", new ARReciept()); return "CreditReceipt"; }
-	 */
+	private Boolean UpdateParent(double creditAmount) {
+		boolean result = false;
+		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_RECIEVABLE);
+		try {
+			while (item.getIsParent() != null) {
+				double amount = 0.0;
+				amount = creditAmount + item.getAmount();
+				item.setAmount(amount);
+				AG_service.save(item);
+				item = item.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
+	}
+
 	@GetMapping(value = "/CreditReceipt/{creditID}")
 	public String ReceiveCreditNoteHome(@PathVariable("creditID") int creditID, Model model) {
 

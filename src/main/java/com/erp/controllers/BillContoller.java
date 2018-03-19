@@ -74,7 +74,7 @@ public class BillContoller {
 
 	private Boolean UpdateParent(double BillAmount) {
 		boolean result = false;
-		AccountGroup item = AG_service.findByName(Constants.ACCOUNTPAYABLE);
+		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
 		try {
 			while (item.getIsParent() != null) {
 				double amount = 0.0;
@@ -88,6 +88,26 @@ public class BillContoller {
 		} catch (Exception e) {
 			result = false;
 			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
+	}
+
+	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
+		boolean result = false;
+		try {
+			while (bankSource.getIsParent() != null) {
+				double amount = 0.0;
+				amount = bankSource.getAmount() - BillAmount;
+				bankSource.setAmount(amount);
+				AG_service.save(bankSource);
+				bankSource = bankSource.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
 		}
 		return result;
 
@@ -119,6 +139,29 @@ public class BillContoller {
 		saveBill(data);
 		model.addAttribute("AccountPayable", new Account_Payable());
 		return "Bill";
+	}
+
+	private Boolean updatePaidParent(double paidAmount) {
+		boolean result = false;
+		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
+		try {
+			while (item.getIsParent() != null) {
+				double amount = 0.0;
+				amount = item.getAmount() - paidAmount;
+				System.out.println("Subtracting " + paidAmount + " from " + item.getAccName() + " having balance: "
+						+ item.getAmount());
+				item.setAmount(amount);
+				AG_service.save(item);
+				item = item.getIsParent();
+			}
+
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+		}
+		return result;
+
 	}
 
 	public List<Account_Payable> getAllBills() {

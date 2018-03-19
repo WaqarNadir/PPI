@@ -17,7 +17,7 @@
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
 		$.ajax({
-			url : "/getSubTypeIncome",
+			url : "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -140,7 +140,7 @@
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 													<option value="0">Please Select</option>
-													<option th:each="asset : ${AssetList}"
+													<option th:each="asset : ${income.childList}"
 														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
 														In hand</option>
 											</select></td>

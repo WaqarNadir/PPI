@@ -32,10 +32,10 @@ public class ReportController {
 		List<ProfitLoss> profitLossList = service.profitLossReport();
 		for (ProfitLoss PL : profitLossList) {
 
-			if (PL.getType() == 1) {
+			if (PL.getType() == Constants.isIncome) {
 				incomeSum += PL.getSubTotal();
 			}
-			if (PL.getType() == 2) {
+			if (PL.getType() == Constants.isExpense) {
 				expenseSum += PL.getSubTotal();
 			}
 

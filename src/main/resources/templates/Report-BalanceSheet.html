@@ -20,14 +20,20 @@
 									<h3>Assets</h3>
 								</td>
 							</tr>
+							<th:block th:each="item : ${assets.childList}">
+								<tr>
+									<td width="10px"></td>
+									<td width="140px"><strong th:text="${item.accName}"></strong></td>
+									<td th:text="${item.amount}"></td>
+								</tr>
+								<tr th:each="child : ${item.childList}"
+									th:if="${child.amount} !='0'">
 
-							<tr th:each="item : ${assets.childList}">
-								<td width="10px"></td>
-								<td width="140px" th:text="${item.accName}"></td>
-								<td th:text="${item.amount}"></td>
-
-							</tr>
-
+									<td width="10px"></td>
+									<td width="140px" th:text="${child.accName}"></td>
+									<td th:text="${child.amount}"></td>
+								</tr>
+							</th:block>
 							<tr>
 								<td></td>
 							</tr>
@@ -43,12 +49,21 @@
 								</td>
 							</tr>
 
-							<tr th:each="item : ${liability.childList}">
-								<td width="10px"></td>
-								<td th:text="${item.accName}"></td>
-								<td th:text="${item.amount}"></td>
 
-							</tr>
+							<th:block th:each="item : ${liability.childList}">
+								<tr>
+									<td width="10px"></td>
+									<td width="140px"><strong th:text="${item.accName}"></strong></td>
+									<td th:text="${item.amount}"></td>
+								</tr>
+								<tr th:each="child : ${item.childList}"
+									th:if="${child.amount} !='0'">
+
+									<td width="10px"></td>
+									<td width="140px" th:text="${child.accName}"></td>
+									<td th:text="${child.amount}"></td>
+								</tr>
+							</th:block>
 
 							<tr>
 								<td></td>
@@ -65,13 +80,20 @@
 								</td>
 							</tr>
 
-							<tr th:each="item : ${equity.childList}">
-								<td width="10px"></td>
-								<td th:text="${item.accName}"></td>
-								<td th:text="${item.amount}"></td>
+							<th:block th:each="item : ${equity.childList}">
+								<tr>
+									<td width="10px"></td>
+									<td width="140px"><strong th:text="${item.accName}"></strong></td>
+									<td th:text="${item.amount}"></td>
+								</tr>
+								<tr th:each="child : ${item.childList}"
+									th:if="${child.amount} !='0'">
 
-							</tr>
-
+									<td width="10px"></td>
+									<td width="140px" th:text="${child.accName}"></td>
+									<td th:text="${child.amount}"></td>
+								</tr>
+							</th:block>
 							<tr>
 								<td></td>
 							</tr>

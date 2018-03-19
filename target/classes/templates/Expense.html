@@ -83,7 +83,7 @@
 										id="cash" name="bankSource"
 										th:field="${wrapper.TrailBalance.bankSourceID}">
 										<option value="0">Please Select</option>
-										<option th:each="asset : ${AssetList}"
+										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
@@ -136,7 +136,7 @@
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 													<option value="0">Please Select</option>
-													<option th:each="asset : ${AssetList}"
+													<option th:each="asset : ${expense.childList}"
 														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
 														In hand</option>
 											</select></td>
