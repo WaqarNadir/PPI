@@ -56,45 +56,4 @@ public class GroupController {
 	public List<AccountGroup> getAll() {
 		return service.getAll();
 	}
-
-	// salman changes
-
-	@GetMapping("IncomeGroups")
-	public String IncomeGroupHome(Model model) {
-		model.addAttribute("AssetList", getSubGroup("Income"));
-		return "IncomeGroups";
-	}
-
-	@GetMapping("ExpenseGroups")
-	public String ExpenseGroupHome(Model model) {
-		model.addAttribute("AssetList", getSubGroup("EXPENSES"));
-		return "ExpenseGroups";
-	}
-
-	@GetMapping("FixedAssets")
-	public String FixedAssetsGroupHome(Model model) {
-		model.addAttribute("AssetList", getSubGroup("Fixed Asset"));
-		return "ExpenseGroups";
-	}
-
-	@GetMapping("CurrentAssets")
-	public String CurrentAssetsGroupHome(Model model) {
-		model.addAttribute("AssetList", getSubGroup("CURRENT ASSET"));
-		return "ExpenseGroups";
-	}
-
-	public List<AccountGroup> getSubGroup(String str) {
-		List<AccountGroup> result = new ArrayList<>();
-		populateAccountGroupList(str);
-		for (AccountGroup AG : AG_List) {
-			result.add(AG);
-		}
-		return result;
-	}
-
-	public void populateAccountGroupList(String str) {
-		AG_List = new ArrayList<>();
-		AG_List = service.getAllWithRemarks(str);
-
-	}
 }

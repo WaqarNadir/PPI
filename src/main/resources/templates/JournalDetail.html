@@ -24,61 +24,80 @@
 							action="/Journal/Save" method="post">
 							<div class="box-body">
 
-								<div class="col-sm-3 pull-right">
-									<h2>
-										<label for="inputPassword3" class="control-label input-lg"
-											align="center">Total</label>
-									</h2>
-									<input th:field="${journal.total}" id="total"
-										readonly="readonly" class="form-control  input-lg" />
-								</div>
-							</div>
-
-							<div class="form-group">
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label">Date</label> <input
 										type="date" class="form-control input-lg" id="myDate"
 										th:field="${journal.date}" />
 								</div>
 
-								<div class="col-sm-3">
+								<div class="col-sm-3 pull-right">
 									<label for="refNo" class="control-label">Ref No</label> <input
 										type="text" class="form-control input-lg" id="refNo"
 										th:field="${journal.diaryNo}" />
 								</div>
+
+
+							</div>
+
+							<div class="form-group">
+								<br /> <br /> <br />
+
+
 							</div>
 
 							<table id="table1" class="table table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>No#</th>
-										<th>Account</th>
+										<th width="10px">#</th>
+										<th width="230px">Account</th>
+										<th width="310px">Sub Account</th>
 										<th>Description</th>
-										<th>Sub Total</th>
-										<th>Type</th>
+										<th width="150px">Debit</th>
+										<th width="150px">Credit</th>
 
 									</tr>
 								</thead>
+
 								<tbody>
 
 									<tr th:each="item ,iterStat: ${journal.JDList}">
 										<td th:text="${iterStat.index +1}"></td>
 
-										<td><select class="form-control ">
-												<option th:text="${item.subGroup_ID.accName}">Cash In hand</option>
+										<td><select class="form-control input-lg ">
+												<option th:text="${item.subGroup_ID.isParent.accName}">Parent Name</option>
 										</select></td>
 
-										<td><input class="form-control "
+										<td><select class="form-control input-lg ">
+												<option th:text="${item.subGroup_ID.accName}">Child Name</option>
+										</select></td>
+
+										<td><input class="form-control input-lg "
 											th:value="${item.description}" /></td>
 
-										<td><input class="form-control "
-											th:value="${item.subTotal}" /></td>
-										<td th:text="${item.isCredit == 1 ? 'Credit' : 'Debit'}"></td>
+										<td><input class="form-control input-lg "
+											th:value="${item.isCredit} == '1' ? ${item.subTotal}" /></td>
+
+										<td><input class="form-control input-lg "
+											th:value="${item.isCredit} == '0' ? ${item.subTotal}" /></td>
+
 									</tr>
 
 								</tbody>
 
 							</table>
+							<div class="box-body">
+
+								<div class="col-sm-3 pull-right">
+									<h2>
+										<label for="inputPassword3" class="control-label input-lg"
+											align="center">Total</label>
+									</h2>
+									<input th:field="${journal.total}" id="total"
+										readonly="readonly" class="form-control input-lg" />
+								</div>
+
+
+							</div>
 						</form>
 
 					</div>

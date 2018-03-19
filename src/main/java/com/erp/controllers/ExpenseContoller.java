@@ -53,7 +53,7 @@ public class ExpenseContoller {
 	public String ExpenseHome(Model model) {
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
-		model.addAttribute("AssetList", getCurrentAsset());
+		model.addAttribute("expense", AG_service.findByName(Constants.EXPENSE));
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
 
 		return "Expense";

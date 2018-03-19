@@ -175,8 +175,7 @@ public class CreditNoteContoller {
 
 	public void populateAccountGroupList() {
 		AG_List = new ArrayList<>();
-		AG_List = AG_service.getWithParentRef(50);
-
+		AG_List = AG_service.getAll();
 	}
 
 	public AccountGroup getAccountGroup(int ID) {

@@ -54,7 +54,7 @@ public class IncomeContoller {
 	public String IncomeHome(Model model) {
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
-		model.addAttribute("AssetList", getCurrentAsset());
+		model.addAttribute("income", AG_service.findByName(Constants.INCOME));
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
 
 		return "Income";

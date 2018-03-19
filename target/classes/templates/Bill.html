@@ -11,11 +11,14 @@
 			val = parseFloat($(this).val()) | 0;
 			total = val ? (parseFloat(total + val)) : total;
 		});
-		$("#total").text(total);
+		//$("#total").text(total);
 		$("#total").val(total);
+		$("#total1").val(total);
 	};
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
+		$(fieldName).empty();
+
 		$.ajax({
 			url : "/getSubType",
 			contentType : "application/json; charset=utf-8",
@@ -24,6 +27,7 @@
 			success : function(prodType) {
 				$('fieldName').val();
 				$.each(prodType, function(key, value, dropDown) {
+
 					$(fieldName).append(
 							$("<option></option>").attr("value", value[0])
 									.text(value[1]));
@@ -70,7 +74,8 @@
 								<div class="col-sm-3 pull-right">
 									<label for="inputPassword3" class="control-label input-lg"
 										align="center">Total</label> <input id="total"
-										readonly="readonly" class="form-control  input-lg" />
+										readonly="readonly" class="form-control  input-lg"
+										th:field="${AccountPayable.total}" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -140,7 +145,7 @@
 								</div>
 								<div class="col-sm-3 pull-right">
 									<label for="inputPassword3" class="control-label input-lg"
-										align="center">Total</label> <input id="total"
+										align="center">Total</label> <input id="total1"
 										readonly="readonly" class="form-control  input-lg" />
 								</div>
 							</div>
