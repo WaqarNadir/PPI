@@ -75,11 +75,7 @@
 										id="cash" name="bankSource"
 										th:field="${wrapper.TrailBalance.bankSourceID}">
 										<option value="0">Please Select</option>
-<<<<<<< HEAD
 										<option th:each="asset : ${currentAsset.childList}"
-=======
-										<option th:each="asset : ${expense}"
->>>>>>> Salman-Code
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
