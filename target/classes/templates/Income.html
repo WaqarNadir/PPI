@@ -27,7 +27,6 @@
 					$(fieldName).append(
 							$("<option></option>").attr("value", value[0])
 									.text(value[1]));
-
 				});
 
 			},
@@ -75,7 +74,7 @@
 										id="cash" name="bankSource"
 										th:field="${wrapper.TrailBalance.bankSourceID}">
 										<option value="0">Please Select</option>
-										<option th:each="asset : ${AssetList}"
+										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>

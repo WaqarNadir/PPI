@@ -121,10 +121,11 @@ public class CreditNoteContoller {
 	}
 
 	@PostMapping("/getSubTypeCreditNote")
-	public @ResponseBody List<String[]> getSubType(@RequestBody String data) {
+	public @ResponseBody List<String[]> getSubTypeCreditNote(@RequestBody String data) {
 		int Id = Integer.parseInt(data);
 		List<String[]> resultList = new ArrayList<>();
-		List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
+		//List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
+		List<AccountGroup> AGList = AG_service.find(Id).getChildList();
 
 		for (AccountGroup AG : AGList) {
 			String[] result = new String[4];
@@ -158,7 +159,7 @@ public class CreditNoteContoller {
 		AR_Service.save(data);
 		for (AR_Details ARDetails : ArList) {
 			AR_Details ARD = new AR_Details(ARDetails);
-			if (ARD.getAmount_Received() != 0.0) {
+			if (ARD.getAmountReceived() != 0.0) {
 				ARD.setReceived_Date(data.getDate());
 				// data.getAccountPayable().setPerson_ID(data.get);
 				ARD.setAR_ID(data);
@@ -181,18 +182,19 @@ public class CreditNoteContoller {
 
 	public List<AccountGroup> getCurrentAsset() {
 		List<AccountGroup> result = new ArrayList<>();
-		populateAccountGroupList();
+		// populateAccountGroupList();
 		for (AccountGroup AG : AG_List) {
 			result.add(AG);
 		}
 		return result;
 	}
 
-	public void populateAccountGroupList() {
-		AG_List = new ArrayList<>();
-		AG_List = AG_service.getWithParentRef(50);
-
-	}
+	/*
+	 * public void populateAccountGroupList() { AG_List = new ArrayList<>(); AG_List
+	 * = AG_service.getWithParentRef(50);
+	 * 
+	 * }
+	 */
 
 	public AccountGroup getAccountGroup(int ID) {
 		for (AccountGroup val : AG_List) {

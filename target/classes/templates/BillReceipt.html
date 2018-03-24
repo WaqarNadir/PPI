@@ -13,14 +13,34 @@
 		});
 		$("#total").text(total);
 		$("#total").val(total);
+	};
+
+	function getBalance(value) {
+		fieldName = "#balance";
+		$.ajax({
+			url : "/getBalance",
+			contentType : "application/json; charset=utf-8",
+			data : value,
+			type : "POST",
+			success : function(data) {
+				$(fieldName).val(data);
+			},
+			error : function(xhr, status, error) {
+				alert("ERROR:" + xhr.responseText);
+				console.log("ERROR:" + xhr.responseText);
+			}
+		});
+	};
+	function updateBalance(value) {
+		var total = $("#total").val();
+		var remain = total - value;
+		$("#balance2").val(remain);
+
 	}
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
-
-
-
 	<div class="content-wrapper">
 		<div class="content-header">
 			<h1 align="center">Bill Payment</h1>
@@ -37,31 +57,44 @@
 							method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
-									<label for="inputPassword3" class="control-label input-lg">To</label>
-									<select class="form-control input-lg">
-										<option th:value="${apReciept.AP_ID.person_ID}"
-											th:if="${apReciept.AP_ID.person_ID} !=null"
-											th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
+									<label for="accPay" class="control-label input-lg">Payment
+										Account</label> <select type="text" class="form-control input-lg"
+										id="cash" onchange="getBalance(this.value)" name="bankSource"
+										th:field="${apReciept.BankSourceID}">
+										<option value="0">Please Select</option>
+										<option th:each="asset : ${currentAsset.childList}"
+											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
+								<div class="col-sm-2">
+									<label for="balanceVal" class="control-label input-lg">Balance</label>
+									<input id="balance" readonly="readonly" class="label-total" />
+								</div>
 								<div class="col-sm-3">
-									<label for="refNo" class="control-label input-lg">Ref.
-										No</label> <input type="text" class="form-control input-lg" id="refNo"
-										th:value="${apReciept.AP_ID.diary_No}" />
+									<label for="dueDate" class="control-label input-lg">Due
+										Date</label> <input type="date" class="form-control input-lg"
+										id="myDate" th:value="${apReciept.AP_ID.dueDate}" />
 								</div>
 							</div>
 							<div class="box-body">
 								<div class="col-sm-3">
-									<label for="date" class="control-label input-lg" align="center">Date</label>
-
-									<input type="date" id="myDate" class="form-control input-lg"
-										th:value="${apReciept.AP_ID.date}" />
+									<label for="payDate" class="control-label input-lg">Payment
+										Date</label><input type="date" class="form-control input-lg"
+										id="paidDate" th:field="${apReciept.Date}" />
 								</div>
 								<div class="col-sm-3">
-									<label for="duedate" class="control-label input-lg"
-										align="center">Expected Date</label> <input type="date"
-										class="form-control input-lg" id="myDate"
-										th:value="${apReciept.AP_ID.dueDate}" />
+									<label for="method" class="control-label input-lg">Payment
+										Method</label> <select th:field="${apReciept.PM_ID}" type="text"
+										class="form-control input-lg" name="paymentMethod">
+										<option th:value="0">Please Select</option>
+										<option th:each="method: ${methodList}"
+											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+									</select>
+								</div>
+								<div class="col-sm-2">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
+										th:value="${apReciept.AP_ID.diary_No}" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -69,16 +102,21 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>Account</th>
-											<th>Sub Group</th>
+											<th width="200px">Payee</th>
+											<th width="230px">Account</th>
+											<th width="230px">Sub Group</th>
 											<th>Description</th>
 											<th>Amount</th>
 										</tr>
 									</thead>
 									<tbody>
-
 										<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
+											<td><select class="form-control input-lg">
+													<option th:value="${apReciept.AP_ID.person_ID}"
+														th:if="${apReciept.AP_ID.person_ID} !=null"
+														th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
+											</select></td>
 											<td><input class="form-control input-lg"
 												th:value="${Detail.subGroup_ID.isParent.accName}" /></td>
 											<td><select class="form-control input-lg" id="cash">
@@ -90,16 +128,16 @@
 												th:value="${Detail.remarks}" type="text" /></td>
 											<td><input class="form-control input-lg"
 												th:value="${Detail.amount_Paid}" /></td>
+
 										</tr>
-
-
 										<tr>
 											<td></td>
 											<td></td>
 											<td></td>
 											<td></td>
+											<td></td>
 											<td><label>Total:</label> <input type="text"
-												class="form-control input-lg" id="total"
+												class="label-total" id="total"
 												th:value="${apReciept.AP_ID.total}" /></td>
 										</tr>
 
@@ -107,34 +145,29 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td><label>Balance</label> <input type="text"
-												class="form-control input-lg" id="balance" /></td>
-											<td><label>Payment Method</label> <select
-												th:field="${apReciept.PM_ID}" type="text"
-												class="form-control input-lg" name="paymentMethod">
-													<option th:value="0">Please Select</option>
-													<option th:each="method: ${methodList}"
-														th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
-											</select></td>
+											<td></td>
+											<td></td>
+											<td><label>Amount Paid</label> <input type="text"
+												class="label-total" id="amountPaid"
+												onchange="updateBalance(this.value)"
+												th:field="${apReciept.amountPaid}" /></td>
 										</tr>
 										<tr>
 											<td></td>
 											<td></td>
-											<td><label>Paid Date</label><input type="date"
-												class="form-control input-lg" id="paidDate"
-												th:field="${apReciept.Date}" /></td>
-											<td><label>Amount Paid</label> <input type="text"
-												class="form-control input-lg" id="amountPaid"
-												th:field="${apReciept.amountPaid}" /></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><label>Balance</label> <input type="text"
+												class="label-total" id="balance2" /></td>
 										</tr>
 									</tbody>
-
 								</table>
 							</div>
 							<div class="box-body">
-								<label class="col-sm-2 control-label input-lg">Remarks:</label>
 								<div class="col-sm-4">
-									<textarea class="form-control input-lg" cols="4"
+									<label class="control-label input-lg">Remarks:</label>
+									<textarea class="form-control input-lg" cols="4" rows="4"
 										th:field="${apReciept.remarks}"
 										placeholder="Enter Any details if needed"></textarea>
 								</div>

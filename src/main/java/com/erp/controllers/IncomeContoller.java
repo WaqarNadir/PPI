@@ -12,9 +12,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Constants;
 import com.erp.classes.PaymentMethods;
@@ -56,6 +53,7 @@ public class IncomeContoller {
 		income = AG_service.findByName(Constants.INCOME);
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("income", income);
 		model.addAttribute("wrapper", new TrailBalanceWrapper());
 
@@ -185,7 +183,7 @@ public class IncomeContoller {
 
 	public void populateAccountGroupList() {
 		AG_List = new ArrayList<>();
-		AG_List = AG_service.getWithParentRef(50);
+		AG_List = AG_service.getAll();
 
 	}
 

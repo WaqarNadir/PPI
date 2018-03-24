@@ -32,12 +32,23 @@ public class ARReciept implements Serializable {
 	private PaymentMethods PM_ID;
 
 	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "BankSourceID")
+	private AccountGroup BankSourceID;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="AR_ID")
 	private Account_Receivable AR_ID;
 
 	// --------------- Getter & Setters ---------------
 
 
+	public AccountGroup getBankSourceID() {
+		return BankSourceID;
+	}
+
+	public void setBankSourceID(AccountGroup bankSourceID) {
+		BankSourceID = bankSourceID;
+	}
 
 	public Account_Receivable getAR_ID() {
 		return AR_ID;
