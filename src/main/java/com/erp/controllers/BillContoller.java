@@ -49,11 +49,10 @@ public class BillContoller {
 	private APRecieptService APRecieptService;
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
-<<<<<<< HEAD
+
 	private List<AccountGroup> AG_List;
 
-=======
->>>>>>> 25284e7dbfced36fb43954ef833dc735a8327187
+
 	// TrailBalanceWrapper wrapper = null;
 	@GetMapping("/")
 	public String test(Model model) {
