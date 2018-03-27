@@ -49,7 +49,12 @@ public class BillContoller {
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
 	private List<AccountGroup> AG_List;
+
 	// TrailBalanceWrapper wrapper = null;
+	@GetMapping("/")
+	public String test(Model model) {
+		return "home";
+	}
 
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {

@@ -24,7 +24,6 @@ public class GroupController {
 	@GetMapping(value = "AddGroup")
 	public String ViewPage(Model model) {
 		model.addAttribute("group", new AccountGroup());
-
 		return "AddGroup";
 	}
 
