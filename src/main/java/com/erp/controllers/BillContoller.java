@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.erp.classes.APReciept;
 import com.erp.classes.AP_Details;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
-import com.erp.classes.JournalDetails;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.services.APRecieptService;
@@ -48,8 +49,11 @@ public class BillContoller {
 	private APRecieptService APRecieptService;
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
+<<<<<<< HEAD
 	private List<AccountGroup> AG_List;
 
+=======
+>>>>>>> 25284e7dbfced36fb43954ef833dc735a8327187
 	// TrailBalanceWrapper wrapper = null;
 	@GetMapping("/")
 	public String test(Model model) {
@@ -129,7 +133,7 @@ public class BillContoller {
 		Account_Payable AP = AP_Service.find(billID);
 		APReciept APR = new APReciept();
 		APR.setAP_ID(AP);
-
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("methodList", getMethods());
 		// model.addAttribute("AssetList", getCurrentAsset());
 		model.addAttribute("apReciept", APR);
@@ -167,6 +171,22 @@ public class BillContoller {
 		}
 		return result;
 
+	}
+	
+	@PostMapping("/getBalance")
+	public @ResponseBody String getBalance(@RequestBody String data) {
+		int Id = Integer.parseInt(data);
+		// List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
+		AccountGroup AG = AG_service.find(Id);
+		return AG.getAmount().toString();
+
+//		for (AccountGroup AG : AGList) {
+//			String[] result = new String[4];
+//			result[1] = AG.getAccName();
+//			result[0] = AG.getAcc_ID() + "";
+//			resultList.add(result);
+//		}
+		
 	}
 
 	public List<Account_Payable> getAllBills() {

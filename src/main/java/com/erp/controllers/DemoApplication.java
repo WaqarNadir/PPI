@@ -12,10 +12,14 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+<<<<<<< HEAD
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+=======
+import org.springframework.web.bind.annotation.GetMapping;
+>>>>>>> 25284e7dbfced36fb43954ef833dc735a8327187
 
 @Configuration
 @EntityScan(basePackages = { "com.erp.classes" })
@@ -26,7 +30,6 @@ public class DemoApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-
 	}
 
 	@Override
