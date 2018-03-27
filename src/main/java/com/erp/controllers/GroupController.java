@@ -1,6 +1,5 @@
 package com.erp.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,13 @@ import com.erp.services.AccountGroupService;
 
 @Controller
 public class GroupController {
+	@GetMapping(value = "/")
+	public String MainPage(Model model) {
+		return "Dashboard";
+	}
 
 	@Autowired
 	private AccountGroupService service;
-	private List<AccountGroup> AG_List;
-
 	@GetMapping(value = "AddGroup")
 	public String ViewPage(Model model) {
 		model.addAttribute("group", new AccountGroup());

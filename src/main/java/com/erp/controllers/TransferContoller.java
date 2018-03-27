@@ -121,7 +121,7 @@ public class TransferContoller {
 
 	public void populateAccountGroupList() {
 		AG_List = new ArrayList<>();
-		AG_List = AG_service.getWithParentRef(28);
+		AG_List = AG_service.getAll();
 
 	}
 

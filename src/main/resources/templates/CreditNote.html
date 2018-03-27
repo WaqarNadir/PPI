@@ -100,6 +100,13 @@
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 													<option value="0">Please Select</option>
+													<option th:each="asset : ${income.childList}"
+														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
+														In hand</option>
+											</select></td>
+											<td><select class="form-control input-lg"
+												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
+													<option value="0">Please Select</option>
 													<option th:each="asset : ${AssetList}"
 														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
 														In hand</option>

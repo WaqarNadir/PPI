@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Dashboard</h1>
+		</div>
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<div class="box-body">
+							<div class="col-sm-6">Income</div>
+							<div class="col-sm-6">Expense</div>
+						</div>
+					</div>
+					
+					<div class="box box-info">
+						<div class="box-body">
+							<div class="col-sm-6">Bills</div>
+							<div class="col-sm-6">Credit Notes</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</section>
+	</div>
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

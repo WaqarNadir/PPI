@@ -30,6 +30,11 @@ public class APReciept implements Serializable {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "PM_ID")
 	private PaymentMethods PM_ID;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "BankSourceID")
+	private AccountGroup BankSourceID;
+
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "AP_ID")
@@ -43,6 +48,14 @@ public class APReciept implements Serializable {
 
 	public void setAPReciept_ID(int aPReciept_ID) {
 		APReciept_ID = aPReciept_ID;
+	}
+
+	public AccountGroup getBankSourceID() {
+		return BankSourceID;
+	}
+
+	public void setBankSourceID(AccountGroup bankSourceID) {
+		BankSourceID = bankSourceID;
 	}
 
 	public PaymentMethods getPM_ID() {

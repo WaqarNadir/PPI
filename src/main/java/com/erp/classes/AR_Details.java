@@ -23,7 +23,7 @@ public class AR_Details implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ARD_ID")
 	@Column(name = "ARD_ID")
 	private int ARDetail_ID;
-	private double amount_Received;
+	private double amountReceived;
 	private String Remarks;
 	private Date received_Date;
 
@@ -77,7 +77,7 @@ public class AR_Details implements Serializable {
 	}
 
 	public AR_Details(AR_Details ARD) {
-		this.setAmount_Received(ARD.getAmount_Received());
+		this.setAmountReceived(ARD.getAmountReceived());
 		this.setAR_ID(ARD.getAR_ID());
 		this.setReceived_Date(ARD.getReceived_Date());
 		this.setRemarks(ARD.getRemarks());
@@ -89,12 +89,12 @@ public class AR_Details implements Serializable {
 	}
 
 
-	public double getAmount_Received() {
-		return amount_Received;
+	public double getAmountReceived() {
+		return amountReceived;
 	}
 
-	public void setAmount_Received(double amount_Received) {
-		this.amount_Received = amount_Received;
+	public void setAmountReceived(double amount_Received) {
+		this.amountReceived = amount_Received;
 	}
 
 
