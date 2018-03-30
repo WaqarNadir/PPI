@@ -10,10 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 @Entity
+
+@NamedQuery(name = "Journal.ByDateRange", query = "select j from Journal j "
+		+ "WHERE j.date BETWEEN :startDate and :endDate")
+
 public class Journal implements Serializable {
 	private static final long serialVersionUID = 1L;
 

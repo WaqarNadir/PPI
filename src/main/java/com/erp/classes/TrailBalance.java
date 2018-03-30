@@ -13,10 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 @Entity(name = "TrailBalance")
+@NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "
+		+ "WHERE t.date BETWEEN :startDate and :endDate and t.type =:type")
+
 public class TrailBalance implements Serializable {
 	private static final long serialVersionUID = 1L;
 

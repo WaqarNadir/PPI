@@ -50,14 +50,17 @@ public class CreditNoteContoller {
 	private List<Account_Receivable> AR_List;
 	private List<AccountGroup> AG_List;
 	TrailBalanceWrapper wrapper = null;
+	AccountGroup income = null;
 
 	@GetMapping("CreditNote/Add")
 	public String CreditNoteHome(Model model) {
 		wrapper = new TrailBalanceWrapper();
 		model.addAttribute("wrapper", wrapper);
+		income = AG_service.findByName(Constants.INCOME);
 		model.addAttribute("personList", getPerson());
-		model.addAttribute("AssetList", AG_service.findByName(Constants.EXPENSE));
+		model.addAttribute("AssetList", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("AccountRecievable", new Account_Receivable());
+		model.addAttribute("income", income);
 
 		return "CreditNote";
 	}
@@ -102,7 +105,7 @@ public class CreditNoteContoller {
 		model.addAttribute("AssetList", getCurrentAsset());
 		model.addAttribute("arReciept", ARR);
 		// model.addAttribute("wrapper", APR);
-		return "creditReceipt";
+		return "CreditReceipt";
 	}
 
 	@PostMapping("/CreditReceipt/Save")
@@ -118,22 +121,6 @@ public class CreditNoteContoller {
 	public String ViewExpenseHome(Model model) {
 		model.addAttribute("CreditList", getAllCredits());
 		return "ViewCredits";
-	}
-
-	@PostMapping("/getSubTypeCreditNote")
-	public @ResponseBody List<String[]> getSubTypeCreditNote(@RequestBody String data) {
-		int Id = Integer.parseInt(data);
-		List<String[]> resultList = new ArrayList<>();
-		//List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
-		List<AccountGroup> AGList = AG_service.find(Id).getChildList();
-
-		for (AccountGroup AG : AGList) {
-			String[] result = new String[4];
-			result[1] = AG.getAccName();
-			result[0] = AG.getAcc_ID() + "";
-			resultList.add(result);
-		}
-		return resultList;
 	}
 
 	// ------------------ Utility functions ------------------------
@@ -182,19 +169,18 @@ public class CreditNoteContoller {
 
 	public List<AccountGroup> getCurrentAsset() {
 		List<AccountGroup> result = new ArrayList<>();
-		// populateAccountGroupList();
+		populateAccountGroupList();
 		for (AccountGroup AG : AG_List) {
 			result.add(AG);
 		}
 		return result;
 	}
 
-	/*
-	 * public void populateAccountGroupList() { AG_List = new ArrayList<>(); AG_List
-	 * = AG_service.getWithParentRef(50);
-	 * 
-	 * }
-	 */
+	public void populateAccountGroupList() {
+		AG_List = new ArrayList<>();
+		AG_List = AG_service.getAll();
+
+	}
 
 	public AccountGroup getAccountGroup(int ID) {
 		for (AccountGroup val : AG_List) {

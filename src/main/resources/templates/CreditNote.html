@@ -17,7 +17,7 @@
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
 		$.ajax({
-			url : "/getSubTypeCreditNote",
+			url : "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -95,7 +95,7 @@
 									</thead>
 									<tbody>
 
-										<tr th:each="i: ${#numbers.sequence(0, 5)}">
+								<tr th:each="i: ${#numbers.sequence(0, 5)}">
 											<td th:value="${i}" th:text="${i+1}"></td>
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
@@ -104,24 +104,16 @@
 														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
 														In hand</option>
 											</select></td>
-											<td><select class="form-control input-lg"
-												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
-													<option value="0">Please Select</option>
-													<option th:each="asset : ${AssetList}"
-														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
-														In hand</option>
-											</select></td>
-
 											<td><select type="text" class="form-control input-lg"
 												th:id="${'subType' + i}"
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].subGroup_ID}">
+												th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
 													<option value="0">Please Select</option>
 											</select></td>
 											<td><input class="form-control input-lg"
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].remarks}"
+												th:field="${wrapper.TB_DetailList[__${i}__].remarks}"
 												type="text" /></td>
 											<td><input
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].amount_Received}"
+												th:field="${wrapper.TB_DetailList[__${i}__].subTotal}"
 												onblur="updateTotal(this.value)"
 												placeholder="enter subtotal "
 												class="subTotal form-control input-lg" /></td>
