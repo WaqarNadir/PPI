@@ -14,6 +14,18 @@ public class ProfitLoss {
 	}
 
 	private String name;
+	private double subTotal;
+	private int type;
+
+	private AccountGroup AG;
+
+	public AccountGroup getAG() {
+		return AG;
+	}
+
+	public void setAG(AccountGroup aG) {
+		AG = aG;
+	}
 
 	public String getName() {
 		return name;
@@ -38,8 +50,5 @@ public class ProfitLoss {
 	public void setType(int type) {
 		this.type = type;
 	}
-
-	private double subTotal;
-	private int type;
 
 }

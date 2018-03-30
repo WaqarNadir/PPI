@@ -54,7 +54,8 @@ public class ExpenseContoller {
 	public String ExpenseHome(Model model) {
 		expense = new AccountGroup();
 		expense = AG_service.findByName(Constants.EXPENSE);
-
+		expense.getChildList();
+		List<TB_Details> tbList = expense.getTBDList();
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));

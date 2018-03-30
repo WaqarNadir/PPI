@@ -14,4 +14,11 @@ public final class Constants {
 	public static String ACCOUNT_RECIEVABLE = "ACCOUNT RECIEVABLE";
 	public static String CURRENT_ASSETS = "Current Assets";
 	public static String FIXED_ASSETS = "Fixed Assets";
+
+	public static int FIXED_ASSETS_ID = 2;
+	public static int Current_ASSETS_ID = 28;
+	public static int CURRENT_LIABILITIES_ID = 38;
+	public static int LONG_TERM_LIABILITIES_ID = 44;
+	public static int EQUITY_AND_FUNDS_ID = 48;
+
 }
