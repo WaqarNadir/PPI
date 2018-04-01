@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
+import com.erp.classes.ProfitLoss;
 import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
 import com.erp.classes.TrailBalanceWrapper;
@@ -68,6 +71,56 @@ public class IncomeContoller {
 
 		return "redirect:/Income/Add";
 	}
+	
+	
+	@PostMapping("Income/DateWiseIncome")
+	public String dateWiseProfitReport(HttpServletRequest request, Model model) {
+		double incomeSum = 0, expenseSum = 0;
+		Date startDate = null, endDate = null;
+		int type= Integer.parseInt(request.getParameter("type"));
+		List<TrailBalance> profitLossList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
+		}
+
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		profitLossList = TB_service.ByDateRange(startDate, endDate, type);
+		for (TrailBalance PL : profitLossList) {
+
+			if (PL.getType() == Constants.isIncome) {
+				incomeSum += PL.getTotal();
+			}
+			if (PL.getType() == Constants.isExpense) {
+				expenseSum += PL.getTotal();
+			}
+
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("profitLossList", profitLossList);
+		model.addAttribute("incomeSum", incomeSum);
+		model.addAttribute("expenseSum", expenseSum);
+		model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "IncomeCustom";
+	}
+	
+	
 
 	private Boolean updateParent(double BillAmount) {
 		boolean result = false;
