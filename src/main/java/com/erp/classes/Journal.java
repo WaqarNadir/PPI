@@ -14,7 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
-@Entity(name="Journal")
+@Entity
+
 @NamedQuery(name = "Journal.ByDateRange", query = "select j from Journal j "
 		+ "WHERE j.date BETWEEN :startDate and :endDate")
 

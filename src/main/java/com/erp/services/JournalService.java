@@ -40,7 +40,7 @@ public class JournalService {
 		return repo.findAll();
 
 	}
-	public List<Journal> byDateRange(Date startDate, Date endDate) {
+	public List<Journal> ByDateRange(Date startDate, Date endDate) {
 		return repo.ByDateRange(startDate, endDate);
 	}
 

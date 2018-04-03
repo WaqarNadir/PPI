@@ -54,6 +54,11 @@ public class BillContoller {
 
 
 	// TrailBalanceWrapper wrapper = null;
+	@GetMapping("/")
+	public String test(Model model) {
+		return "home";
+	}
+
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
 		Account_Payable AP = new Account_Payable();
