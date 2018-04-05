@@ -51,16 +51,18 @@ public class CreditNoteContoller {
 	private List<AccountGroup> AG_List;
 	TrailBalanceWrapper wrapper = null;
 	AccountGroup income = null;
+	AccountGroup currentAsset = null;
 
 	@GetMapping("CreditNote/Add")
 	public String CreditNoteHome(Model model) {
 		wrapper = new TrailBalanceWrapper();
 		model.addAttribute("wrapper", wrapper);
 		income = AG_service.findByName(Constants.INCOME);
+		currentAsset = AG_service.findByName(Constants.CURRENT_ASSETS);
 		model.addAttribute("personList", getPerson());
-		model.addAttribute("AssetList", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("AccountRecievable", new Account_Receivable());
 		model.addAttribute("income", income);
+		model.addAttribute("currentAsset", currentAsset);
 
 		return "CreditNote";
 	}

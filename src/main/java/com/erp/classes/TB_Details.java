@@ -32,7 +32,7 @@ public class TB_Details implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "TB_ID")
-	private TrailBalance TB_ID;
+	private TrailBalance tB;
 
 	public int getTBDetail_ID() {
 		return TBDetail_ID;
@@ -67,11 +67,11 @@ public class TB_Details implements Serializable {
 	}
 
 	public TrailBalance getTB_ID() {
-		return TB_ID;
+		return tB;
 	}
 
 	public void setTB_ID(TrailBalance tB_ID) {
-		TB_ID = tB_ID;
+		tB = tB_ID;
 	}
 
 	// --------------- Getter & Setters ---------------

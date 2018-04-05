@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2>Balance Sheet</h2>
+				</div>
+
+				<div class="box-body no-padding">
+					<div class="col-md-5">
+						<table class="table stripped">
+							<tr>
+								<td>
+									<h3>Assets</h3>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="10px"></td>
+								<td width="140px"><strong th:text="${fixedAsset.accName}"></strong></td>
+								<td th:text="${fixedAsset.amount}"></td>
+							</tr>
+							<tr th:each="child : ${fixedAsset.childList}"
+								th:if="${child.amount} !='0'">
+
+								<td width="10px"></td>
+								<td width="140px" th:text="${child.accName}"></td>
+								<td th:text="${child.amount}"></td>
+							</tr>
+
+							<tr>
+								<td width="10px"></td>
+								<td width="140px"><strong th:text="${currentAsset.accName}"></strong></td>
+								<td th:text="${currentAsset.amount}"></td>
+							</tr>
+							<tr th:each="child : ${currentAsset.childList}"
+								th:if="${child.amount} !='0'">
+
+								<td width="10px"></td>
+								<td width="140px" th:text="${child.accName}"></td>
+								<td th:text="${child.amount}"></td>
+							</tr>
+
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total Assets</strong></td>
+								<td></td>
+								<td class="custom-td"><strong
+									th:text="${currentAsset.amount}+${fixedAsset.amount}"></strong></td>
+							</tr>
+
+							<tr>
+								<td>
+									<h3>Liability</h3>
+								</td>
+							</tr>
+
+							<tr>
+								<td width="10px"></td>
+								<td width="140px"><strong
+									th:text="${longTermLiability.accName}"></strong></td>
+								<td th:text="${longTermLiability.amount}"></td>
+							</tr>
+							<tr th:each="child : ${longTermLiability.childList}"
+								th:if="${child.amount} !='0'">
+
+								<td width="10px"></td>
+								<td width="140px" th:text="${child.accName}"></td>
+								<td th:text="${child.amount}"></td>
+							</tr>
+
+							<tr>
+								<td width="10px"></td>
+								<td width="140px"><strong
+									th:text="${currentLiability.accName}"></strong></td>
+								<td th:text="${currentLiability.amount}"></td>
+							</tr>
+							<tr th:each="child : ${currentLiability.childList}"
+								th:if="${child.amount} !='0'">
+
+								<td width="10px"></td>
+								<td width="140px" th:text="${child.accName}"></td>
+								<td th:text="${child.amount}"></td>
+							</tr>
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total Assets</strong></td>
+								<td></td>
+								<td class="custom-td"><strong
+									th:text="${longTermLiability.amount}+${currentLiability.amount}"></strong></td>
+							</tr>
+							<tr>
+								<td>
+									<h3>Equity</h3>
+								</td>
+							</tr>
+
+
+							<tr>
+								<td width="10px"></td>
+								<td width="140px"><strong th:text="${equity.accName}"></strong></td>
+								<td th:text="${equity.amount}"></td>
+							</tr>
+							<tr th:each="child : ${equity.childList}"
+								th:if="${child.amount} !='0'">
+
+								<td width="10px"></td>
+								<td width="140px" th:text="${child.accName}"></td>
+								<td th:text="${child.amount}"></td>
+							</tr>
+
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td><strong>Total equity</strong></td>
+								<td></td>
+								<td class="custom-td"><strong th:text="${equity.amount}"></strong></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

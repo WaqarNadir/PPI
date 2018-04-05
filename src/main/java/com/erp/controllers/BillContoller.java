@@ -50,14 +50,14 @@ public class BillContoller {
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
 
-	private List<AccountGroup> AG_List;
+
 
 
 	// TrailBalanceWrapper wrapper = null;
-	@GetMapping("/")
-	public String test(Model model) {
-		return "home";
-	}
+//	@GetMapping("/")
+//	public String test(Model model) {
+//		return "home";
+//	}
 
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
@@ -67,6 +67,7 @@ public class BillContoller {
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("expense", AG_service.findByName(Constants.EXPENSE));
+		model.addAttribute("currentLiability" , AG_service.findByName(Constants.CURRENT_LIABILITY));
 		model.addAttribute("AccountPayable", AP);
 
 		return "Bill";

@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TB_Details;
@@ -195,4 +197,73 @@ public class IncomeContoller {
 		}
 		return null;
 	}
+	
+	
+	
+	@GetMapping("Income/CustomIncomes")
+	public String CustomIncomes(Model model) {
+		double incomeSum = 0;
+		Date currentDate = Functions.getCurrentDate();
+		Date lastMonth = Functions.thisMonth(currentDate);
+
+		System.out.println(
+				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
+		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
+
+		List<TrailBalance> tBalance = TB_service.ByDateRange(lastMonth, currentDate, Constants.isIncome);
+		for (TrailBalance TB : tBalance) {
+
+			if (TB.getType() == Constants.isIncome) {
+				incomeSum += TB.getTotal();
+			}
+
+		}
+		model.addAttribute("tBalance", tBalance);
+		model.addAttribute("incomeSum", incomeSum);
+		//model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "CustomIncomes";
+	}
+
+	@PostMapping("Income/DateWiseIncome")
+	public String dateWiseIncome(HttpServletRequest request, Model model) {
+		double incomeSum = 0;
+		Date startDate = null, endDate = null;
+		List<TrailBalance> tBIncomeList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
+		}
+
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isIncome);
+		for (TrailBalance TB : tBIncomeList) {
+			if (TB.getType() == Constants.isIncome) {
+					incomeSum += TB.getTotal();			
+			}
+			
+
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("tBIncomeList", tBIncomeList);
+		model.addAttribute("incomeSum", incomeSum);
+		return "CustomIncomes";
+	}
+	
+	
 }

@@ -16,8 +16,9 @@
 	};
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
+		$(fieldName).empty();
 		$.ajax({
-			url : "/getSubTypeCreditNote",
+			url : "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -37,6 +38,8 @@
 			}
 		});
 	}
+	
+	
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -99,29 +102,32 @@
 											<td th:value="${i}" th:text="${i+1}"></td>
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
-													<option value="0">Please Select</option>
-													<option th:each="asset : ${income.childList}"
-														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
-														In hand</option>
-											</select></td>
-											<td><select class="form-control input-lg"
-												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
-													<option value="0">Please Select</option>
-													<option th:each="asset : ${AssetList}"
-														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
-														In hand</option>
-											</select></td>
+													<option value="999">Please Select</option>
 
+													<th:block th:each="parent : ${income}">
+
+														<th:block th:each="child : ${parent.childList}">
+
+															<option th:value="${child.Acc_ID}"
+																th:text=" ${child.accName}">Cash In hand</option>
+
+														</th:block>
+													</th:block>
+													<th:block>
+														<option th:value="${currentAsset.Acc_ID}"
+															th:text="${currentAsset.accName}"></option>
+													</th:block>
+											</select></td>
 											<td><select type="text" class="form-control input-lg"
 												th:id="${'subType' + i}"
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].subGroup_ID}">
-													<option value="0">Please Select</option>
+												th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
+													<option value="999">Please Select</option>
 											</select></td>
 											<td><input class="form-control input-lg"
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].remarks}"
+												th:field="${wrapper.TB_DetailList[__${i}__].remarks}"
 												type="text" /></td>
 											<td><input
-												th:field="${AccountRecievable.AR_DetailList[__${i}__].amount_Received}"
+												th:field="${wrapper.TB_DetailList[__${i}__].subTotal}"
 												onblur="updateTotal(this.value)"
 												placeholder="enter subtotal "
 												class="subTotal form-control input-lg" /></td>

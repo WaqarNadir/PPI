@@ -16,6 +16,7 @@
 	};
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
+		$(fieldName).empty();
 		$.ajax({
 			url : "/getSubType",
 			contentType : "application/json; charset=utf-8",
@@ -130,7 +131,6 @@
 
 										<tr th:each="i: ${#numbers.sequence(0, 5)}">
 											<td th:value="${i}" th:text="${i+1}"></td>
-
 											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 													<option value="0">Please Select</option>

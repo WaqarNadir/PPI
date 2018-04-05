@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
 import com.erp.repo.TrailBalanceRepo;
 
@@ -43,7 +44,7 @@ public class TrailBalanceService {
 	public List<TrailBalance> findByType(int type) {
 		return repo.findByType(type);
 	}
-
+	
 	public List<TrailBalance> ByDateRange(Date startDate, Date endDate, int type) {
 		return repo.ByDateRange(startDate, endDate, type);
 	}

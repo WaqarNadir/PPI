@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TB_Details;
@@ -55,7 +57,6 @@ public class ExpenseContoller {
 		expense = new AccountGroup();
 		expense = AG_service.findByName(Constants.EXPENSE);
 		expense.getChildList();
-		List<TB_Details> tbList = expense.getTBDList();
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
@@ -190,8 +191,72 @@ public class ExpenseContoller {
 		}
 		return resultList;
 	}
-	
 
+	@GetMapping("Expense/CustomBills")
+	public String CustomBills(Model model) {
+		double incomeSum = 0;
+		double expenseSum = 0;
+		Date currentDate = Functions.getCurrentDate();
+		Date lastMonth = Functions.thisMonth(currentDate);
+
+		System.out.println(
+				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
+		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
+
+		List<TrailBalance> tBalance = TB_service.ByDateRange(lastMonth, currentDate, Constants.isExpense);
+		for (TrailBalance TB : tBalance) {
+
+			if (TB.getType() == Constants.isExpense) {
+				expenseSum += TB.getTotal();
+			}
+
+		}
+		model.addAttribute("profitLossList", tBalance);
+		model.addAttribute("expenseSum", expenseSum);
+		model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "CustomBills";
+	}
+
+	@PostMapping("Expense/DateWiseExpense")
+	public String dateWiseExpense(HttpServletRequest request, Model model) {
+		double expenseSum = 0;
+		Date startDate = null, endDate = null;
+		List<TrailBalance> tBExpenseList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
+		}
+
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		tBExpenseList = TB_service.ByDateRange(startDate, endDate, Constants.isExpense);
+		for (TrailBalance TB : tBExpenseList) {
+			if (TB.getType() == Constants.isExpense) {
+					expenseSum += TB.getTotal();			
+			}
+			
+
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("tBExpenseList", tBExpenseList);
+		model.addAttribute("expenseSum", expenseSum);
+		return "CustomBills";
+	}
 
 	public AccountGroup getAccountGroup(int ID) {
 		for (AccountGroup val : AG_List) {
