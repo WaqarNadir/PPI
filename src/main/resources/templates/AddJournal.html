@@ -124,6 +124,17 @@
 						<form class="form-horizontal" th:object="${journal}"
 							action="/Journal/Save" method="post">
 							<div class="box-body">
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label input-lg">Date</label>
+									<input type="date" class="form-control input-lg" id="myDate"
+										th:field="${journal.date}" />
+								</div>
+
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
+										th:field="${journal.diaryNo}" />
+								</div>
 
 								<div class="col-sm-3 pull-right text-center">
 
@@ -137,17 +148,7 @@
 							</div>
 
 							<div class="form-group">
-								<div class="col-sm-3">
-									<label for="refNo" class="control-label input-lg">Date</label>
-									<input type="date" class="form-control input-lg" id="myDate"
-										th:field="${journal.date}" />
-								</div>
-
-								<div class="col-sm-3">
-									<label for="refNo" class="control-label input-lg">Ref.
-										No</label> <input type="text" class="form-control input-lg" id="refNo"
-										th:field="${journal.diaryNo}" />
-								</div>
+								<hr />
 							</div>
 
 							<table id="table1" class="table table-bordered table-hover">

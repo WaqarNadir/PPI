@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.erp.classes.Journal;
-import com.erp.classes.TrailBalance;
 
 @Repository
 public interface JournalRepo extends JpaRepository<Journal, Integer> {

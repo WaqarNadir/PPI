@@ -16,6 +16,12 @@ public final class Constants {
 	public static String CURRENT_ASSETS = "Current Assets";
 	public static String FIXED_ASSETS = "Fixed Assets";
 
+	public static String PARTIAL = "Partial";
+	public static String CLOSED = "Closed";
+	public static String OPEN = "Open";
+	public static String PAID = "PAID";
+	public static String UNPAID = "UNPAID";
+
 	public static int FIXED_ASSETS_ID = 2;
 	public static int Current_ASSETS_ID = 28;
 	public static int CURRENT_LIABILITIES_ID = 38;

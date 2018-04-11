@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
 @Entity(name = "AccountReceivable")
@@ -47,6 +51,10 @@ public class Account_Receivable implements Serializable {
 	private List<AR_Details> AR_DetailList;
 
 	// --------------- Getter & Setters ---------------
+	public Account_Receivable(String status, Double total) {
+		this.total = total;
+		this.status = status;
+	}
 
 	public String getstatus() {
 		return status;

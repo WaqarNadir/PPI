@@ -1,10 +1,12 @@
 package com.erp.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.repo.Account_PayableRepo;
 
@@ -15,7 +17,7 @@ public class Account_PayableService {
 
 	public void save(Account_Payable accountPayable) {
 		repo.save(accountPayable);
-		}
+	}
 
 	public void delete(int id) {
 		repo.delete(id);
@@ -37,5 +39,8 @@ public class Account_PayableService {
 
 	}
 
-}
+	public Account_Payable SumTotal(Date startDate, Date endDate, String status) {
+		return repo.SumTotal(startDate, endDate, status);
+	}
 
+}

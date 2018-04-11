@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.erp.classes.AccountGroup;
-import com.erp.classes.ProfitLoss;
 
 @Repository
 public interface AccountGroupRepo extends JpaRepository<AccountGroup, Integer> {

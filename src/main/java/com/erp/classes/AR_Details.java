@@ -23,6 +23,7 @@ public class AR_Details implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ARD_ID")
 	@Column(name = "ARD_ID")
 	private int ARDetail_ID;
+	@Column(name = "amountReceivable")
 	private double amountReceived;
 	private String Remarks;
 	private Date received_Date;
@@ -30,7 +31,6 @@ public class AR_Details implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Acc_ID")
 	private AccountGroup subGroup_ID;
-	
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AR_ID")
@@ -84,10 +84,10 @@ public class AR_Details implements Serializable {
 		this.setSubGroup_ID(ARD.getSubGroup_ID());
 
 	}
+
 	public AR_Details() {
 		// TODO Auto-generated constructor stub
 	}
-
 
 	public double getAmountReceived() {
 		return amountReceived;
@@ -97,9 +97,6 @@ public class AR_Details implements Serializable {
 		this.amountReceived = amount_Received;
 	}
 
-
-
 	// --------------- Getter & Setters ---------------
 
 }
-

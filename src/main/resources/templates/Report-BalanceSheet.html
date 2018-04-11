@@ -27,6 +27,17 @@
 									<td></td>
 									<td th:text="${item.amount}"></td>
 								</tr>
+
+								<tr
+									th:if="${item.accName} == 'Current Assets' and ${recievable} != null ">
+
+									<td width="10px"></td>
+									<td></td>
+									<td width="140px" th:text="'ACCOUNT RECIEVABLE'"></td>
+									<td></td>
+									<td th:text="${recievable.total}"></td>
+								</tr>
+
 								<tr th:each="child : ${item.childList}"
 									th:if="${child.amount} !='0'">
 
@@ -43,8 +54,7 @@
 							<tr>
 								<td><strong>Total Assets</strong></td>
 								<td></td>
-								<td class="custom-td"><strong
-									th:text="${assets.remarks} == null ?'0'">0.0</strong></td>
+								<td class="custom-td"><strong th:text="${assets.amount}">0.0</strong></td>
 							</tr>
 
 							<tr>
@@ -76,8 +86,7 @@
 							<tr>
 								<td><strong>Total equity</strong></td>
 								<td></td>
-								<td class="custom-td"><strong
-									th:text="${equity.remarks} == null ?'0' ">0.0</strong></td>
+								<td class="custom-td"><strong th:text="${equity.amount}">0.0</strong></td>
 							</tr>
 						</table>
 					</div>
@@ -98,6 +107,17 @@
 									<td></td>
 									<td th:text="${item.amount}"></td>
 								</tr>
+
+								<tr
+									th:if="${item.accName} == 'CURRENT LIABILITIES' and ${payable} != null ">
+
+									<td width="10px"></td>
+									<td></td>
+									<td width="140px" th:text="'ACCOUNT PAYABLE'"></td>
+									<td></td>
+									<td th:text="${payable.total} "></td>
+								</tr>
+
 								<tr th:each="child : ${item.childList}"
 									th:if="${child.amount} !='0'">
 
@@ -116,7 +136,7 @@
 								<td><strong>Total liability</strong></td>
 								<td></td>
 								<td class="custom-td"><strong
-									th:text="${liability.remarks} == null ?'0'">0.0</strong></td>
+									th:text="${liability.amount} ">0.0</strong></td>
 							</tr>
 
 						</table>

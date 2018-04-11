@@ -110,71 +110,6 @@
 					<!-- Sidebar Menu -->
 					<ul class="sidebar-menu" th:fragement="sidebar-menu">
 
-						<!-- Optionally, you can add icons to the links -->
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Person</span> <span class="pull-right-container"> <i
-									class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/NewPerson">New Customer</a></li>
-							</ul></li>
-
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Account Groups</span> <span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/AddGroup">New Account Group</a></li>
-							</ul></li>
-
-
-
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Expense</span> <span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/Expense/Add">Add New Expense</a></li>
-								<li><a href="/ViewExpenses">See All Expense</a></li>
-								<li><a href="/Expense/CustomBills">View Expenses</a>
-							</ul></li>
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Bills/Account Payable</span> <span class="pull-right-container"> <i
-									class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/Bill/Add">Add New Bill</a></li>
-								<li><a href="/ViewBills">See All Bills</a></li>
-							</ul></li>
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Credit Note/Account Receivable</span> <span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/CreditNote/Add">Add New Credit Note</a></li>
-								<li><a href="/ViewCredits">See All Credit Notes</a></li>
-							</ul></li>
-
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Income</span> <span class="pull-right-container"> <i
-									class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/Income/Add">Create New Income</a></li>
-								<li><a href="/ViewIncomes">See All Income</a></li>
-								<li><a href="/Income/CustomIncomes">View Income</a>
-							</ul></li>
-
-						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-								<span>Transfers</span> <span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-							</span> </a>
-							<ul class="treeview-menu">
-								<li><a href="/Transfer/Add">Create New Transfer</a></li>
-								<li><a href="/ViewTransfers">See All Transfers</a></li>
-							</ul></li>
-
-
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Journal</span> <span class="pull-right-container">
 									<i class="fa fa-angle-left pull-right"></i>
@@ -182,6 +117,61 @@
 							<ul class="treeview-menu">
 								<li><a href="/Journal/Add">Add Journal</a></li>
 								<li><a href="/ViewAllJournal">View Journals</a></li>
+							</ul></li>
+
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Income</span> <span class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/Income/Add">Add Income</a></li>
+								<li><a href="/ViewIncomes">View All</a></li>
+								<li><a href="/Income/CustomIncomes">Date Wise Income</a></li>
+							</ul></li>
+
+
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Expense</span> <span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/Expense/Add">Add Expense</a></li>
+								<li><a href="/ViewExpenses">View All</a></li>
+								<li><a href="/Expense/CustomBills">Date Wise Income</a></li>
+							</ul></li>
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Bills</span> <span class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/Bill/Add">Add Bill</a></li>
+								<li><a href="/ViewBills">View All</a></li>
+							</ul></li>
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Credit Note</span> <span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/CreditNote/Add">Add Credit Note</a></li>
+								<li><a href="/ViewCredits">View All</a></li>
+							</ul></li>
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Transfers</span> <span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/Transfer/Add">Add Transfer</a></li>
+								<li><a href="/ViewTransfers">View All </a></li>
+							</ul></li>
+
+
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Chart of Account</span> <span class="pull-right-container">
+									<i class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/AddGroup">Add CoA</a></li>
+								<li><a href="">View All</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Reports</span> <span class="pull-right-container">
@@ -192,10 +182,18 @@
 								<li><a href="/Reports/ChartsOfAccount">Chart of Account</a></li>
 								<li><a href="/Reports/ProfitLoss">Profit and Loss
 										Statement</a></li>
-
-
-
 							</ul></li>
+
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Person</span> <span class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a href="/NewPerson">Add Customer</a></li>
+								<li><a href="">View All </a></li>
+							</ul></li>
+
+
 					</ul>
 					<!-- /.sidebar-menu -->
 				</section>

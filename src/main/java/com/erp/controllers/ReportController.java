@@ -2,8 +2,6 @@ package com.erp.controllers;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.erp.classes.AccountGroup;
+import com.erp.classes.Account_Payable;
+import com.erp.classes.Account_Receivable;
 import com.erp.classes.Constants;
 import com.erp.classes.Functions;
 import com.erp.classes.ProfitLoss;
 import com.erp.services.AccountGroupService;
+import com.erp.services.Account_PayableService;
+import com.erp.services.Account_ReceivableService;
 import com.erp.services.ReportsService;
 
 @Controller
@@ -28,6 +30,11 @@ public class ReportController {
 	private ReportsService service;
 	@Autowired
 	private AccountGroupService AGService;
+	@Autowired
+	private Account_ReceivableService ARService;
+
+	@Autowired
+	private Account_PayableService APService;
 
 	AccountGroup assets = null;
 	AccountGroup liability = null;
@@ -296,19 +303,39 @@ public class ReportController {
 		Date endDate = Functions.getCurrentDate();
 
 		List<AccountGroup> BalanceSheetList = AGService.BalanceSheetReport(startDate, endDate);
+		Account_Payable payable = APService.SumTotal(startDate, endDate, Constants.CLOSED);
+		Account_Receivable recievable = ARService.SumTotal(startDate, endDate, Constants.OPEN);
 
 		AccountGroup Asset = new AccountGroup(AGService.Asset);
 		AccountGroup liability = new AccountGroup(AGService.liability);
 		AccountGroup equity = new AccountGroup(AGService.equity);
 
+		if (recievable != null)
+			Asset.setAmount(recievable.getTotal());
+		else
+			Asset.setAmount(0.0);
+
+		if (payable != null)
+			liability.setAmount(payable.getTotal());
+		else
+			liability.setAmount(0.0);
+		equity.setAmount(0.0);
+
 		Asset.getChildList().forEach(s -> {
 			s.setChildList(new ArrayList<>());
 			s.setAmount(0.0);
+			if (s.getAccName().equals(Constants.CURRENT_ASSETS) && recievable != null) {
+				s.setAmount(recievable.getTotal());
+			}
 		});
 
 		liability.getChildList().forEach(s -> {
 			s.setChildList(new ArrayList<>());
 			s.setAmount(0.0);
+			if (s.getAccName().equals(Constants.CURRENT_LIABILITY) && payable != null) {
+				s.setAmount(payable.getTotal());
+			}
+
 		});
 
 		equity.getChildList().forEach(s -> {
@@ -317,33 +344,51 @@ public class ReportController {
 		});
 
 		for (AccountGroup AG : BalanceSheetList) {
+			boolean childFound = false;
 
 			for (AccountGroup child : Asset.getChildList()) {
 
 				System.out.println("Child: " + child.getAcc_ID() + "  AG: " + AG.getIsParent().getAcc_ID());
+
 				if (child.getAcc_ID() == AG.getIsParent().getAcc_ID()) {
 					child.getChildList().add(AG);
 					child.setAmount((child.getAmount() + AG.getAmount()));
+					Asset.setAmount((Asset.getAmount() + AG.getAmount()));
+					childFound = true;
+					break;
 				}
+
 			}
+			if (childFound)
+				continue;
 
 			for (AccountGroup child : liability.getChildList()) {
 				System.out.println("Child: " + child.getAcc_ID() + "AG: " + AG.getIsParent().getAcc_ID());
 				if (child.getAcc_ID() == AG.getIsParent().getAcc_ID()) {
 					child.getChildList().add(AG);
 					child.setAmount((child.getAmount() + AG.getAmount()));
+					liability.setAmount((liability.getAmount() + AG.getAmount()));
+
+					childFound = true;
+					break;
 				}
 			}
+			if (childFound)
+				continue;
 
 			for (AccountGroup child : equity.getChildList()) {
 				System.out.println("Child: " + child.getAcc_ID() + "AG: " + AG.getIsParent().getAcc_ID());
 				if (child.getAcc_ID() == AG.getIsParent().getAcc_ID()) {
 					child.getChildList().add(AG);
 					child.setAmount((child.getAmount() + AG.getAmount()));
+					equity.setAmount((equity.getAmount() + AG.getAmount()));
+
+					childFound = true;
+					break;
 				}
 			}
-
 		}
+
 		AccountGroup netEquity = new AccountGroup();
 		netEquity.setAccName("Net Equity");
 
@@ -352,6 +397,9 @@ public class ReportController {
 			netEquity.setAmount(netEquity.getAmount() + pf.getSubTotal());
 		}
 		equity.getChildList().add(netEquity);
+
+		model.addAttribute("recievable", recievable);
+		model.addAttribute("payable", payable);
 		model.addAttribute("assets", Asset);
 		model.addAttribute("liability", liability);
 		model.addAttribute("equity", equity);
