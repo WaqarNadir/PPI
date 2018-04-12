@@ -50,14 +50,11 @@ public class BillContoller {
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
 
-
-
-
 	// TrailBalanceWrapper wrapper = null;
-//	@GetMapping("/")
-//	public String test(Model model) {
-//		return "home";
-//	}
+	// @GetMapping("/")
+	// public String test(Model model) {
+	// return "home";
+	// }
 
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
@@ -67,7 +64,7 @@ public class BillContoller {
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("expense", AG_service.findByName(Constants.EXPENSE));
-		model.addAttribute("currentLiability" , AG_service.findByName(Constants.CURRENT_LIABILITY));
+		model.addAttribute("currentLiability", AG_service.findByName(Constants.CURRENT_LIABILITY));
 		model.addAttribute("AccountPayable", AP);
 
 		return "Bill";
@@ -76,7 +73,7 @@ public class BillContoller {
 	@PostMapping("/Bill/Save")
 	public String saveBillNote(@ModelAttribute Account_Payable data, Errors errors, HttpServletRequest request,
 			Model model) {
-		savePayable(data, "Partial");
+		savePayable(data, Constants.PARTIAL);
 		UpdateParent(data.getTotal());
 		return "redirect:/BillReceipt/" + data.getAP_ID();
 	}
@@ -172,7 +169,7 @@ public class BillContoller {
 		return result;
 
 	}
-	
+
 	@PostMapping("/getBalance")
 	public @ResponseBody String getBalance(@RequestBody String data) {
 		int Id = Integer.parseInt(data);
@@ -180,13 +177,13 @@ public class BillContoller {
 		AccountGroup AG = AG_service.find(Id);
 		return AG.getAmount().toString();
 
-//		for (AccountGroup AG : AGList) {
-//			String[] result = new String[4];
-//			result[1] = AG.getAccName();
-//			result[0] = AG.getAcc_ID() + "";
-//			resultList.add(result);
-//		}
-		
+		// for (AccountGroup AG : AGList) {
+		// String[] result = new String[4];
+		// result[1] = AG.getAccName();
+		// result[0] = AG.getAcc_ID() + "";
+		// resultList.add(result);
+		// }
+
 	}
 
 	public List<Account_Payable> getAllBills() {

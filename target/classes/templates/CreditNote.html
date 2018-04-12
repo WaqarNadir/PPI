@@ -38,15 +38,13 @@
 			}
 		});
 	}
-	
-	
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
 	<div class="content-wrapper">
 		<div class="content-header">
-			<h1 align="center">Credit Note</h1>
+			<h1 align="center">Account Receivable</h1>
 		</div>
 		<!-- Main content -->
 		<section class="content">
@@ -106,6 +104,9 @@
 
 													<th:block th:each="parent : ${income}">
 
+														<option th:value="${parent.Acc_ID}" disabled="disabled"
+															th:text="${parent.accName}" class="custom-bold">Cash In hand</option>
+
 														<th:block th:each="child : ${parent.childList}">
 
 															<option th:value="${child.Acc_ID}"
@@ -114,11 +115,12 @@
 														</th:block>
 													</th:block>
 													<th:block>
+														<option disabled="disabled" class="custom-bold">Assets</option>
 														<option th:value="${currentAsset.Acc_ID}"
 															th:text="${currentAsset.accName}"></option>
 													</th:block>
 											</select></td>
-											<td><select type="text" class="form-control input-lg"
+											<td><select class="form-control input-lg"
 												th:id="${'subType' + i}"
 												th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
 													<option value="999">Please Select</option>

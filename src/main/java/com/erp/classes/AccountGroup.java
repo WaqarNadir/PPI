@@ -14,34 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
 @Entity
 
-@NamedNativeQuery(name = "AccountGroup.BalanceSheet", query = "select X.Acc_ID as Acc_ID, X.accName as accName ,X.isParent as isParent,X.refNo AS refNo,SUM(X.amount) as amount\r\n"
-		+ "FROM (\r\n"
-		+ "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo, SUM(tbd.subTotal) as amount,'1' AS type\r\n"
-		+ "from AccountGroup a\r\n" + "JOIN TrailBalanceDetails tbd on tbd.Acc_ID=a.Acc_ID\r\n"
-		+ "join TrailBalance t on t.TB_ID = tbd.TBD_ID\r\n" + "where t.[date] BETWEEN :startDate and :endDate\r\n"
-		+ "group by a.Acc_ID,a.accName,a.isParent,a.refNo\r\n" + "\r\n" + "UNION all\r\n"
-		+ "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo,SUM(jd.subTotal) as amount,'2' AS type\r\n"
+@NamedNativeQuery(name = "AccountGroup.BalanceSheet", query = "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo,SUM(jd.subTotal) as amount,'2' AS type\r\n"
 		+ "from AccountGroup a\r\n" + "JOIN JournalDetails jd on jd.Acc_ID=a.Acc_ID\r\n"
 		+ "join Journal j on j.J_ID = JD.J_ID\r\n" + "where j.[date] BETWEEN :startDate and :endDate\r\n"
-		+ "group by a.Acc_ID,a.accName,a.isParent,a.refNo\r\n" + "\r\n" + "UNION ALL\r\n"
-		+ "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo, SUM(APD.amount_Paid) as amount,'3' AS type\r\n"
-		+ "from AccountGroup a\r\n" + "JOIN AccountPayableDetails APD on APD.Acc_ID=a.Acc_ID\r\n"
-		+ "join AccountPayable AP on AP.AP_ID= APD.AP_ID\r\n" + "where AP.[date] BETWEEN :startDate and :endDate\r\n"
-		+ "group by a.Acc_ID,a.accName,a.isParent,a.refNo\r\n" + "\r\n" + "UNION ALL\r\n"
-		+ "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo,SUM(ARD.amountReceivable ) as amount,'4' AS type\r\n"
-		+ "from AccountGroup a\r\n" + "JOIN AccountReceivableDetails ARD on ARD.Acc_ID=a.Acc_ID\r\n"
-		+ "join AccountReceivable AR on AR.AR_ID= ARD.AR_ID\r\n" + "where AR.[date] BETWEEN :startDate and :endDate\r\n"
-		+ "group by a.Acc_ID,a.accName,a.isParent,a.refNo\r\n" + ") as X\r\n"
-		+ "group by X.Acc_ID,X.accName,X.isParent,X.refNo\r\n" + "\r\n", resultSetMapping = "BalanceSheet")
+		+ "group by a.Acc_ID,a.accName,a.isParent,a.refNo", resultSetMapping = "BalanceSheet")
 
 @SqlResultSetMapping(name = "BalanceSheet", classes = { @ConstructorResult(targetClass = AccountGroup.class, columns = {
 		@ColumnResult(name = "accName", type = String.class), @ColumnResult(name = "isParent", type = Double.class),
@@ -162,7 +145,11 @@ public class AccountGroup implements Serializable {
 		this.isParent = AG.isParent;
 		this.childList = AG.getChildList();
 		TBDList = AG.getTBDList();
-		this.amount = AG.amount;
+		if (amount == null)
+			amount = 0.0;
+		else
+			this.amount = AG.amount;
+
 		this.accName = AG.accName;
 		this.refNo = AG.refNo;
 		this.remarks = AG.remarks;

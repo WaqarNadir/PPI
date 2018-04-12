@@ -38,7 +38,7 @@ public class PersonController {
 
 	@PostMapping(value = "SavePerson")
 	public String SaveDetails(@ModelAttribute Person person, @ModelAttribute Phone phone,
-			@ModelAttribute Address address, @ModelAttribute Email email,Errors error) {
+			@ModelAttribute Address address, @ModelAttribute Email email, Errors error) {
 
 		person = validate(person);
 
@@ -57,7 +57,7 @@ public class PersonController {
 			personDetailservice.savePhone(phone);
 		}
 
-		return "NewPerson";
+		return "redirect:/NewPerson";
 	}
 
 	private Person validate(Person person) {

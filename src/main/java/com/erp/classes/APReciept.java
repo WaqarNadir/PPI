@@ -24,17 +24,17 @@ public class APReciept implements Serializable {
 	@Column(name = "APReciept_ID")
 	private int APReciept_ID;
 	private Date date;
+	@Column(name = "amount_Paid")
 	private double amountPaid;
 	private String remarks;
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "PM_ID")
 	private PaymentMethods PM_ID;
-	
+
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "BankSourceID")
 	private AccountGroup BankSourceID;
-
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "AP_ID")

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.erp.classes.AccountGroup;
 import com.erp.classes.ProfitLoss;
 import com.erp.classes.Reports;
 
