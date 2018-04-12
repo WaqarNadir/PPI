@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.erp.classes.AccountGroup;
 import com.erp.services.AccountGroupService;
@@ -22,36 +25,40 @@ public class GroupController {
 
 	@Autowired
 	private AccountGroupService service;
+
 	@GetMapping(value = "AddGroup")
 	public String ViewPage(Model model) {
 		model.addAttribute("group", new AccountGroup());
+		model.addAttribute("parentList", service.getWithParentRef(null));
+
 		return "AddGroup";
 	}
 
 	@PostMapping(value = "SaveGroup")
-	// public String SaveDetails(@ModelAttribute AccountGroup group,Errors error)
 	public String SaveDetails(@ModelAttribute(name = "group") AccountGroup group, Errors error) {
-
-		// group = validate(group);
 
 		service.save(group);
 
 		return "AddGroup";
 	}
 
-	// private AccountGroup validate(AccountGroup group) {
-	//
-	// if (!(group.getIsParent() == null)) {
-	//
-	// if (group.getIsParent().equals("0"))
-	// group.setIsParent(group.getIsParent());
-	// else
-	// group.setIsParent("Child");
-	// }
-	//
-	// return group;
-	//
-	// }
+	@PostMapping(value = "getRefNo")
+	public @ResponseBody String getRefNo(@RequestBody String data) {
+		int id = Integer.parseInt(data);
+		List<AccountGroup> AGList = service.find(id).getChildList();
+		String[] result = AGList.get((AGList.size() - 1)).getRefNo().split("-");
+
+		int index = Integer.parseInt(result[result.length - 1]) + 1;
+		String refNo = "";
+		for (int i = 0; i < result.length; i++) {
+			if (i == (result.length - 1))
+				refNo += index;
+			else
+				refNo += result[i] + "-";
+		}
+		return refNo;
+
+	}
 
 	public List<AccountGroup> getAll() {
 		return service.getAll();
