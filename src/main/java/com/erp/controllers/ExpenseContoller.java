@@ -49,7 +49,6 @@ public class ExpenseContoller {
 	// ---- Variables -------------
 	private List<AccountGroup> AG_List;
 	private List<TrailBalance> TB_List;
-	TrailBalanceWrapper wrapper = null;
 	AccountGroup expense = null;
 
 	@GetMapping("Expense/Add")
@@ -57,20 +56,23 @@ public class ExpenseContoller {
 		expense = new AccountGroup();
 		expense = AG_service.findByName(Constants.EXPENSE);
 		expense.getChildList();
+		TrailBalance TB = new TrailBalance();
+
+		TB.setDate(new Date(System.currentTimeMillis()));
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("expense", expense);
-		model.addAttribute("wrapper", new TrailBalanceWrapper());
+		model.addAttribute("TrailBalance", TB);
 
 		return "Expense";
 	}
 
 	@PostMapping("/Expense/Save")
-	public String saveExpense(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
+	public String saveExpense(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isExpense);
-		updateParent(data.getTrailBalance().getTotal());
-		updateBankSource(data.getTrailBalance().getbankSourceID(), data.getTrailBalance().getTotal());
+		updateParent(data.getTotal());
+		updateBankSource(data.getbankSourceID(), data.getTotal());
 		return "redirect:/Expense/Add";
 	}
 
@@ -122,20 +124,17 @@ public class ExpenseContoller {
 	}
 	// ------------------ Utility functions ------------------------
 
-	private void save(TrailBalanceWrapper data, int type) {
+	private void save(TrailBalance data, int type) {
+		data.setType(type);
+		TB_service.save(data);
 		for (TB_Details TBD : data.getTB_DetailList()) {
 			if (TBD.getSubTotal() != 0.0) {
-				TBD.setTB_ID(data.getTrailBalance());
-
-				TBD.getTB_ID().setType(type);
-				// TBD.getTB_ID().setDiaryNo(data.getTrailBalance().getDiaryNo());
-
-				TB_service.save(TBD.getTB_ID());
+				
 				TBD_Service.save(TBD);
-				data.getPaymentDetail().setTB_ID(TBD.getTB_ID());
-				PD_Service.save(data.getPaymentDetail());
 			}
 		}
+		//data.getPaymentDetail().get(0).setTB_ID(data);
+		PD_Service.save(data.getPaymentDetail().get(0));
 
 	}
 
@@ -245,9 +244,8 @@ public class ExpenseContoller {
 		tBExpenseList = TB_service.ByDateRange(startDate, endDate, Constants.isExpense);
 		for (TrailBalance TB : tBExpenseList) {
 			if (TB.getType() == Constants.isExpense) {
-					expenseSum += TB.getTotal();			
+				expenseSum += TB.getTotal();
 			}
-			
 
 		}
 		msg = "From " + startDate + " to " + endDate;

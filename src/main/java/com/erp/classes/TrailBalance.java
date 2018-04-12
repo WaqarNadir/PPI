@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
+import com.erp.repo.TrailBalanceDetailsRepo;
+
 @Entity(name = "TrailBalance")
 @NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "
 		+ "WHERE t.date BETWEEN :startDate and :endDate and t.type =:type")
@@ -46,10 +48,21 @@ public class TrailBalance implements Serializable {
 	@JoinColumn(name = "personID")
 	private Person person_ID;
 
+	@OneToMany(mappedBy = "tB")
+	private List<TB_Details> TB_DetailList;
+	
 	@OneToMany(mappedBy = "TB_ID")
-	private List<TrailBalance> TB_DetailList;
+	private List<PaymentDetails> PaymentDetail;
 
 	// --------------- Getter & Setters ---------------
+
+	public List<PaymentDetails> getPaymentDetail() {
+		return PaymentDetail;
+	}
+
+	public void setPaymentDetail(List<PaymentDetails> paymentDetail) {
+		PaymentDetail = paymentDetail;
+	}
 
 	public int getType() {
 		return type;
@@ -63,11 +76,11 @@ public class TrailBalance implements Serializable {
 		TB_DetailList = new ArrayList<>();
 	}
 
-	public List<TrailBalance> getTB_DetailList() {
+	public List<TB_Details> getTB_DetailList() {
 		return TB_DetailList;
 	}
 
-	public void setTB_DetailList(List<TrailBalance> tB_DetailList) {
+	public void setTB_DetailList(List<TB_Details> tB_DetailList) {
 		TB_DetailList = tB_DetailList;
 	}
 
