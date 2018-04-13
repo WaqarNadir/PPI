@@ -20,59 +20,20 @@
 					<!-- general form elements -->
 					<div class="box box-info">
 						<!-- form start -->
-						<form class="form-horizontal" th:object="${wrapper.TrailBalance}"
+						<form class="form-horizontal" th:object="${TB}"
 							action="/Transfer/Save" method="post">
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label input-lg">From</label>
-								<div class="col-sm-3">
-									<div>
-										<select type="text" class="form-control input-lg" id="cash"
-											name="bankSource"
-											th:field="${wrapper.TrailBalance.bankSourceID}">
-											<option value="0">Please Select</option>
-											<option th:each="asset : ${AssetList}"
-												th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 
 
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-2" align="right">
-									<h2>
-										<label for="inputPassword3" class="control-label"
-											align="center">Total</label> <input th:id="total"
-											th:field="${wrapper.TrailBalance.total}" readonly="readonly" />
-									</h2>
-								</div>
-							</div>
-
-							<div class="form-group">
+							<div class="form-group col-sm-12">
 								<div class="col-sm-3">
 									<label for="date" class="control-label" align="center">Date</label>
 									<input type="date" class="form-control" id="myDate"
-										th:field="${wrapper.TrailBalance.date}" />
+										th:field="${TB.date}" />
 								</div>
-
-								<div class="col-sm-3">
-									<label for="total" class="control-label" align="center">Payment
-										Method</label> <select type="text" class="form-control"
-										th:field="${wrapper.paymentDetail.PM_ID}" name="paymentMethod">
-										<option th:value="0">Please Select</option>
-										<option th:each="method: ${methodList}"
-											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
-									</select>
-								</div>
-								<div class="col-sm-2">
-									<label for="refNo" class="control-label">Payment
-										Details</label> <input type="text" class="form-control"
-										id="paymentDetials"
-										th:field="${wrapper.paymentDetail.paymentDetail}" />
-								</div>
-
-								<div class="col-sm-2">
-									<label for="refNo" class="control-label">Ref. No</label> <input
+								<div class="col-sm-3 pull-right">
+									<label for="date" class="control-label">Diary No</label> <input
 										type="text" class="form-control" id="refNo"
-										th:field="${wrapper.TrailBalance.diaryNo}" />
+										th:field="${TB.diaryNo}" />
 								</div>
 							</div>
 
@@ -80,34 +41,75 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Account</th>
-										<th>Description</th>
-										<th>Amount</th>
+										<th></th>
+										<th></th>
+										<th></th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 
-									<tr th:each="i: ${#numbers.sequence(0, 5)}">
-										<td th:value="${i}" th:text="${i+1}"></td>
-										<td><select type="text" class="form-control" id="cash"
-											th:field="${wrapper.TB_DetailList[__${i}__].subGroup_ID}">
+									<tr>
+										<td class="text-bold">From</td>
+
+										<td><select class="form-control"
+											th:field="${TB.bankSourceID}">
 												<option value="0">Please Select</option>
-												<option th:each="asset : ${AssetList}"
-													th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
-													In hand</option>
+
+												<th:block th:each="parent : ${AssetList}">
+
+													<option th:value="${parent.Acc_ID}" disabled="disabled"
+														th:text="${parent.accName}" class="custom-bold">Cash In hand</option>
+
+													<th:block th:each="child : ${parent.childList}">
+
+														<option th:value="${child.Acc_ID}"
+															th:text=" ${child.accName}">Cash In hand</option>
+
+													</th:block>
+												</th:block>
+
+
 										</select></td>
 
-										<td><input
-											th:field="${wrapper.TB_DetailList[__${i}__].remarks}"
-											type="text" /></td>
-										<td><input
-											th:field="${wrapper.TB_DetailList[__${i}__].subTotal}"
-											onblur="updateTotal(this.value)"
-											placeholder="enter subtotal " class="subTotal" /></td>
+										<td>Balance:</td>
+										<td><input class="label-total" disabled="disabled" /></td>
 
 									</tr>
+									<tr>
+										<td class="text-bold">To</td>
 
+										<td><select class="form-control"
+											th:field="${TB.TB_DetailList[0].subGroup_ID}">
+												<option value="0">Please Select</option>
+
+												<th:block th:each="parent : ${AssetList}">
+
+													<option th:value="${parent.Acc_ID}" disabled="disabled"
+														th:text="${parent.accName}" class="custom-bold">Cash In hand</option>
+
+													<th:block th:each="child : ${parent.childList}">
+
+														<option th:value="${child.Acc_ID}"
+															th:text=" ${child.accName}">Cash In hand</option>
+
+													</th:block>
+												</th:block>
+
+
+										</select></td>
+
+										<td>Balance:</td>
+										<td><input class="label-total" disabled="disabled" /></td>
+
+									</tr>
+									<tr>
+										<td class="text-bold">Transfer Amount</td>
+										<td></td>
+										<td></td>
+										<td><input th:field="${TB.TB_DetailList[0].subTotal}"
+											type="text" class="form-control" /></td>
+									</tr>
 								</tbody>
 
 							</table>
@@ -116,7 +118,7 @@
 								<label class="col-sm-2 control-label">Remarks:</label>
 								<div class="col-sm-10">
 									<textarea class="form-control" rows="4" cols="4"
-										th:field="${wrapper.TrailBalance.remarks}"
+										th:field="${TB.remarks}"
 										placeholder="Enter Any details if needed"></textarea>
 								</div>
 							</div>

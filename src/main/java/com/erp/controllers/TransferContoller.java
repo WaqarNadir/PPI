@@ -1,10 +1,12 @@
 package com.erp.controllers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,16 +55,41 @@ public class TransferContoller {
 	public String TransferHome(Model model) {
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("AssetList", getCurrentAsset());
-		model.addAttribute("wrapper", new TrailBalanceWrapper());
+		model.addAttribute("TB", new TrailBalance());
 
 		return "Transfer";
 	}
 
 	@PostMapping("/Transfer/Save")
-	public String saveTransfer(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
-		save(data, Constants.isTransfer);
+	public String saveTransfer(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
+		data.setType(Constants.isTransfer);
+
+		TB_service.save(data);
+		data.getTB_DetailList().get(0).setTB_ID(data);
+		TBD_Service.save(data.getTB_DetailList().get(0));
 		return "redirect:/Transfer/Add";
 	}
+
+//	private Boolean updateParent(double BillAmount) {
+//		boolean result = false;
+//		AccountGroup item = expense;
+//		try {
+//			while (item.getIsParent() != null) {
+//				double amount = 0.0;
+//				amount = BillAmount + item.getAmount();
+//				item.setAmount(amount);
+//				AG_service.save(item);
+//				item = item.getIsParent();
+//			}
+//
+//			result = true;
+//		} catch (Exception e) {
+//			result = false;
+//			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
+//		}
+//		return result;
+//
+//	}
 
 	@GetMapping("ViewTransfers")
 	public String ViewExpenseHome(Model model) {
@@ -112,10 +139,26 @@ public class TransferContoller {
 
 	public List<AccountGroup> getCurrentAsset() {
 		List<AccountGroup> result = new ArrayList<>();
-		populateAccountGroupList();
-		for (AccountGroup AG : AG_List) {
+		AccountGroup asset = AG_service.findByName(Constants.ASSETS);
+		AccountGroup liability = AG_service.findByName(Constants.LIABILITY);
+		AccountGroup equity = AG_service.findByName(Constants.EQUITY);
+		asset.getChildList().sort(Comparator.comparing(AccountGroup::getAcc_ID).reversed());
+
+		for (AccountGroup AG : asset.getChildList()) {
+			AG.getChildList();
 			result.add(AG);
 		}
+
+		for (AccountGroup AG : liability.getChildList()) {
+			AG.getChildList();
+			result.add(AG);
+		}
+
+		for (AccountGroup AG : equity.getChildList()) {
+			AG.getChildList();
+			result.add(AG);
+		}
+
 		return result;
 	}
 
