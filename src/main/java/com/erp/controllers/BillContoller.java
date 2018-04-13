@@ -22,6 +22,7 @@ import com.erp.classes.AP_Details;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.services.APRecieptService;
@@ -50,26 +51,22 @@ public class BillContoller {
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
 
-	// TrailBalanceWrapper wrapper = null;
-	// @GetMapping("/")
-	// public String test(Model model) {
-	// return "home";
-	// }
-
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
 		Account_Payable AP = new Account_Payable();
-		AP.setDate(new Date(System.currentTimeMillis()));
-
+		Date cDate = new Date(System.currentTimeMillis());
+		AP.setDate(cDate);
+		Date dueDate = Functions.addDays(30, cDate);
+		AP.setDueDate(dueDate);
+		
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("expense", AG_service.findByName(Constants.EXPENSE));
 		model.addAttribute("currentLiability", AG_service.findByName(Constants.CURRENT_LIABILITY));
 		model.addAttribute("AccountPayable", AP);
-
 		return "Bill";
 	}
-
+	
 	@PostMapping("/Bill/Save")
 	public String saveBillNote(@ModelAttribute Account_Payable data, Errors errors, HttpServletRequest request,
 			Model model) {
@@ -77,7 +74,36 @@ public class BillContoller {
 		UpdateParent(data.getTotal());
 		return "redirect:/BillReceipt/" + data.getAP_ID();
 	}
+	
+	@GetMapping(value = "/BillReceipt/{billID}")
+	public String BillPaymentHome(@PathVariable("billID") int billID, Model model) {
+		Account_Payable AP = AP_Service.find(billID);
+		APReciept APR = new APReciept();
+		APR.setAP_ID(AP);
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
+		model.addAttribute("methodList", getMethods());
+		model.addAttribute("apReciept", APR);
+		return "BillReceipt";
+	}
 
+	@PostMapping("/BillReciept/Save")
+	public String saveBillReieptNote(@ModelAttribute APReciept data, Errors errors, HttpServletRequest request,
+			Model model) {
+		saveBill(data);
+		model.addAttribute("AccountPayable", new Account_Payable());
+		return "redirect:/Bill/Add";
+	}
+	
+	@GetMapping("ViewBills")
+	public String ViewExpenseHome(Model model) {
+		model.addAttribute("BillsList", getAllBills());
+		return "ViewBills";
+	}
+
+
+	
+//------------------------------ Utility functions ----------------------------------
+	
 	private Boolean UpdateParent(double BillAmount) {
 		boolean result = false;
 		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
@@ -89,16 +115,14 @@ public class BillContoller {
 				AG_service.save(item);
 				item = item.getIsParent();
 			}
-
 			result = true;
 		} catch (Exception e) {
 			result = false;
 			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
 		}
 		return result;
-
 	}
-
+	
 	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
 		boolean result = false;
 		try {
@@ -109,44 +133,14 @@ public class BillContoller {
 				AG_service.save(bankSource);
 				bankSource = bankSource.getIsParent();
 			}
-
 			result = true;
 		} catch (Exception e) {
 			result = false;
 			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
 		}
 		return result;
-
 	}
-
-	@GetMapping("ViewBills")
-	public String ViewExpenseHome(Model model) {
-		model.addAttribute("BillsList", getAllBills());
-		return "ViewBills";
-	}
-
-	@GetMapping(value = "/BillReceipt/{billID}")
-	public String BillPaymentHome(@PathVariable("billID") int billID, Model model) {
-		Account_Payable AP = AP_Service.find(billID);
-		APReciept APR = new APReciept();
-		APR.setAP_ID(AP);
-		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
-		model.addAttribute("methodList", getMethods());
-		// model.addAttribute("AssetList", getCurrentAsset());
-		model.addAttribute("apReciept", APR);
-		// model.addAttribute("accountPayable", AP);
-		// model.addAttribute("wrapper", APR);
-		return "BillReceipt";
-	}
-
-	@PostMapping("/BillReciept/Save")
-	public String saveBillReieptNote(@ModelAttribute APReciept data, Errors errors, HttpServletRequest request,
-			Model model) {
-		saveBill(data);
-		model.addAttribute("AccountPayable", new Account_Payable());
-		return "Bill";
-	}
-
+	
 	private Boolean updatePaidParent(double paidAmount) {
 		boolean result = false;
 		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
@@ -160,30 +154,19 @@ public class BillContoller {
 				AG_service.save(item);
 				item = item.getIsParent();
 			}
-
 			result = true;
 		} catch (Exception e) {
 			result = false;
 			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
 		}
 		return result;
-
 	}
 
 	@PostMapping("/getBalance")
 	public @ResponseBody String getBalance(@RequestBody String data) {
 		int Id = Integer.parseInt(data);
-		// List<AccountGroup> AGList = AG_service.getWithParentRef(Id);
 		AccountGroup AG = AG_service.find(Id);
 		return AG.getAmount().toString();
-
-		// for (AccountGroup AG : AGList) {
-		// String[] result = new String[4];
-		// result[1] = AG.getAccName();
-		// result[0] = AG.getAcc_ID() + "";
-		// resultList.add(result);
-		// }
-
 	}
 
 	public List<Account_Payable> getAllBills() {
@@ -212,15 +195,13 @@ public class BillContoller {
 		for (AP_Details APDetails : ApList) {
 			AP_Details APD = new AP_Details(APDetails);
 			if (APD.getAmount_Paid() != 0.0) {
-				APD.setPaid_Date(data.getDate());
+				APD.setPaidDate(data.getDate());
 				// data.getAccountPayable().setPerson_ID(data.get);
 				APD.setAP_ID(data);
 				APD_Service.save(APD);
 			}
 		}
 	}
-
-	// ------------------ Utility functions ------------------------
 
 	public List<Person> getPerson() {
 		return personService.getAll();
@@ -229,28 +210,5 @@ public class BillContoller {
 	public List<PaymentMethods> getMethods() {
 		return PM_Service.getAll();
 	}
-
-	// public AccountGroup getAccountGroup(int ID) {
-	// for (AccountGroup val : AG_List) {
-	// if (val.getAcc_ID() == ID) {
-	// return val;
-	// }
-	// }
-	// return null;
-	// }
-	// public List<AccountGroup> getCurrentAsset() {
-	// List<AccountGroup> result = new ArrayList<>();
-	// populateAccountGroupList();
-	// for (AccountGroup AG : AG_List) {
-	// result.add(AG);
-	// }
-	// return result;
-	// }
-	//
-	// public void populateAccountGroupList() {
-	// AG_List = new ArrayList<>();
-	// //AG_List = AG_service.getWithParentRef(142);
-	// AG_List = AG_service.getWithParentRef(142);
-	// }
 
 }

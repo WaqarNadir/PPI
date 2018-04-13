@@ -150,14 +150,24 @@
 
 										<tr th:each="i: ${#numbers.sequence(0, 5)}">
 											<td th:value="${i}" th:text="${i+1}"></td>
-											<td><select class="form-control input-lg"
+											
+												<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
-													<option value="0">Please Select</option>
-													<option th:each="asset : ${expense.childList}"
-														th:value="${asset.Acc_ID}" th:text="${asset.accName}">Cash
-														In hand</option>
-											</select></td>
+													<option value="999">Please Select</option>
 
+													<th:block th:each="parent : ${expense}">
+													<option th:value="${parent.Acc_ID}" disabled="disabled"
+															th:text="${parent.accName}" class="custom-bold">Cash
+															In hand</option>
+
+														<th:block th:each="child : ${parent.childList}">
+
+															<option th:value="${child.Acc_ID}"
+																th:text=" ${child.accName}">Cash In hand</option>
+
+														</th:block>
+													</th:block>
+											</select></td>
 											<td><select type="text" class="form-control input-lg"
 												th:id="${'subType' + i}"
 												th:field="${TrailBalance.TB_DetailList[__${i}__].subGroup_ID}">

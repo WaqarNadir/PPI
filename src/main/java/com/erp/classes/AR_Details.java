@@ -26,7 +26,7 @@ public class AR_Details implements Serializable {
 	@Column(name = "amountReceivable")
 	private double amountReceived;
 	private String Remarks;
-	private Date received_Date;
+	private Date ReceivedDate;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Acc_ID")
@@ -52,12 +52,12 @@ public class AR_Details implements Serializable {
 		Remarks = remarks;
 	}
 
-	public Date getReceived_Date() {
-		return received_Date;
+	public Date getReceivedDate() {
+		return ReceivedDate;
 	}
 
-	public void setReceived_Date(Date received_Date) {
-		this.received_Date = received_Date;
+	public void setReceivedDate(Date received_Date) {
+		this.ReceivedDate = received_Date;
 	}
 
 	public AccountGroup getSubGroup_ID() {
@@ -79,7 +79,7 @@ public class AR_Details implements Serializable {
 	public AR_Details(AR_Details ARD) {
 		this.setAmountReceived(ARD.getAmountReceived());
 		this.setAR_ID(ARD.getAR_ID());
-		this.setReceived_Date(ARD.getReceived_Date());
+		this.setReceivedDate(ARD.getReceivedDate());
 		this.setRemarks(ARD.getRemarks());
 		this.setSubGroup_ID(ARD.getSubGroup_ID());
 

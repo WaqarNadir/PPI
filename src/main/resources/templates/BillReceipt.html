@@ -66,14 +66,16 @@
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
-								<div class="col-sm-2">
-									<label for="balanceVal" class="control-label input-lg">Balance</label>
-									<input id="balance" readonly="readonly" class="label-total" />
+								<div class="col-sm-2 text-center">
+									<label for="balanceVal" align="center"
+										class="control-label input-lg">Balance</label> <input
+										id="balance" readonly="readonly" class="label-total" align="center" />
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-2 pull-right">
 									<label for="dueDate" class="control-label input-lg">Due
 										Date</label> <input type="date" class="form-control input-lg"
-										id="myDate" th:value="${apReciept.AP_ID.dueDate}" />
+										id="myDate" th:value="${apReciept.AP_ID.dueDate}"
+										readonly="readonly" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -91,7 +93,7 @@
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>
 								</div>
-								<div class="col-sm-2">
+								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input type="text" class="form-control input-lg" id="refNo"
 										th:value="${apReciept.AP_ID.diary_No}" />
@@ -112,22 +114,25 @@
 									<tbody>
 										<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
-											<td><select class="form-control input-lg">
+											<td><select class="form-control input-lg" readonly="readonly"
+												>
 													<option th:value="${apReciept.AP_ID.person_ID}"
 														th:if="${apReciept.AP_ID.person_ID} !=null"
 														th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
 											</select></td>
 											<td><input class="form-control input-lg"
+												readonly="readonly"
 												th:value="${Detail.subGroup_ID.isParent.accName}" /></td>
-											<td><select class="form-control input-lg" id="cash">
+											<td><select class="form-control input-lg" id="cash"
+												readonly="readonly">
 													<option th:value="${Detail.subGroup_ID.Acc_ID}"
 														th:text="${Detail.subGroup_ID.accName}"></option>
 											</select></td>
 
 											<td><input class="form-control input-lg"
-												th:value="${Detail.remarks}" type="text" /></td>
+												readonly="readonly" th:value="${Detail.remarks}" type="text" /></td>
 											<td><input class="form-control input-lg"
-												th:value="${Detail.amount_Paid}" /></td>
+												readonly="readonly" th:value="${Detail.amount_Paid}" /></td>
 
 										</tr>
 										<tr>
@@ -136,8 +141,8 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td><label>Total:</label> <input type="text"
-												class="label-total" id="total"
+											<td><label class="text-center">Total:</label> <input type="text"
+												class="label-total" id="total" readonly="readonly"
 												th:value="${apReciept.AP_ID.total}" /></td>
 										</tr>
 

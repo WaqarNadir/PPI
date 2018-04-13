@@ -24,7 +24,8 @@ public class ARReciept implements Serializable {
 	@Column(name = "ARReciept_ID")
 	private int ARReciept_ID;
 	private Date date;
-	private double amountReceived;
+	@Column(name = "AmountRecieved")
+	private double AmountReceived;
 	private String remarks;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
@@ -90,10 +91,10 @@ public class ARReciept implements Serializable {
 	}
 
 	public double getAmountReceived() {
-		return amountReceived;
+		return AmountReceived;
 	}
 
 	public void setAmountReceived(double amountReceived) {
-		this.amountReceived = amountReceived;
+		this.AmountReceived = amountReceived;
 	}
 }

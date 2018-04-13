@@ -71,11 +71,12 @@
 									</select>
 								</div>
 
-								<div class="col-sm-3 pull-right">
+
+								<div class="col-sm-3 pull-right text-center">
 									<label for="inputPassword3" class="control-label input-lg"
-										align="center">Total</label> <input id="total"
-										readonly="readonly" class="form-control  input-lg"
-										th:field="${AccountPayable.total}" />
+										align="center">Total</label> <input th:id="total"
+										th:field="${AccountPayable.total}" readonly="readonly"
+										class="label-total" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -86,11 +87,11 @@
 								</div>
 								<div class="col-sm-3">
 									<label for="duedate" class="control-label input-lg"
-										align="center">Expected Date</label> <input type="date"
+										align="center">Due Date</label> <input type="date"
 										class="form-control input-lg" id="myDate"
 										th:field="${AccountPayable.dueDate}" />
 								</div>
-								<div class="col-sm-3 pull-right">
+								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input type="text" class="form-control input-lg" id="refNo"
 										th:field="${AccountPayable.diary_No}" />
@@ -116,6 +117,9 @@
 													<option value="999">Please Select</option>
 
 													<th:block th:each="parent : ${expense}">
+														<option th:value="${parent.Acc_ID}" disabled="disabled"
+															th:text="${parent.accName}" class="custom-bold">Cash
+															In hand</option>
 
 														<th:block th:each="child : ${parent.childList}">
 
@@ -125,6 +129,7 @@
 														</th:block>
 													</th:block>
 													<th:block>
+														<option disabled="disabled" class="custom-bold">CURRENT LIABILITIES</option>
 														<option th:value="${currentLiability.Acc_ID}"
 															th:text="${currentLiability.accName}"></option>
 													</th:block>
@@ -154,10 +159,12 @@
 										th:field="${AccountPayable.remarks}"
 										placeholder="Enter Any details if needed"></textarea>
 								</div>
-								<div class="col-sm-3 pull-right">
-									<label for="inputPassword3" class="control-label input-lg"
-										align="center">Total</label> <input id="total1"
-										readonly="readonly" class="form-control  input-lg" />
+								<div class="box-body">
+									<div class="col-sm-3 pull-right text-center">
+										<label for="inputPassword3" class="control-label input-lg"
+											align="center">Total</label> <input id="total1"
+											readonly="readonly" class="label-total" />
+									</div>
 								</div>
 							</div>
 							<div class="box-footer">

@@ -1,5 +1,6 @@
 package com.erp.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.erp.classes.ARReciept;
 import com.erp.classes.AR_Details;
 import com.erp.classes.AccountGroup;
+import com.erp.classes.Account_Payable;
 import com.erp.classes.Account_Receivable;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TrailBalanceWrapper;
@@ -47,18 +50,20 @@ public class CreditNoteContoller {
 	// ---- Variables -------------
 	private List<Account_Receivable> AR_List;
 	private List<AccountGroup> AG_List;
-	TrailBalanceWrapper wrapper = null;
 	AccountGroup income = null;
 	AccountGroup currentAsset = null;
 
 	@GetMapping("CreditNote/Add")
 	public String CreditNoteHome(Model model) {
-		wrapper = new TrailBalanceWrapper();
-		model.addAttribute("wrapper", wrapper);
+		Account_Receivable AR = new Account_Receivable();
+		Date cDate = new Date(System.currentTimeMillis());
+		AR.setDate(cDate);
+		Date dueDate = Functions.addDays(30, cDate);
+		AR.setDue_Date(dueDate);	
 		income = AG_service.findByName(Constants.INCOME);
 		currentAsset = AG_service.findByName(Constants.CURRENT_ASSETS);
 		model.addAttribute("personList", getPerson());
-		model.addAttribute("AccountRecievable", new Account_Receivable());
+		model.addAttribute("AccountRecievable", AR);
 		model.addAttribute("income", income);
 		model.addAttribute("currentAsset", currentAsset);
 
@@ -102,6 +107,7 @@ public class CreditNoteContoller {
 		ARR.setAR_ID(AR);
 
 		model.addAttribute("methodList", getMethods());
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("AssetList", getCurrentAsset());
 		model.addAttribute("arReciept", ARR);
 		// model.addAttribute("wrapper", APR);
@@ -114,7 +120,7 @@ public class CreditNoteContoller {
 		saveCredit(data);
 		// model.addAttribute("wrapper", data);
 		model.addAttribute("AccountRecievable", new Account_Receivable());
-		return "CreditNote";
+		return "redirect:/CreditNote/Add";
 	}
 
 	@GetMapping("ViewCredits")
@@ -147,7 +153,7 @@ public class CreditNoteContoller {
 		for (AR_Details ARDetails : ArList) {
 			AR_Details ARD = new AR_Details(ARDetails);
 			if (ARD.getAmountReceived() != 0.0) {
-				ARD.setReceived_Date(data.getDate());
+				ARD.setReceivedDate(data.getDate());
 				// data.getAccountPayable().setPerson_ID(data.get);
 				ARD.setAR_ID(data);
 				ARD_Service.save(ARD);

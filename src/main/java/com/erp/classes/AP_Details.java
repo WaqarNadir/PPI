@@ -25,7 +25,7 @@ public class AP_Details implements Serializable {
 	private int APDetail_ID;
 	private double amount_Paid;
 	private String Remarks;
-	private Date paid_Date;
+	private Date PaidDate;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Acc_ID")
@@ -51,12 +51,12 @@ public class AP_Details implements Serializable {
 		APDetail_ID = aPDetail_ID;
 	}
 
-	public Date getPaid_Date() {
-		return paid_Date;
+	public Date getPaidDate() {
+		return PaidDate;
 	}
 
-	public void setPaid_Date(Date paid_Date) {
-		this.paid_Date = paid_Date;
+	public void setPaidDate(Date paid_Date) {
+		this.PaidDate = paid_Date;
 	}
 
 	public double getAmount_Paid() {
@@ -86,7 +86,7 @@ public class AP_Details implements Serializable {
 	public AP_Details(AP_Details APD) {
 		this.setAmount_Paid(APD.getAmount_Paid());
 		this.setAP_ID(APD.getAP_ID());
-		this.setPaid_Date(APD.getPaid_Date());
+		this.setPaidDate(APD.getPaidDate());
 		this.setRemarks(APD.getRemarks());
 		this.setSubGroup_ID(APD.getSubGroup_ID());
 
@@ -96,13 +96,13 @@ public class AP_Details implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "AMount Paid = " + this.getAmount_Paid() + "\n" + "Paid Date = " + getPaid_Date() + "\n" + "Remarks = "
-				+ getRemarks() + "\n" + "Subgroup = " + getSubGroup_ID() + "\n";
-
-	}
+//	@Override
+//	public String toString() {
+//		// TODO Auto-generated method stub
+//		return "AMount Paid = " + this.getAmount_Paid() + "\n" + "Paid Date = " + getPaid_Date() + "\n" + "Remarks = "
+//				+ getRemarks() + "\n" + "Subgroup = " + getSubGroup_ID() + "\n";
+//
+//	}
 	// --------------- Getter & Setters ---------------
 
 }

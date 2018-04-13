@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
-import com.erp.repo.TrailBalanceDetailsRepo;
 
 @Entity(name = "TrailBalance")
 @NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "

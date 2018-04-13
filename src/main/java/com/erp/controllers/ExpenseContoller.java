@@ -23,7 +23,6 @@ import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
-import com.erp.classes.TrailBalanceWrapper;
 import com.erp.services.AccountGroupService;
 import com.erp.services.PaymentDetailService;
 import com.erp.services.PaymentMethodService;
@@ -129,11 +128,11 @@ public class ExpenseContoller {
 		TB_service.save(data);
 		for (TB_Details TBD : data.getTB_DetailList()) {
 			if (TBD.getSubTotal() != 0.0) {
-				
+				TBD.setTB_ID(data);
 				TBD_Service.save(TBD);
 			}
 		}
-		//data.getPaymentDetail().get(0).setTB_ID(data);
+		data.getPaymentDetail().get(0).setTB_ID(data);
 		PD_Service.save(data.getPaymentDetail().get(0));
 
 	}

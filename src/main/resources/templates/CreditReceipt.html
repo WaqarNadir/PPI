@@ -13,6 +13,28 @@
 		});
 		$("#total").text(total);
 		$("#total").val(total);
+	};
+	function getBalance(value) {
+		fieldName = "#balance";
+		$.ajax({
+			url : "/getBalance",
+			contentType : "application/json; charset=utf-8",
+			data : value,
+			type : "POST",
+			success : function(data) {
+				$(fieldName).val(data);
+			},
+			error : function(xhr, status, error) {
+				alert("ERROR:" + xhr.responseText);
+				console.log("ERROR:" + xhr.responseText);
+			}
+		});
+	};
+	function updateBalance(value) {
+		var total = $("#total").val();
+		var remain = total - value;
+		$("#balance2").val(remain);
+
 	}
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -36,20 +58,50 @@
 						<form class="form-horizontal" action="/CreditReceipt/Save"
 							method="post">
 							<div class="box-body">
-								<div class="col-sm-3 pull-right">
-									<label for="inputPassword3" class="control-label input-lg">From</label>
-									<select class="form-control input-lg" readonly="readonly">
-										<option th:value="${arReciept.AR_ID.person_ID}"
-											th:text="${arReciept.AR_ID.person_ID.Fname +' '+arReciept.AR_ID.person_ID.Lname}"></option>
+								<div class="col-sm-3">
+									<label for="accPay" class="control-label input-lg">Payment
+										Account</label> <select type="text" class="form-control input-lg"
+										id="cash" onchange="getBalance(this.value)" name="bankSource"
+										th:field="${arReciept.BankSourceID}">
+										<option value="0">Please Select</option>
+										<option th:each="asset : ${currentAsset.childList}"
+											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
-							</div>
-							<div class="box-body">
-								<div class="col-sm-3">
+								<div class="col-sm-2 text-center">
+									<label for="balanceVal" align="center"
+										class="control-label input-lg">Balance</label> <input
+										id="balance" readonly="readonly" class="label-total"
+										align="center" />
+								</div>
+								<div class="col-sm-2 pull-right">
+
 									<label for="date" class="control-label input-lg" align="center">Expected
 										Date</label> <input type="date" readonly="readonly"
 										class="form-control input-lg" id="myDate"
 										th:value="${arReciept.AR_ID.date}" />
+
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="col-sm-3">
+									<label>Payment Method</label> <select
+										th:field="${arReciept.PM_ID}" type="text"
+										class="form-control input-lg" name="paymentMethod">
+										<option th:value="0">Please Select</option>
+										<option th:each="method: ${methodList}"
+											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<label>Received Date</label> <input type="date"
+										class="form-control input-lg" id="recievedDate"
+										th:field="${arReciept.Date}" />
+								</div>
+								<div class="col-sm-2 pull-right">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
+										th:value="${arReciept.AR_ID.diary_No}" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -57,49 +109,70 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>Account</th>
+											<th width="200px">Payer</th>
+											<th width="230px">Account</th>
+											<th width="230px">Sub Group</th>
 											<th>Description</th>
 											<th>Amount</th>
-											<th></th>
 										</tr>
 									</thead>
 									<tbody>
 
-										<tr th:each="Detail,row : ${arReciept.AR_ID.AR_DetailList}">
+
+									<tr th:each="Detail,row : ${arReciept.AR_ID.AR_DetailList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
-											<td><select class="form-control input-lg"
-												readonly="readonly" id="cash">
+											<td><select class="form-control input-lg" readonly="readonly"
+												>
+													<option th:value="${arReciept.AR_ID.person_ID}"
+														th:if="${arReciept.AR_ID.person_ID} !=null"
+														th:text="${arReciept.AR_ID.person_ID.Fname +' '+arReciept.AR_ID.person_ID.Lname}"></option>
+											</select></td>
+											<td><input class="form-control input-lg"
+												readonly="readonly"
+												th:value="${Detail.subGroup_ID.isParent.accName}" /></td>
+											<td><select class="form-control input-lg" id="cash"
+												readonly="readonly">
 													<option th:value="${Detail.subGroup_ID.Acc_ID}"
 														th:text="${Detail.subGroup_ID.accName}"></option>
 											</select></td>
+
 											<td><input class="form-control input-lg"
 												readonly="readonly" th:value="${Detail.remarks}" type="text" /></td>
-											<td><input readonly="readonly"
-												class="form-control input-lg"
-												th:value="${Detail.amount_Received}" /></td>
+											<td><input class="form-control input-lg"
+												readonly="readonly" th:value="${Detail.amountReceived}" /></td>
+
 										</tr>
 										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><label class="text-center">Total:</label> <input type="text"
+												class="label-total" id="total" readonly="readonly"
+												th:value="${arReciept.AR_ID.total}" /></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
 											<td></td>
 											<td></td>
 											<td><label>Amount Received</label> <input type="text"
-												class="form-control input-lg" id="amountPaid"
+												class="label-total" id="amountReceived"
+												onchange="updateBalance(this.value)"
 												th:field="${arReciept.amountReceived}" /></td>
-											<td><label>Received Date</label> <input type="date"
-												class="form-control input-lg" id="recievedDate"
-												th:field="${arReciept.Date}" /></td>
+											<td></td>
 										</tr>
 										<tr>
 											<td></td>
 											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
 											<td><label>Balance</label> <input type="text"
-												class="form-control input-lg" id="balance" /></td>
-											<td><label>Payment Method</label> <select
-												th:field="${arReciept.PM_ID}" type="text"
-												class="form-control input-lg" name="paymentMethod">
-													<option th:value="0">Please Select</option>
-													<option th:each="method: ${methodList}"
-														th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
-											</select></td>
+												class="label-total" id="balance2" /></td>
+											<td></td>
 										</tr>
 									</tbody>
 								</table>

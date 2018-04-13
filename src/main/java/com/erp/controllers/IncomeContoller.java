@@ -21,7 +21,6 @@ import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
 import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
-import com.erp.classes.TrailBalanceWrapper;
 import com.erp.services.AccountGroupService;
 import com.erp.services.PaymentDetailService;
 import com.erp.services.PaymentMethodService;
@@ -48,26 +47,29 @@ public class IncomeContoller {
 
 	private List<TrailBalance> TB_List;
 	private List<AccountGroup> AG_List;
-	TrailBalanceWrapper wrapper = null;
 	AccountGroup income = null;
 
 	@GetMapping("Income/Add")
 	public String IncomeHome(Model model) {
+		income = new AccountGroup();
 		income = AG_service.findByName(Constants.INCOME);
+		income.getChildList();
+		TrailBalance TB = new TrailBalance();
+		TB.setDate(new Date(System.currentTimeMillis()));
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("income", income);
-		model.addAttribute("wrapper", new TrailBalanceWrapper());
+		model.addAttribute("TrailBalance", TB);
 
 		return "Income";
 	}
-
+	
 	@PostMapping("/Income/Save")
-	public String saveIncome(@ModelAttribute TrailBalanceWrapper data, Errors errors, HttpServletRequest request) {
+	public String saveIncome(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isIncome);
-		updateParent(data.getTrailBalance().getTotal());
-		updateBankSource(data.getTrailBalance().getbankSourceID(), data.getTrailBalance().getTotal());
+		updateParent(data.getTotal());
+		updateBankSource(data.getbankSourceID(), data.getTotal());
 
 		return "redirect:/Income/Add";
 	}
@@ -136,23 +138,19 @@ public class IncomeContoller {
 
 	// ------------------ Utility functions ------------------------
 
-	private void save(TrailBalanceWrapper data, int type) {
+	private void save(TrailBalance data, int type) {
+		data.setType(type);
+		TB_service.save(data);
 		for (TB_Details TBD : data.getTB_DetailList()) {
 			if (TBD.getSubTotal() != 0.0) {
-				TBD.setTB_ID(data.getTrailBalance());
-
-				TBD.getTB_ID().setType(type);
-				// TBD.getTB_ID().setDiaryNo(data.getTrailBalance().getDiaryNo());
-
-				TB_service.save(TBD.getTB_ID());
+				TBD.setTB_ID(data);
 				TBD_Service.save(TBD);
-				data.getPaymentDetail().setTB_ID(TBD.getTB_ID());
-				PD_Service.save(data.getPaymentDetail());
 			}
 		}
+		data.getPaymentDetail().get(0).setTB_ID(data);
+		PD_Service.save(data.getPaymentDetail().get(0));
 
 	}
-
 	public List<TrailBalance> getAllIncomes(int num) {
 		List<TrailBalance> result = new ArrayList<>();
 		populateIncomeList(num);
