@@ -6,11 +6,13 @@
 
 <script>
 	function updateTotal(value) {
-		var total = 0;
+		var total = 0.0;
+		var bal = $("#balance").val();
 		$('.subTotal').each(function() {
 			val = parseFloat($(this).val()) | 0;
 			total = val ? (parseFloat(total + val)) : total;
 		});
+		
 		$("#total").text(total);
 		$("#total").val(total);
 	};
@@ -30,6 +32,17 @@
 			}
 		});
 	};
+	 function checkBalance(theForm){
+		 var tot = parseFloat(theForm.total.value);
+		 var bal = parseFloat(theForm.balance.value);
+		if(tot>bal)
+	    {
+	        alert('The Account Balance is less than Expense!');
+	        return false;
+	    } else{
+	        return true;
+	    }
+	}; 
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
 		$(fieldName).empty();
@@ -74,13 +87,13 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${TrailBalance}"
-							action="/Expense/Save" method="post">
+							action="/Expense/Save" method="post" onsubmit="return checkBalance(this);">
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">To</label>
 									<select class="form-control input-lg"
-										th:field="${TrailBalance.person_ID}">
-										<option value="0">Please Select</option>
+										th:field="${TrailBalance.person_ID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="person : ${personList}"
 											th:value="${person.PersonID}"
 											th:text="${person.Fname +' '+person.Lname}"></option>
@@ -98,11 +111,11 @@
 								</div>
 								<div class="col-sm-2">
 									<label for="balanceVal" class="control-label input-lg">Balance</label>
-									<input id="balance" readonly="readonly" class="label-total" />
+									<input id="balance" readonly="readonly" th:name="balance" class="label-total" />
 								</div>
 								<div class="col-sm-3 pull-right text-center">
 									<label for="inputPassword3" class="control-label input-lg" align="center">Total</label>
-									<input th:id="total" th:field="${TrailBalance.total}"
+									<input th:id="total" th:name="total" th:field="${TrailBalance.total}"
 										readonly="readonly" class="label-total"/>
 								</div>
 							</div>

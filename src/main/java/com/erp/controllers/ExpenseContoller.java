@@ -118,7 +118,13 @@ public class ExpenseContoller {
 
 	@GetMapping("ViewExpenses")
 	public String ViewExpenseHome(Model model) {
-		model.addAttribute("ExpenseList", getAllExpenses(Constants.isExpense));
+		
+		List<TrailBalance> expenses = new ArrayList<>();
+		expenses = getAllExpenses(Constants.isExpense);
+		int gTotal = getExpense(expenses);
+		
+		model.addAttribute("ExpenseList", expenses);
+		model.addAttribute("expenseSum", gTotal);
 		return "ViewExpenses";
 	}
 	// ------------------ Utility functions ------------------------
@@ -190,7 +196,7 @@ public class ExpenseContoller {
 		return resultList;
 	}
 
-	@GetMapping("Expense/CustomBills")
+	@GetMapping("Expense/CustomExpenses")
 	public String CustomBills(Model model) {
 		double incomeSum = 0;
 		double expenseSum = 0;
@@ -212,7 +218,7 @@ public class ExpenseContoller {
 		model.addAttribute("profitLossList", tBalance);
 		model.addAttribute("expenseSum", expenseSum);
 		model.addAttribute("netEquity", (incomeSum + expenseSum));
-		return "CustomBills";
+		return "CustomExpenses";
 	}
 
 	@PostMapping("Expense/DateWiseExpense")
@@ -252,7 +258,19 @@ public class ExpenseContoller {
 		model.addAttribute("selectedValue", value);
 		model.addAttribute("tBExpenseList", tBExpenseList);
 		model.addAttribute("expenseSum", expenseSum);
-		return "CustomBills";
+		return "CustomExpenses";
+	}
+	
+	public int getExpense(List<TrailBalance> incomeList) {
+		int expenseSum = 0;
+		for (TrailBalance TB : incomeList) {
+
+			if (TB.getType() == Constants.isExpense) {
+				expenseSum += TB.getTotal();
+			}
+
+		}
+		return expenseSum;
 	}
 
 	public AccountGroup getAccountGroup(int ID) {

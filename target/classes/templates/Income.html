@@ -77,8 +77,8 @@
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">From</label>
 									<select class="form-control input-lg"
-										th:field="${TrailBalance.person_ID}">
-										<option value="0">Please Select</option>
+										th:field="${TrailBalance.person_ID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="person : ${personList}"
 											th:value="${person.PersonID}"
 											th:text="${person.Fname +' '+person.Lname}"></option>

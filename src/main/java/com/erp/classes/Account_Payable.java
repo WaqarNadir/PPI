@@ -20,7 +20,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
-@Entity(name = "AccountPayable")
+@Entity(name = "Account_Payable")
+@NamedQuery(name = "Account_Payable.ByDateRange", query = "select a from Account_Payable a "
+		+ "WHERE a.date BETWEEN :startDate and :endDate")
 
 public class Account_Payable implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -63,10 +65,10 @@ public class Account_Payable implements Serializable {
 	private List<AP_Details> AP_DetailList;
 
 	// --------------- Getter & Setters ---------------
-
-	public Account_Payable(String status, double total) {
-		this.total = total;
-		this.status = status;
+	
+	public Account_Payable(String Status, double total){
+		this.status= Status;
+		this.total= total;
 	}
 
 	public String getstatus() {
@@ -128,14 +130,6 @@ public class Account_Payable implements Serializable {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-
-	// public AccountGroup getbankSourceID() {
-	// return bankSourceID;
-	// }
-	//
-	// public void setbankSourceID(AccountGroup bankSourceID) {
-	// this.bankSourceID = bankSourceID;
-	// }
 
 	public Person getPerson_ID() {
 		return person_ID;

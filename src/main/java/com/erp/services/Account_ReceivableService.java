@@ -43,5 +43,9 @@ public class Account_ReceivableService {
 	public Account_Receivable SumTotal(Date startDate, Date endDate, String status) {
 		return repo.sumTotal(startDate, endDate, status);
 	}
+	
+	public List<Account_Receivable> ByDateRange(Date startDate, Date endDate) {
+		return repo.ByDateRange(startDate, endDate);
+	}
 
 }

@@ -25,6 +25,7 @@ import com.erp.classes.Constants;
 import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
+import com.erp.classes.TrailBalance;
 import com.erp.services.APRecieptService;
 import com.erp.services.AP_DetailsService;
 import com.erp.services.AccountGroupService;
@@ -70,7 +71,7 @@ public class BillContoller {
 	@PostMapping("/Bill/Save")
 	public String saveBillNote(@ModelAttribute Account_Payable data, Errors errors, HttpServletRequest request,
 			Model model) {
-		savePayable(data, Constants.PARTIAL);
+		savePayable(data, Constants.OPEN);
 		UpdateParent(data.getTotal());
 		return "redirect:/BillReceipt/" + data.getAP_ID();
 	}
@@ -89,6 +90,12 @@ public class BillContoller {
 	@PostMapping("/BillReciept/Save")
 	public String saveBillReieptNote(@ModelAttribute APReciept data, Errors errors, HttpServletRequest request,
 			Model model) {
+		if(data.getAmountPaid() == data.getAP_ID().getTotal()) {
+			data.getAP_ID().setstatus(Constants.CLOSED);
+		}
+		else {
+			data.getAP_ID().setstatus(Constants.PARTIAL);
+		}
 		saveBill(data);
 		model.addAttribute("AccountPayable", new Account_Payable());
 		return "redirect:/Bill/Add";
@@ -98,6 +105,69 @@ public class BillContoller {
 	public String ViewExpenseHome(Model model) {
 		model.addAttribute("BillsList", getAllBills());
 		return "ViewBills";
+	}
+	
+	
+	@GetMapping("Bill/CustomBills")
+	public String CustomBills(Model model) {
+		double incomeSum = 0;
+		double expenseSum = 0;
+		Date currentDate = Functions.getCurrentDate();
+		Date lastMonth = Functions.thisMonth(currentDate);
+
+		System.out.println(
+				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
+		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
+
+		List<Account_Payable> bBalance = AP_Service.ByDateRange(lastMonth, currentDate);
+		for (Account_Payable BB : bBalance) {
+
+			
+				expenseSum += BB.getTotal();
+			
+
+		}
+		model.addAttribute("profitLossList", bBalance);
+		model.addAttribute("expenseSum", expenseSum);
+		model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "CustomBills";
+	}
+	
+	@PostMapping("Bill/DateWiseBill")
+	public String dateWiseBill(HttpServletRequest request, Model model) {
+		double billSum = 0;
+		Date startDate = null, endDate = null;
+		List<Account_Payable> aPayableList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
+		}
+
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		aPayableList = AP_Service.ByDateRange(startDate, endDate);
+		for (Account_Payable AP : aPayableList) {
+				billSum += AP.getTotal();
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("aPayableList", aPayableList);
+		model.addAttribute("billSum", billSum);
+		return "CustomBills";
 	}
 
 
@@ -122,6 +192,7 @@ public class BillContoller {
 		}
 		return result;
 	}
+	
 	
 	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
 		boolean result = false;

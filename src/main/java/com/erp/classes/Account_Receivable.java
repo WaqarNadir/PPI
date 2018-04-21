@@ -15,11 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
-@Entity(name = "AccountReceivable")
+@Entity(name = "Account_Receivable")
+@NamedQuery(name = "Account_Receivable.ByDateRange", query = "select r from Account_Receivable r "
+		+ "WHERE r.date BETWEEN :startDate and :endDate")
 public class Account_Receivable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
