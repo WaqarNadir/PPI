@@ -29,7 +29,7 @@
 					</p>
 				</div>
 				<div>
-					<form action="/Expense/DateWiseExpense" method="post"
+					<form th:action="@{/Expense/DateWiseExpense}" method="post"
 						id="BillForm">
 						<div class="col-sm-3 pull-right">
 							<select class="form-control" onchange="getReport(this.value)"

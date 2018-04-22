@@ -3,7 +3,7 @@
 
 <div th:replace="template:: head"></div>
 
-<script>
+<script th:inline="javascript">
 	function setsubTotal(i, field, disableField) {
 		console.log("On blur called;" + field);
 
@@ -79,11 +79,12 @@
 	}
 
 	function getSubType(index, value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#subGroup" + index;
 		$(fieldName).empty();
 
 		$.ajax({
-			url : "/getSubType",
+			url : contextPath + "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -122,7 +123,7 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${journal}"
-							action="/Journal/Save" method="post">
+							th:action="@{/Journal/Save}" method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Date</label>
@@ -172,7 +173,8 @@
 											th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 												<option value="999">Please Select</option>
 
-												<th:block th:each="parent : ${AccountGroup}">
+												<th:block th:each="parent : ${AccountGroup}"
+													th:unless="${parent.accName} == 'EXPENSES'">
 
 													<option th:value="${parent.Acc_ID}" disabled="disabled"
 														th:text="${parent.accName}" class="custom-bold">Cash In hand</option>

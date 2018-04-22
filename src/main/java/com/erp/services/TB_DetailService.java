@@ -38,4 +38,5 @@ public class TB_DetailService {
 
 	}
 
+
 }

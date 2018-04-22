@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
 		var total = 0;
 		$('.subTotal').each(function() {
@@ -15,9 +15,10 @@
 		$("#total").val(total);
 	};
 	function getBalance(value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#balance";
 		$.ajax({
-			url : "/getBalance",
+			url : contextPath + "/getBalance",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -33,7 +34,7 @@
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
 		$.ajax({
-			url : "/getSubType",
+			url :contextPath + "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -72,7 +73,7 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${TrailBalance}"
-							action="/Income/Save" method="post">
+							th:action="@{/Income/Save}" method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">From</label>

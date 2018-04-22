@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
+import org.hibernate.annotations.ColumnDefault;
+
 @Entity
 
 @NamedNativeQuery(name = "AccountGroup.BalanceSheet", query = "select a.Acc_ID as Acc_ID, a.accName as accName ,a.isParent as isParent,a.refNo AS refNo,SUM(jd.subTotal) as amount,'2' AS type\r\n"
@@ -60,7 +62,7 @@ public class AccountGroup implements Serializable {
 
 	@OneToMany(mappedBy = "subGroup_ID", fetch = FetchType.LAZY)
 	private List<TB_Details> TBDList;
-
+	@ColumnDefault(value = "0.0")
 	private Double amount;
 	private String accName;
 	private String refNo;
@@ -138,6 +140,7 @@ public class AccountGroup implements Serializable {
 	public AccountGroup() {
 		childList = new ArrayList<>();
 		TBDList = new ArrayList<>();
+		this.amount = 0.0;
 	}
 
 	public AccountGroup(AccountGroup AG) {
@@ -153,6 +156,17 @@ public class AccountGroup implements Serializable {
 		this.accName = AG.accName;
 		this.refNo = AG.refNo;
 		this.remarks = AG.remarks;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if (obj == null)
+			return false;
+		AccountGroup param = (AccountGroup) obj;
+		if (this.getAcc_ID() == param.getAcc_ID())
+			return true;
+		return false;
 	}
 
 }

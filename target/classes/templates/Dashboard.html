@@ -2,7 +2,198 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
-<body class="hold-transition skin-blue sidebar-mini">
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	function chart() {
+		profitLoss();
+		var labelList = [];
+		var dataList = [];
+		var colorList = [];
+		var colors = 0;
+		// ================ Expense map ======================= 
+		var expenseMap = /*[[${expenseList}]]*/'0';
+		var total = /*[[${expenseSum}]]*/'0';
+		for ( var key in expenseMap) {
+			var label = key;
+			var value = expenseMap[key];
+			dataList.push(value);
+			labelList.push(label);
+			colors = colors + 1;
+		}
+		colorList = getRandomColor(colors);
+		var id = "expense";
+		var title = 'Monthly Expense Detail';
+		pieChart(labelList, dataList, colorList, id, title);
+		$("#expenseTotal").text(total);
+		//=========================================
+		// ================ Income map ======================= 
+		labelList = [];
+		dataList = [];
+		colorList = [];
+		var incomeMap = /*[[${incomeList}]]*/'0';
+		var total = /*[[${incomeSum}]]*/'0';
+		for ( var key in incomeMap) {
+			var label = key;
+			var value = incomeMap[key];
+			dataList.push(value);
+			labelList.push(label);
+			colors = colors + 1;
+		}
+		colorList = getRandomColor(colors);
+		var id = "income";
+		title = "Monthly Income Detail"
+		pieChart(labelList, dataList, colorList, id, title);
+		$("#incomeTotal").text(total);
+		//=========================================
+		// ================ APAging ======================= 
+		labelList = [ "1-30 Days", "31-60 Days", "61-90 Days", "90+ Days" ];
+		var thirty =/*[[${ApThirtyTotal}]]*/;
+		var sixty = /*[[${ApSixtyTotal}]]*/;
+		var ninty  = /*[[${ApNintyTotal}]]*/;
+		var nintyPlus = /*[[${ApNintyPlusTotal}]]*/;
+		var total = /*[[${ApTotal}]]*/;
+		
+		dataList = [thirty , sixty, ninty,nintyPlus ];
+		colorList = [];
+		colorList = getRandomColor(4);
+		var id = "APAging";
+		title = "AP Aging Report"
+		pieChart(labelList, dataList, colorList, id, title);
+		$("#APTotal").text(total);
+		//=========================================
+		//=====================ARAging=========================	
+		labelList = [ "1-30 Days", "31-60 Days", "61-90 Days", "90+ Days" ];
+		var thirty =/*[[${thirtyTotal}]]*/;
+		var sixty = /*[[${sixtyTotal}]]*/;
+		var ninty  = /*[[${nintyTotal}]]*/;
+		var nintyPlus = /*[[${nintyPlusTotal}]]*/;
+		var total = /*[[${total}]]*/;
+		
+		dataList = [thirty , sixty, ninty,nintyPlus ];
+		colorList = [];
+		colorList = getRandomColor(4);
+		var id = "ARAging";
+		title = "AR Aging Report"
+		pieChart(labelList, dataList, colorList, id, title);
+		$("#ARTotal").text(total);
+		//=========================================
+		//=====================current Asset=========================	
+		labelList = /*[[${groupNames}]]*/;
+		dataList =  /*[[${groupValue}]]*/;
+		var total =  /*[[${groupTotal}]]*/;
+		colorList = [];
+		colorList = getRandomColor(10);
+		var id = "currentAsset";
+		title = "Current Asset Summary"
+		pieChart(labelList, dataList, colorList, id, title);
+		$("#assetTotal").text(total);
+		//=========================================
+
+	}
+
+	function pieChart(labelList, dataList, colorList, id, title) {
+		new Chart(document.getElementById(id), {
+			type : 'pie',
+			data : {
+				labels : labelList,
+				datasets : [ {
+					label : "RS.",
+					backgroundColor : colorList,
+					data : dataList
+				} ]
+			},
+			options : {
+				title : {
+					display : true,
+					text : title
+				}
+			}
+		});
+	}
+	function profitLoss() {
+		var income = /*[[${incomeSum}]]*/'0';
+		var expense = /*[[${expenseSum}]]*/'0';
+		var colorList = getRandomColor(2);
+
+		var msg = " Current Month ProfitLoss Report";
+		new Chart(document.getElementById("bar-chart"), {
+			type : 'bar',
+			data : {
+				labels : [ "INCOME", "EXPENSE" ],
+				datasets : [ {
+					label : "RS.",
+					backgroundColor : colorList,
+					data : [ income, expense ]
+				} ]
+			},
+			options : {
+				legend : {
+					display : false
+				},
+				title : {
+					display : true,
+					fontSize : 13,
+					text : msg
+				},
+				scales : {
+					yAxes : [ {
+						ticks : {
+							beginAtZero : true
+						}
+					} ]
+				}
+			}
+		});
+	};
+	function lineChart(dataList, labelList) {
+		val = {
+			type : 'line',
+			data : {
+				labels : labelList,
+				datasets : []
+			},
+			options : {
+				title : {
+					display : true,
+					text : 'Machine Wise Production'
+				}
+			}
+		};
+		var lineChart = new Chart(document.getElementById("line-chart"), val);
+		var newval = {
+			data : [ 186, 114, 106, 106, 107, 111, 133, 221, 783, 2478 ],
+			label : "abc",
+			borderColor : "#3e95cd",
+			fill : false
+		};
+		for (var i = 0; i < dataList.length; i++) {
+			val.data.datasets.push(dataList[i]);
+		}
+
+		lineChart.update();
+	}
+
+	function getRandomColor(value) {
+		colorList = [];
+		var letters = '0123456789ABCDEF';
+
+		for (var colors = 0; colors < value; colors++) {
+			  var dynamicColors = function() {
+	            var r = Math.floor(Math.random() * 255);
+	            var g = Math.floor(Math.random() * 255);
+	            var b = Math.floor(Math.random() * 255);
+	            return "rgb(" + r + "," + g + "," + b + ")";
+	         };
+	         color=dynamicColors();
+			colorList.push(color);
+		}
+		return colorList;
+	}
+	/*]]>*/
+</script>
+
+<body class="hold-transition skin-blue sidebar-mini" onload="chart()">
 
 	<div th:replace="template:: wrapper"></div>
 	<div class="content-wrapper">
@@ -14,20 +205,70 @@
 				<!-- left column -->
 				<div class="col-md-12">
 					<!-- general form elements -->
-					<div class="box box-info">
-						<div class="box-body">
-							<div class="col-sm-6">Income</div>
-							<div class="col-sm-6">Expense</div>
-						</div>
+
+					<div class="box-body">
+
+						<section class="col-sm-6">
+							<div class="box box-info">
+
+								<canvas id="bar-chart" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p></p>
+								</div>
+							</div>
+							<div class="box box-danger">
+
+								<canvas id="income" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p>
+										Total Income: <strong id="incomeTotal"></strong>
+									</p>
+								</div>
+							</div>
+							<div class="box box-success">
+								<canvas id="APAging" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p>
+										Total Payable: <strong id="APTotal"></strong>
+									</p>
+								</div>
+
+							</div>
+						</section>
+						<section class="col-sm-6">
+
+							<div class="box box-primary">
+
+								<canvas id="currentAsset" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p>
+										Total Current Assets: <strong id="assetTotal"></strong>
+									</p>
+								</div>
+							</div>
+							<div class="box box-primary">
+
+								<canvas id="expense" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p>
+										Total Expense: <strong id="expenseTotal"></strong>
+									</p>
+								</div>
+							</div>
+							<div class="box box-primary">
+
+								<canvas id="ARAging" width="800" height="450"></canvas>
+								<div class="form-control text-center">
+									<p>
+										Total Receivable: <strong id="ARTotal"></strong>
+									</p>
+								</div>
+							</div>
+
+						</section>
+
 					</div>
-					
-					<div class="box box-info">
-						<div class="box-body">
-							<div class="col-sm-6">Bills</div>
-							<div class="col-sm-6">Credit Notes</div>
-						</div>
-					</div>
-					
+
 				</div>
 			</div>
 		</section>

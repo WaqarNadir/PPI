@@ -26,3 +26,7 @@
 	font-size: 25px;
 	text-align: center;
 }
+
+.table-col-width-fixed {
+	table-layout: fixed;
+}

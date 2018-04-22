@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 
 @Entity(name = "AccountReceivable")
+
+@NamedQuery(name = "Account_Receivable.DateBetween", query = "select t from AccountReceivable t "
+		+ "WHERE t.date BETWEEN :startDate and :endDate ")
 public class Account_Receivable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,6 +49,25 @@ public class Account_Receivable implements Serializable {
 
 	@OneToMany(mappedBy = "AR_ID")
 	private List<AR_Details> AR_DetailList;
+
+	@OneToMany(mappedBy = "AR_ID")
+	private List<ARReciept> recieptList;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<ARReciept> getRecieptList() {
+		return recieptList;
+	}
+
+	public void setRecieptList(List<ARReciept> recieptList) {
+		this.recieptList = recieptList;
+	}
 
 	// --------------- Getter & Setters ---------------
 	public Account_Receivable(String status, Double total) {

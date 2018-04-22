@@ -5,6 +5,8 @@ public final class Constants {
 	public static int isIncome = 2;
 	public static int isTransfer = 3;
 	public static int isPartial = 6;
+	public static int IS_CREDIT = 1;
+
 	public static String ASSETS = "ASSETS";
 	public static String LIABILITY = "LIABILITY";
 	public static String CURRENT_LIABILITY = "CURRENT LIABILITIES";
@@ -13,7 +15,7 @@ public final class Constants {
 	public static String EXPENSE = "EXPENSES";
 	public static String ACCOUNT_PAYABLE = "ACCOUNT PAYABLE";
 	public static String ACCOUNT_RECIEVABLE = "ACCOUNT RECIEVABLE";
-	public static String CURRENT_ASSETS = "Current Assets";
+	public static String CURRENT_ASSETS = "CURRENT ASSETS";
 	public static String FIXED_ASSETS = "Fixed Assets";
 
 	public static String PARTIAL = "Partial";
@@ -27,5 +29,7 @@ public final class Constants {
 	public static int CURRENT_LIABILITIES_ID = 38;
 	public static int LONG_TERM_LIABILITIES_ID = 44;
 	public static int EQUITY_AND_FUNDS_ID = 48;
+	public static int INCOME_ID = 50;
+	public static int EXPENSE_ID = 142;
 
 }

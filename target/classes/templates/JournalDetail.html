@@ -21,7 +21,7 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${journal}"
-							action="/Journal/Save" method="post">
+							th:action="@{/Journal/Save}" method="post">
 							<div class="box-body">
 
 								<div class="col-sm-3">
@@ -75,10 +75,10 @@
 											th:value="${item.description}" /></td>
 
 										<td><input class="form-control input-lg "
-											th:value="${item.isCredit} == '1' ? ${item.subTotal}" /></td>
+											th:value="${item.isCredit} == '0' ? ${item.subTotal}" /></td>
 
 										<td><input class="form-control input-lg "
-											th:value="${item.isCredit} == '0' ? ${item.subTotal}" /></td>
+											th:value="${item.isCredit} == '1' ? ${item.subTotal}" /></td>
 
 									</tr>
 

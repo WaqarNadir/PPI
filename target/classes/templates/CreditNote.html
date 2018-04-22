@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
 		var total = 0;
 		$('.subTotal').each(function() {
@@ -15,10 +15,11 @@
 		$("#total").val(total);
 	};
 	function getSubType(index, value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#subType" + index;
 		$(fieldName).empty();
 		$.ajax({
-			url : "/getSubType",
+			url : contextPath + "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -54,7 +55,7 @@
 					<!-- general form elements -->
 					<div class="box box-info">
 						<!-- form start -->
-						<form class="form-horizontal" action="/CreditNote/Save"
+						<form class="form-horizontal" th:action="@{/CreditNote/Save}"
 							method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
@@ -78,7 +79,7 @@
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="date" class="control-label input-lg" align="center">
-										 Date</label> <input type="date" class="form-control input-lg"
+										Date</label> <input type="date" class="form-control input-lg"
 										id="myDate" th:field="${AccountRecievable.date}" />
 								</div>
 								<div class="col-sm-3">

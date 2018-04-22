@@ -29,7 +29,7 @@
 					</p>
 				</div>
 				<div>
-					<form action="/Income/DateWiseIncome" method="post"
+					<form th:action="@{/Income/DateWiseIncome}" method="post"
 						id="IncomeForm">
 						<div class="col-sm-3 pull-right">
 							<select class="form-control" onchange="getReport(this.value)"

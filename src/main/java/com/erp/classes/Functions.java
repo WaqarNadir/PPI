@@ -92,4 +92,9 @@ public class Functions {
 		}
 		return null;
 	}
+
+	public static String getTwoDigitInt(int number) {
+		return String.format("%02d", number);
+	}
+
 }

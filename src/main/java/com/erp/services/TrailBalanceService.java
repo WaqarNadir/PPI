@@ -42,8 +42,12 @@ public class TrailBalanceService {
 	public List<TrailBalance> findByType(int type) {
 		return repo.findByType(type);
 	}
-	
+
 	public List<TrailBalance> ByDateRange(Date startDate, Date endDate, int type) {
 		return repo.ByDateRange(startDate, endDate, type);
+	}
+
+	public List<TrailBalance> DateBetween(Date startDate, Date endDate) {
+		return repo.DateBetween(startDate, endDate);
 	}
 }

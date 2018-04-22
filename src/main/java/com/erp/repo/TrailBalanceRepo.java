@@ -12,5 +12,9 @@ import com.erp.classes.TrailBalance;
 @Repository
 public interface TrailBalanceRepo extends JpaRepository<TrailBalance, Integer> {
 	List<TrailBalance> findByType(int type);
-	List<TrailBalance> ByDateRange(@Param("startDate") Date startDate,@Param("endDate") Date endDate,@Param("type") int type);
+
+	List<TrailBalance> ByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("type") int type);
+
+	List<TrailBalance> DateBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

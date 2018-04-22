@@ -28,8 +28,9 @@
 						<strong th:text="${label}"></strong>
 					</p>
 				</div>
+
 				<div>
-					<form action="/Reports/DateWiseProfitLoss" method="post"
+					<form th:action="@{/Reports/DateWiseProfitLoss}" method="post"
 						id="ProfitLossForm">
 						<div class="col-sm-3 pull-right">
 							<select class="form-control" onchange="getReport(this.value)"
@@ -56,45 +57,65 @@
 
 						</div>
 					</form>
-					<table class="table stripped">
+					<table class="table stripped table-col-width-fixed">
 						<tr>
-							<td>
+							<td class="text-center" colspan="3">
 								<h3>Income</h3>
 							</td>
 						</tr>
 
-						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 2}">
-							<td th:text="${PF.name}"></td>
-							<td th:text="${PF.subTotal}"></td>
+						<tr th:each="income : ${incomeList}">
+
+							<td th:text="${income.key}"></td>
+							<td></td>
+							<td th:text="${income.value}"></td>
+							<td></td>
 						</tr>
 						<tr>
 							<td></td>
 						</tr>
 						<tr>
+							<td></td>
 							<td><strong>Total Income</strong></td>
-							<td th:text="${incomeSum}"></td>
+
+							<td class="custom-td" th:text="${incomeSum}"></td>
+							<td></td>
 						</tr>
 						<tr>
-							<td>
+							<td class="text-center" colspan="3">
 								<h3>Expense</h3>
 							</td>
 						</tr>
 
-						<tr th:each="PF : ${profitLossList}" th:if="${PF.type == 1}">
-							<td th:text="${PF.name}"></td>
-							<td th:text="${PF.subTotal}"></td>
+						<tr th:each="expense : ${expenseList}">
+							<td th:text="${expense.key}"></td>
+							<td></td>
+							<td th:text="${expense.value}"></td>
+							<td></td>
 						</tr>
 						<tr>
 							<td></td>
 						</tr>
 						<tr>
+							<td></td>
 							<td><strong>Total Expense</strong></td>
-							<td th:text="${expenseSum}"></td>
+
+							<td class="custom-td" th:text="${expenseSum}"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<td><strong>Total Profit</strong></td>
+							<td></td>
+							<td class="custom-td" th:text="${incomeSum} - ${expenseSum}"></td>
+							<td></td>
 						</tr>
 
 						<tr>
-							<td><h3>Net Equity</h3></td>
-							<td><h3 th:text="${netEquity}"></h3></td>
+							<td colspan="2"><h3>Net Equity</h3></td>
+							<td class="custom-td"><h3 th:text="${netEquity}"></h3></td>
 						</tr>
 					</table>
 				</div>

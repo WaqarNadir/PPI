@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 <body class="hold-transition skin-blue sidebar-mini">
 
-	<script>
+	<script th:inline="javascript">
 		function enable() {
 			$("#childRef").prop("disabled", (!$("#childRef").attr("disabled")));
 		}
@@ -14,6 +14,7 @@
 		}
 
 		function getSubType(value) {
+			contextPath = /*[[@{/}]]*/'';
 			if (value == 999)
 				return;
 			fieldName = "#childRef";
@@ -22,7 +23,7 @@
 			getRefNo(value);
 
 			$.ajax({
-				url : "/getSubType",
+				url : contextPath + "/getSubType",
 				contentType : "application/json; charset=utf-8",
 				data : value,
 				type : "POST",
@@ -51,7 +52,7 @@
 				return;
 			updateParent(value);
 			$.ajax({
-				url : "/getRefNo",
+				url : contextPath + "/getRefNo",
 				contentType : "application/json; charset=utf-8",
 				data : value,
 				type : "POST",
@@ -74,7 +75,7 @@
 					<h2 class="box-title">Add Chart of Account</h2>
 				</div>
 				<form class="form-horizontal" th:object="${group}"
-					th:action="SaveGroup" method="Post">
+					th:action="@{/SaveGroup}" method="Post">
 					<div class="box-body">
 
 						<input type="text" hidden="" th:field="*{isParent}" id="parent" />

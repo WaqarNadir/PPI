@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
 		var total = 0;
 		$('.subTotal').each(function() {
@@ -15,9 +15,10 @@
 		$("#total").val(total);
 	};
 	function getBalance(value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#balance";
 		$.ajax({
-			url : "/getBalance",
+			url : contextPath + "/getBalance",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -55,7 +56,7 @@
 					<!-- general form elements -->
 					<div class="box box-info">
 						<!-- form start -->
-						<form class="form-horizontal" action="/CreditReceipt/Save"
+						<form class="form-horizontal" th:action="@{/CreditReceipt/Save}"
 							method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
@@ -119,10 +120,10 @@
 									<tbody>
 
 
-									<tr th:each="Detail,row : ${arReciept.AR_ID.AR_DetailList}">
+										<tr th:each="Detail,row : ${arReciept.AR_ID.AR_DetailList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
-											<td><select class="form-control input-lg" readonly="readonly"
-												>
+											<td><select class="form-control input-lg"
+												readonly="readonly">
 													<option th:value="${arReciept.AR_ID.person_ID}"
 														th:if="${arReciept.AR_ID.person_ID} !=null"
 														th:text="${arReciept.AR_ID.person_ID.Fname +' '+arReciept.AR_ID.person_ID.Lname}"></option>
@@ -148,9 +149,9 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td><label class="text-center">Total:</label> <input type="text"
-												class="label-total" id="total" readonly="readonly"
-												th:value="${arReciept.AR_ID.total}" /></td>
+											<td><label class="text-center">Total:</label> <input
+												type="text" class="label-total" id="total"
+												readonly="readonly" th:value="${arReciept.AR_ID.total}" /></td>
 										</tr>
 										<tr>
 											<td></td>

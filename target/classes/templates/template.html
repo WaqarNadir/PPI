@@ -10,9 +10,11 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 	name="viewport" />
 <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
-<!-- <link rel="stylesheet" th:href="@{/bootstrap/css/font-awesome.min.css}" />
-<link rel="stylesheet" th:href="@{/bootstrap/css/ionicons.min.css}" />
+<link rel="stylesheet"
+	th:href="@{/font-awesome/css/font-awesome.min.css}" />
+<!--<link rel="stylesheet" th:href="@{/bootstrap/css/ionicons.min.css}" />
  -->
+<script th:src="@{/bootstrap/js/chart.min.js}"></script>
 <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}" />
 <link rel="stylesheet" th:href="@{/dist/css/skins/skin-blue.min.css}" />
 <link rel="stylesheet" th:href="@{/dist/css/myCss.css}" />
@@ -27,7 +29,7 @@
 	<div class="wrapper">
 		<div th:fragment="wrapper">
 			<header class="main-header" th:fragment="mainheader">
-				<a href="index2.html" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+				<a href="/erp" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
 					<span class="logo-mini"><b>MT</b>S</span> <!-- logo for regular state and mobile devices -->
 					<span class="logo-lg"><b>Demo Site</b></span>
 				</a>
@@ -45,14 +47,14 @@
 							<li class="dropdown user user-menu">
 								<!-- Menu Toggle Button --> <a href="#" class="dropdown-toggle"
 								data-toggle="dropdown"> <!-- The user image in the navbar-->
-									<img src="dist/img/user2-160x160.jpg" class="user-image"
+									<img src="/dist/img/user2-160x160.jpg" class="user-image"
 									alt="User Image" /> <!-- hidden-xs hides the username on small devices so only the image appears. -->
 									<span class="hidden-xs">Waqar Nadir</span>
 							</a>
 								<ul class="dropdown-menu">
 									<!-- The user image in the menu -->
 									<li class="user-header"><img
-										src="dist/img/user2-160x160.jpg" class="img-circle"
+										src="/dist/img/user2-160x160.jpg" class="img-circle"
 										alt="User Image" />
 										<p>Waqar Nadir</p></li>
 
@@ -83,7 +85,7 @@
 					<!-- Sidebar user panel (optional) -->
 					<div class="user-panel">
 						<div class="pull-left image">
-							<img src="dist/img/user2-160x160.jpg" class="img-circle"
+							<img src="/dist/img/user2-160x160.jpg" class="img-circle"
 								alt="User Image" />
 						</div>
 						<div class="pull-left info">
@@ -115,8 +117,8 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Journal/Add">Add Journal</a></li>
-								<li><a href="/ViewAllJournal">View Journals</a></li>
+								<li><a th:href="@{/Journal/Add}">Add Journal</a></li>
+								<li><a th:href="@{/ViewAllJournal}">View Journals</a></li>
 							</ul></li>
 
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
@@ -124,9 +126,10 @@
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Income/Add">Add Income</a></li>
-								<li><a href="/ViewIncomes">View All</a></li>
-								<li><a href="/Income/CustomIncomes">Date Wise Income</a></li>
+								<li><a th:href="@{/Income/Add}">Add Income</a></li>
+								<li><a th:href="@{/ViewIncomes}">View All</a></li>
+								<li><a th:href="@{/Income/CustomIncomes}">Date Wise
+										Income</a></li>
 							</ul></li>
 
 
@@ -135,33 +138,34 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Expense/Add">Add Expense</a></li>
-								<li><a href="/ViewExpenses">View All</a></li>
-								<li><a href="/Expense/CustomBills">Date Wise Expenses</a></li>
+								<li><a th:href="@{/Expense/Add}">Add Expense</a></li>
+								<li><a th:href="@{/ViewExpenses}">View All</a></li>
+								<li><a th:href="@{/Expense/CustomBills}">Date Wise
+										Expenses</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Bills</span> <span class="pull-right-container"> <i
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Bill/Add">Add Bill</a></li>
-								<li><a href="/ViewBills">View All</a></li>
+								<li><a th:href="@{/Bill/Add}">Add Bill</a></li>
+								<li><a th:href="@{/ViewBills}">View All</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Credit Note</span> <span class="pull-right-container">
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/CreditNote/Add">Add Credit Note</a></li>
-								<li><a href="/ViewCredits">View All</a></li>
+								<li><a th:href="@{/CreditNote/Add}">Add Credit Note</a></li>
+								<li><a th:href="@{/ViewCredits}">View All</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Transfers</span> <span class="pull-right-container">
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Transfer/Add">Add Transfer</a></li>
-								<li><a href="/ViewTransfers">View All </a></li>
+								<li><a th:href="@{/Transfer/Add}">Add Transfer</a></li>
+								<li><a th:href="@{/ViewTransfers}">View All </a></li>
 							</ul></li>
 
 
@@ -170,7 +174,7 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/AddGroup">Add CoA</a></li>
+								<li><a th:href="@{/AddGroup}">Add CoA</a></li>
 								<li><a href="">View All</a></li>
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
@@ -178,18 +182,24 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/Reports/BalanceSheet">Balance Sheet</a></li>
-								<li><a href="/Reports/ChartsOfAccount">Chart of Account</a></li>
-								<li><a href="/Reports/ProfitLoss">Profit and Loss
+								<li><a th:href="@{/Reports/BalanceSheet}">Balance Sheet</a></li>
+								<li><a th:href="@{/Reports/ChartsOfAccount}">Chart of
+										Account</a></li>
+								<li><a th:href="@{/Reports/ProfitLoss}">Profit and Loss
 										Statement</a></li>
+								<li><a th:href="@{/Reports/APSummary}"> AP Aging
+										Summary</a></li>
+								<li><a th:href="@{/Reports/ARSummary}"> AR Aging
+										Summary</a></li>
 							</ul></li>
+
 
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Person</span> <span class="pull-right-container"> <i
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a href="/NewPerson">Add Customer</a></li>
+								<li><a th:href="@{/NewPerson}">Add Customer</a></li>
 								<li><a href="">View All </a></li>
 							</ul></li>
 
@@ -239,10 +249,9 @@
 		<!-- Main Footer -->
 		<footer class="main-footer" th:fragment="footer">
 			<!-- To the right -->
-			<div class="pull-right hidden-xs">Anything you want</div>
+			<div class="pull-right hidden-xs">Waqar Nadir 0300 0331007</div>
 			<!-- Default to the left -->
-			<strong>Copyright &copy; 2017 <a href="#">Company</a>.
-			</strong> All rights reserved.
+			<strong>Copyright &copy; 2017 </strong> All rights reserved.
 		</footer>
 	</div>
 	<!-- ./wrapper -->

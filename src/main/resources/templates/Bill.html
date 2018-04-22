@@ -4,8 +4,9 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
+
 		var total = 0;
 		$('.subTotal').each(function() {
 			val = parseFloat($(this).val()) | 0;
@@ -17,10 +18,11 @@
 	};
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
+		var contextPath = /*[[@{/}]]*/'';
 		$(fieldName).empty();
 
 		$.ajax({
-			url : "/getSubType",
+			url : contextPath + "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -56,7 +58,8 @@
 					<!-- general form elements -->
 					<div class="box box-info">
 						<!-- form start -->
-						<form class="form-horizontal" action="/Bill/Save" method="post">
+						<form class="form-horizontal" th:action="@{/Bill/Save}"
+							method="post">
 
 
 							<div class="box-body">

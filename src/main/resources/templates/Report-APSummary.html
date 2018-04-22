@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+	<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2 class="box-title">Account Payable Aging Summary</h2>
+				</div>
+				<div>
+					<table class="table stripped">
+						<tr>
+							<th>Diary No</th>
+							<th>Person</th>
+							<th>Due Date</th>
+							<th>1 - 30 Days</th>
+							<th>31 - 60 Days</th>
+							<th>61 - 90 Days</th>
+							<th>90+ Days</th>
+							<th>Total</th>
+							<th></th>
+						</tr>
+						<tr th:each="item: ${thirtyList}">
+							<td th:text="${item.diary_No}"></td>
+							<td
+								th:text="${item.person_ID.Fname}+ ' '+${item.person_ID.Lname}"></td>
+							<td th:text="${item.dueDate}"></td>
+							<td th:text="${item.total}"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><a th:href="'/BillReceipt/' + ${item.AP_ID}"><button
+										class="btn btn-primary">View Details</button></a></td>
+						</tr>
+						<tr th:each="item: ${sixtyList}">
+							<td th:text="${item.diary_No}"></td>
+							<td
+								th:text="${item.person_ID.Fname}+ ' '+${item.person_ID.Lname}"></td>
+							<td th:text="${item.dueDate}"></td>
+							<td></td>
+							<td th:text="${item.total}"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><a th:href="'/BillReceipt/' + ${item.AP_ID}"><button
+										class="btn btn-primary">View Details</button></a></td>
+						</tr>
+						<tr th:each="item: ${nintyList}">
+							<td th:text="${item.diary_No}"></td>
+							<td
+								th:text="${item.person_ID.Fname}+ ' '+${item.person_ID.Lname}"></td>
+							<td th:text="${item.dueDate}"></td>
+							<td></td>
+							<td></td>
+							<td th:text="${item.total}"></td>
+							<td></td>
+							<td></td>
+							<td><a th:href="'/BillReceipt/' + ${item.AP_ID}"><button
+										class="btn btn-primary">View Details</button></a></td>
+						</tr>
+						<tr th:each="item: ${nintyPlusList}">
+							<td th:text="${item.diary_No}"></td>
+							<td
+								th:text="${item.person_ID.Fname}+ ' '+${item.person_ID.Lname}"></td>
+							<td th:text="${item.dueDate}"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td th:text="${item.total}"></td>
+							<td></td>
+							<td><a th:href="'/BillReceipt/' + ${item.AP_ID}"><button
+										class="btn btn-primary">View Details</button></a></td>
+						</tr>
+						<tr class="text-bold">
+							<td>Total</td>
+							<td></td>
+							<td></td>
+							<td th:text="${ApThirtyTotal}"></td>
+							<td th:text="${ApSixtyTotal}"></td>
+							<td th:text="${ApNintyTotal}"></td>
+							<td th:text="${ApNintyPlusTotal}"></td>
+							<td th:text="${ApTotal}"></td>
+						</tr>
+
+					</table>
+				</div>
+
+
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

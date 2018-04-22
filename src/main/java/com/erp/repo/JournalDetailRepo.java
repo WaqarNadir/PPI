@@ -7,5 +7,4 @@ import com.erp.classes.JournalDetails;
 
 @Repository
 public interface JournalDetailRepo extends JpaRepository<JournalDetails, Integer> {
-
 }

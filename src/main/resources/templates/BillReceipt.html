@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
 		var total = 0;
 		$('.subTotal').each(function() {
@@ -16,9 +16,10 @@
 	};
 
 	function getBalance(value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#balance";
 		$.ajax({
-			url : "/getBalance",
+			url : contextPath + "/getBalance",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -53,7 +54,7 @@
 					<!-- general form elements -->
 					<div class="box box-info">
 						<!-- form start -->
-						<form class="form-horizontal" action="/BillReciept/Save"
+						<form class="form-horizontal" th:action="@{/BillReciept/Save}"
 							method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
@@ -69,7 +70,8 @@
 								<div class="col-sm-2 text-center">
 									<label for="balanceVal" align="center"
 										class="control-label input-lg">Balance</label> <input
-										id="balance" readonly="readonly" class="label-total" align="center" />
+										id="balance" readonly="readonly" class="label-total"
+										align="center" />
 								</div>
 								<div class="col-sm-2 pull-right">
 									<label for="dueDate" class="control-label input-lg">Due
@@ -114,8 +116,8 @@
 									<tbody>
 										<tr th:each="Detail,row : ${apReciept.AP_ID.AP_DetailList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
-											<td><select class="form-control input-lg" readonly="readonly"
-												>
+											<td><select class="form-control input-lg"
+												readonly="readonly">
 													<option th:value="${apReciept.AP_ID.person_ID}"
 														th:if="${apReciept.AP_ID.person_ID} !=null"
 														th:text="${apReciept.AP_ID.person_ID.Fname +' '+apReciept.AP_ID.person_ID.Lname}"></option>
@@ -141,9 +143,9 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td><label class="text-center">Total:</label> <input type="text"
-												class="label-total" id="total" readonly="readonly"
-												th:value="${apReciept.AP_ID.total}" /></td>
+											<td><label class="text-center">Total:</label> <input
+												type="text" class="label-total" id="total"
+												readonly="readonly" th:value="${apReciept.AP_ID.total}" /></td>
 										</tr>
 
 										<tr>

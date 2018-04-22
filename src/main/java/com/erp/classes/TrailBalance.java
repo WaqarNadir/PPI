@@ -13,15 +13,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
-
 @Entity(name = "TrailBalance")
-@NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "
-		+ "WHERE t.date BETWEEN :startDate and :endDate and t.type =:type")
+@NamedQueries({
+		@NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "
+				+ "WHERE t.date BETWEEN :startDate and :endDate and t.type =:type"),
 
+		@NamedQuery(name = "TrailBalance.DateBetween", query = "select t from TrailBalance t "
+				+ "WHERE t.date BETWEEN :startDate and :endDate ") })
 public class TrailBalance implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +52,7 @@ public class TrailBalance implements Serializable {
 
 	@OneToMany(mappedBy = "tB")
 	private List<TB_Details> TB_DetailList;
-	
+
 	@OneToMany(mappedBy = "TB_ID")
 	private List<PaymentDetails> PaymentDetail;
 

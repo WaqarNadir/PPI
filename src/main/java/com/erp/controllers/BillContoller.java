@@ -58,7 +58,7 @@ public class BillContoller {
 		AP.setDate(cDate);
 		Date dueDate = Functions.addDays(30, cDate);
 		AP.setDueDate(dueDate);
-		
+
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("expense", AG_service.findByName(Constants.EXPENSE));
@@ -66,15 +66,15 @@ public class BillContoller {
 		model.addAttribute("AccountPayable", AP);
 		return "Bill";
 	}
-	
+
 	@PostMapping("/Bill/Save")
 	public String saveBillNote(@ModelAttribute Account_Payable data, Errors errors, HttpServletRequest request,
 			Model model) {
-		savePayable(data, Constants.PARTIAL);
+		savePayable(data, Constants.OPEN);
 		UpdateParent(data.getTotal());
 		return "redirect:/BillReceipt/" + data.getAP_ID();
 	}
-	
+
 	@GetMapping(value = "/BillReceipt/{billID}")
 	public String BillPaymentHome(@PathVariable("billID") int billID, Model model) {
 		Account_Payable AP = AP_Service.find(billID);
@@ -93,17 +93,16 @@ public class BillContoller {
 		model.addAttribute("AccountPayable", new Account_Payable());
 		return "redirect:/Bill/Add";
 	}
-	
+
 	@GetMapping("ViewBills")
 	public String ViewExpenseHome(Model model) {
 		model.addAttribute("BillsList", getAllBills());
 		return "ViewBills";
 	}
 
+	// ------------------------------ Utility functions
+	// ----------------------------------
 
-	
-//------------------------------ Utility functions ----------------------------------
-	
 	private Boolean UpdateParent(double BillAmount) {
 		boolean result = false;
 		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
@@ -122,7 +121,7 @@ public class BillContoller {
 		}
 		return result;
 	}
-	
+
 	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
 		boolean result = false;
 		try {
@@ -140,7 +139,7 @@ public class BillContoller {
 		}
 		return result;
 	}
-	
+
 	private Boolean updatePaidParent(double paidAmount) {
 		boolean result = false;
 		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);

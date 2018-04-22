@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.repo.Account_PayableRepo;
 
@@ -39,8 +38,24 @@ public class Account_PayableService {
 
 	}
 
+	public List<Account_Payable> findByStatus(String status) {
+		return repo.findByStatus(status);
+	}
+
 	public Account_Payable SumTotal(Date startDate, Date endDate, String status) {
 		return repo.SumTotal(startDate, endDate, status);
+	}
+
+	public List<Account_Payable> DateBetween(Date startDate, Date endDate) {
+		return repo.DateBetween(startDate, endDate);
+	}
+
+	public List<Account_Payable> DueDateBetween(Date startDate, Date endDate) {
+		return repo.DueDateBetween(startDate, endDate);
+	}
+
+	public List<Account_Payable> DateAndStatus(Date startDate, Date endDate, String status) {
+		return repo.DateAndStatus(startDate, endDate, status);
 	}
 
 }

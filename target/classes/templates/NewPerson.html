@@ -13,7 +13,7 @@
 					<h2 class="box-title">Enter Party Detail</h2>
 				</div>
 				<form class="form-horizontal" th:object="${person}"
-					th:action="SavePerson" method="Post">
+					th:action="@{SavePerson}" method="Post">
 					<div class="box-body">
 						<Select th:field="*{Type}">
 							<option value="0">Customer</option>

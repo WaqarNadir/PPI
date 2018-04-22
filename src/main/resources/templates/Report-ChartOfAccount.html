@@ -12,7 +12,7 @@
 					<h2>Chart Of Account</h2>
 				</div>
 				<div>
-					<table class="table stripped">
+					<!-- <table class="table stripped">
 						<th:block th:each="asset : ${list}">
 							<tr>
 								<td th:text="${asset.accName}"></td>
@@ -34,11 +34,36 @@
 							<td></td>
 						</tr>
 					</table>
+ -->
+				</div>
+				<div>
+					<table class="table stripped">
+						<th>Account</th>
+						<th>Group</th>
+						<th>Head</th>
+						<th>Amount</th>
+
+						<th:block th:each="asset : ${list}">
+							<th:block th:each="child : ${asset.childList}">
+								<tr th:each="item : ${child.childList}">
+									<td th:text="${item.accName}"></td>
+									<td th:text="${child.accName}"></td>
+									<td th:text="${asset.accName}"></td>
+									<td th:text="${item.amount}"
+										th:if="${asset.accName} != 'INCOME'"
+										th:unless="${asset.accName} == 'EXPENSES'"></td>
+								</tr>
+							</th:block>
+						</th:block>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
 				</div>
 
 
 			</div>
-			<th:block th:each="asset : ${list}">
+			<!-- <th:block th:each="asset : ${list}">
 				<li class="treeview"><span th:text="${asset.accName}"></span>
 					<ul class="treeview-menu">
 						<th:block th:each="item : ${asset.childList}">
@@ -48,54 +73,10 @@
 								</ul></li>
 						</th:block>
 					</ul></li>
-			</th:block>
+			</th:block> -->
 		</div>
 
 	</div>
-	<ul class="sidebar-menu" th:fragement="sidebar-menu">
-		<li class="header">Item</li>
-		<!-- Optionally, you can add icons to the links -->
-		<li class="treeview"><a href="#"><i class="fa fa-link"></i> <span>Expense</span>
-				<span class="pull-right-container"> <i
-					class="fa fa-angle-left pull-right"></i>
-			</span> </a>
-			<ul class="treeview-menu">
-				<li><a href="/Expense/Add">Create New Expense</a></li>
-				<li><a href="">See All Expense</a></li>
-			</ul></li>
-
-		<li class="treeview"><a href="#"><i class="fa fa-link"></i> <span>Income</span>
-				<span class="pull-right-container"> <i
-					class="fa fa-angle-left pull-right"></i>
-			</span> </a>
-			<ul class="treeview-menu">
-				<li><a href="">Create New Income</a></li>
-				<li><a href="">See All Income</a></li>
-			</ul></li>
-		<li class="treeview"><a href="#"><i class="fa fa-link"></i> <span>Person</span>
-				<span class="pull-right-container"> <i
-					class="fa fa-angle-left pull-right"></i>
-			</span> </a>
-			<ul class="treeview-menu">
-				<li><a href="/NewPerson">New Customer</a></li>
-				<li><a href="">See All Expense</a></li>
-			</ul></li>
-
-
-		<li class="treeview"><a href="#"><i class="fa fa-link"></i> <span>Reports</span>
-				<span class="pull-right-container"> <i
-					class="fa fa-angle-left pull-right"></i>
-			</span> </a>
-			<ul class="treeview-menu">
-				<li><a href="/Reports/BalanceSheet">Balance Sheet</a></li>
-				<li><a href="Reports/ChartsOfAccount">Chart of Account</a></li>
-				<li><a href="/Reports/ProfitLoss">Profit and Loss Statement</a></li>
-
-
-
-			</ul></li>
-	</ul>
-
 	<div th:replace="template:: footer"></div>
 </body>
 </html>

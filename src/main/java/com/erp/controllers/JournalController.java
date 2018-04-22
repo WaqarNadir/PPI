@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.erp.classes.AccountGroup;
+import com.erp.classes.Constants;
 import com.erp.classes.Functions;
 import com.erp.classes.Journal;
 import com.erp.classes.JournalDetails;
@@ -60,6 +61,16 @@ public class JournalController {
 			if (JD.getSubTotal() != 0.0) {
 				JD.setJournal_ID(journal);
 				UpdateParent(JD);
+
+				if (JD.getIsCredit() != Constants.IS_CREDIT) {
+					double debitSubTotal = 0.0;
+					if (JD.getSubGroup_ID().getIsParent().getIsParent().getAccName().equals(Constants.EXPENSE))
+						debitSubTotal -= JD.getSubTotal();
+					else
+						debitSubTotal += JD.getSubTotal();
+					JD.setSubTotal(debitSubTotal);
+				}
+
 				JDservice.save(JD);
 			}
 		}
@@ -71,7 +82,7 @@ public class JournalController {
 		try {
 			while (item.getIsParent() != null) {
 				double amount = 0.0;
-				if (JD.getIsCredit() == 1)
+				if (JD.getIsCredit() == Constants.IS_CREDIT)
 					amount = JD.getSubTotal() + item.getAmount();
 				else
 					amount = item.getAmount() - JD.getSubTotal();

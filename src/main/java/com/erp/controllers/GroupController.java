@@ -1,6 +1,5 @@
 package com.erp.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.erp.classes.AccountGroup;
+import com.erp.classes.Functions;
 import com.erp.services.AccountGroupService;
 
 @Controller
 public class GroupController {
-	@GetMapping(value = "/")
-	public String MainPage(Model model) {
-		return "Dashboard";
-	}
+	
 
 	@Autowired
 	private AccountGroupService service;
@@ -31,7 +28,7 @@ public class GroupController {
 		model.addAttribute("group", new AccountGroup());
 		model.addAttribute("parentList", service.getWithParentRef(null));
 
-		return "AddGroup";
+		return "AddGroups";
 	}
 
 	@PostMapping(value = "SaveGroup")
@@ -52,7 +49,7 @@ public class GroupController {
 		String refNo = "";
 		for (int i = 0; i < result.length; i++) {
 			if (i == (result.length - 1))
-				refNo += index;
+				refNo += Functions.getTwoDigitInt(index);
 			else
 				refNo += result[i] + "-";
 		}

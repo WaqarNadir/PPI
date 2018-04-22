@@ -4,7 +4,7 @@
 <div th:replace="template:: head"></div>
 
 
-<script>
+<script th:inline="javascript">
 	function updateTotal(value) {
 		var total = 0;
 		$('.subTotal').each(function() {
@@ -15,9 +15,10 @@
 		$("#total").val(total);
 	};
 	function getBalance(value) {
+		contextPath = /*[[@{/}]]*/'';
 		fieldName = "#balance";
 		$.ajax({
-			url : "/getBalance",
+			url : contextPath + "/getBalance",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -34,7 +35,7 @@
 		fieldName = "#subType" + index;
 		$(fieldName).empty();
 		$.ajax({
-			url : "/getSubType",
+			url : contextPath + "/getSubType",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
@@ -74,7 +75,7 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${TrailBalance}"
-							action="/Expense/Save" method="post">
+							th:action="@{/Expense/Save}" method="post">
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">To</label>
@@ -101,9 +102,10 @@
 									<input id="balance" readonly="readonly" class="label-total" />
 								</div>
 								<div class="col-sm-3 pull-right text-center">
-									<label for="inputPassword3" class="control-label input-lg" align="center">Total</label>
-									<input th:id="total" th:field="${TrailBalance.total}"
-										readonly="readonly" class="label-total"/>
+									<label for="inputPassword3" class="control-label input-lg"
+										align="center">Total</label> <input th:id="total"
+										th:field="${TrailBalance.total}" readonly="readonly"
+										class="label-total" />
 								</div>
 							</div>
 							<div class="box-body">
@@ -116,7 +118,8 @@
 									<label for="total" class="control-label input-lg"
 										align="center">Payment Method</label> <select type="text"
 										class="form-control input-lg"
-										th:field="${TrailBalance.paymentDetail[0].PM_ID}" name="paymentMethod">
+										th:field="${TrailBalance.paymentDetail[0].PM_ID}"
+										name="paymentMethod">
 										<option th:value="0">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
@@ -150,13 +153,13 @@
 
 										<tr th:each="i: ${#numbers.sequence(0, 5)}">
 											<td th:value="${i}" th:text="${i+1}"></td>
-											
-												<td><select class="form-control input-lg"
+
+											<td><select class="form-control input-lg"
 												th:onchange="'javascript:getSubType(' + ${i} + ',this.value );'">
 													<option value="999">Please Select</option>
 
 													<th:block th:each="parent : ${expense}">
-													<option th:value="${parent.Acc_ID}" disabled="disabled"
+														<option th:value="${parent.Acc_ID}" disabled="disabled"
 															th:text="${parent.accName}" class="custom-bold">Cash
 															In hand</option>
 
