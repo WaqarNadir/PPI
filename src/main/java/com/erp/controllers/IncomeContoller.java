@@ -64,7 +64,7 @@ public class IncomeContoller {
 
 		return "Income";
 	}
-	
+
 	@PostMapping("/Income/Save")
 	public String saveIncome(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isIncome);
@@ -117,8 +117,80 @@ public class IncomeContoller {
 
 	@GetMapping("ViewIncomes")
 	public String ViewExpenseHome(Model model) {
-		model.addAttribute("IncomesList", getAllIncomes(Constants.isIncome));
+		List<TrailBalance> incomes = new ArrayList<>();
+		incomes = getAllIncomes(Constants.isIncome);
+		int gTotal = getIncome(incomes);
+		model.addAttribute("IncomesList", incomes);
+		model.addAttribute("incomeSum", gTotal);
 		return "ViewIncomes";
+	}
+
+	@GetMapping("Income/CustomIncomes")
+	public String CustomIncomes(Model model) {
+		double incomeSum = 0;
+		Date currentDate = Functions.getCurrentDate();
+		Date lastMonth = Functions.thisMonth(currentDate);
+
+		System.out.println(
+				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
+		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
+
+		List<TrailBalance> tBalance = TB_service.ByDateRange(lastMonth, currentDate, Constants.isIncome);
+		for (TrailBalance TB : tBalance) {
+
+			if (TB.getType() == Constants.isIncome) {
+				incomeSum += TB.getTotal();
+			}
+
+		}
+		model.addAttribute("tBalance", tBalance);
+		model.addAttribute("incomeSum", incomeSum);
+		// model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "CustomIncomes";
+	}
+
+	@PostMapping("Income/DateWiseIncome")
+	public String dateWiseIncome(HttpServletRequest request, Model model) {
+		double incomeSum = 0;
+		Date startDate = null, endDate = null;
+		List<TrailBalance> tBIncomeList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
+		}
+
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		;
+		;
+		;
+		;
+		tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isIncome);
+		for (TrailBalance TB : tBIncomeList) {
+			if (TB.getType() == Constants.isIncome) {
+				incomeSum += TB.getTotal();
+			}
+
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("tBIncomeList", tBIncomeList);
+		model.addAttribute("incomeSum", incomeSum);
+		return "CustomIncomes";
 	}
 
 	// @PostMapping("/getSubTypeIncome")
@@ -151,6 +223,7 @@ public class IncomeContoller {
 		PD_Service.save(data.getPaymentDetail().get(0));
 
 	}
+
 	public List<TrailBalance> getAllIncomes(int num) {
 		List<TrailBalance> result = new ArrayList<>();
 		populateIncomeList(num);
@@ -158,6 +231,18 @@ public class IncomeContoller {
 			result.add(TB);
 		}
 		return result;
+	}
+
+	public int getIncome(List<TrailBalance> incomeList) {
+		int incomeSum = 0;
+		for (TrailBalance TB : incomeList) {
+
+			if (TB.getType() == Constants.isIncome) {
+				incomeSum += TB.getTotal();
+			}
+
+		}
+		return incomeSum;
 	}
 
 	public void populateIncomeList(int num) {
@@ -196,73 +281,5 @@ public class IncomeContoller {
 		}
 		return null;
 	}
-	
-	
-	
-	@GetMapping("Income/CustomIncomes")
-	public String CustomIncomes(Model model) {
-		double incomeSum = 0;
-		Date currentDate = Functions.getCurrentDate();
-		Date lastMonth = Functions.thisMonth(currentDate);
 
-		System.out.println(
-				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
-		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
-
-		List<TrailBalance> tBalance = TB_service.ByDateRange(lastMonth, currentDate, Constants.isIncome);
-		for (TrailBalance TB : tBalance) {
-
-			if (TB.getType() == Constants.isIncome) {
-				incomeSum += TB.getTotal();
-			}
-
-		}
-		model.addAttribute("tBalance", tBalance);
-		model.addAttribute("incomeSum", incomeSum);
-		//model.addAttribute("netEquity", (incomeSum + expenseSum));
-		return "CustomIncomes";
-	}
-
-	@PostMapping("Income/DateWiseIncome")
-	public String dateWiseIncome(HttpServletRequest request, Model model) {
-		double incomeSum = 0;
-		Date startDate = null, endDate = null;
-		List<TrailBalance> tBIncomeList = null;
-		String msg = "";
-		String value = request.getParameter("selectValue");
-
-		if (value.equals("3")) {
-			System.out.println("Displaying Custom Report");
-			startDate = Functions.getSQLDate(request.getParameter("startDate"));
-			endDate = Functions.getSQLDate(request.getParameter("endDate"));
-		}
-
-		if (value.equals("2")) {
-			System.out.println("Displaying Yearly Report");
-			startDate = Functions.thisYear(Functions.getCurrentDate());
-			endDate = Functions.getCurrentDate();
-		}
-
-		if (value.equals("1")) {
-			System.out.println("Displaying Monthly Report");
-			startDate = Functions.thisMonth(Functions.getCurrentDate());
-			endDate = Functions.getCurrentDate();
-		}
-		tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isIncome);
-		for (TrailBalance TB : tBIncomeList) {
-			if (TB.getType() == Constants.isIncome) {
-					incomeSum += TB.getTotal();			
-			}
-			
-
-		}
-		msg = "From " + startDate + " to " + endDate;
-		model.addAttribute("label", msg);
-		model.addAttribute("selectedValue", value);
-		model.addAttribute("tBIncomeList", tBIncomeList);
-		model.addAttribute("incomeSum", incomeSum);
-		return "CustomIncomes";
-	}
-	
-	
 }

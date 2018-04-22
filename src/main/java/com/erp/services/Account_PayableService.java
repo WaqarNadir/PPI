@@ -2,7 +2,6 @@ package com.erp.services;
 
 import java.sql.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +43,10 @@ public class Account_PayableService {
 
 	public Account_Payable SumTotal(Date startDate, Date endDate, String status) {
 		return repo.SumTotal(startDate, endDate, status);
+	}
+	
+	public List<Account_Payable> ByDateRange(Date startDate, Date endDate) {
+		return repo.ByDateRange(startDate, endDate);
 	}
 
 	public List<Account_Payable> DateBetween(Date startDate, Date endDate) {

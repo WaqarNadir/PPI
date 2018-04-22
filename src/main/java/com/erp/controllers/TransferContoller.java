@@ -1,9 +1,9 @@
 package com.erp.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +13,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import com.erp.classes.AccountGroup;
+import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
+import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
 import com.erp.classes.Person;
-import com.erp.classes.TB_Details;
 import com.erp.classes.TrailBalance;
 import com.erp.classes.TrailBalanceWrapper;
 import com.erp.services.AccountGroupService;
-import com.erp.services.PaymentDetailService;
 import com.erp.services.PaymentMethodService;
 import com.erp.services.PersonService;
 import com.erp.services.TB_DetailService;
@@ -36,10 +35,7 @@ public class TransferContoller {
 	@Autowired
 	private AccountGroupService AG_service;
 	@Autowired
-
 	private TB_DetailService TBD_Service;
-	@Autowired
-	private PaymentDetailService PD_Service;
 	@Autowired
 	private TrailBalanceService TB_service;
 	@Autowired
@@ -47,7 +43,6 @@ public class TransferContoller {
 	// ---- Variables -------------
 
 	private List<TrailBalance> TB_List;
-	private List<AccountGroup> AG_List;
 	TrailBalanceWrapper wrapper = null;
 
 	@GetMapping("Transfer/Add")
@@ -62,6 +57,7 @@ public class TransferContoller {
 	@PostMapping("/Transfer/Save")
 	public String saveTransfer(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
 		data.setType(Constants.isTransfer);
+		data.setTotal(data.getTB_DetailList().get(0).getSubTotal());
 
 		TB_service.save(data);
 		data.getTB_DetailList().get(0).setTB_ID(data);
@@ -95,25 +91,73 @@ public class TransferContoller {
 		model.addAttribute("TransferList", getAllTransfers(Constants.isTransfer));
 		return "ViewTransfers";
 	}
+	
+	@GetMapping("Transfer/CustomTransfers")
+	public String CustomTransfers(Model model) {
+		double transferSum = 0;
+		Date currentDate = Functions.getCurrentDate();
+		Date lastMonth = Functions.thisMonth(currentDate);
 
-	// ------------------ Utility functions ------------------------
-	private void save(TrailBalanceWrapper data, int type) {
-		for (TB_Details TBD : data.getTB_DetailList()) {
-			if (TBD.getSubTotal() != 0.0) {
-				TBD.setTB_ID(data.getTrailBalance());
+		System.out.println(
+				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
+		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
 
-				TBD.getTB_ID().setType(type);
-				// TBD.getTB_ID().setDiaryNo(data.getTrailBalance().getDiaryNo());
+		List<TrailBalance> tBalance = TB_service.ByDateRange(lastMonth, currentDate, Constants.isTransfer);
+		for (TrailBalance TB : tBalance) {
 
-				TB_service.save(TBD.getTB_ID());
-				TBD_Service.save(TBD);
-				data.getPaymentDetail().setTB_ID(TBD.getTB_ID());
-				PD_Service.save(data.getPaymentDetail());
+			if (TB.getType() == Constants.isTransfer) {
+				transferSum += TB.getTotal();
 			}
+
+		}
+		model.addAttribute("tBalance", tBalance);
+		model.addAttribute("incomeSum", transferSum);
+		// model.addAttribute("netEquity", (incomeSum + expenseSum));
+		return "CustomTransfers";
+	}
+	
+	@PostMapping("Transfer/DateWiseTransfer")
+	public String dateWiseTransfer(HttpServletRequest request, Model model) {
+		double transferSum = 0;
+		Date startDate = null, endDate = null;
+		List<TrailBalance> tBTransferList = null;
+		String msg = "";
+		String value = request.getParameter("selectValue");
+
+		if (value.equals("3")) {
+			System.out.println("Displaying Custom Report");
+			startDate = Functions.getSQLDate(request.getParameter("startDate"));
+			endDate = Functions.getSQLDate(request.getParameter("endDate"));
 		}
 
+		if (value.equals("2")) {
+			System.out.println("Displaying Yearly Report");
+			startDate = Functions.thisYear(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+
+		if (value.equals("1")) {
+			System.out.println("Displaying Monthly Report");
+			startDate = Functions.thisMonth(Functions.getCurrentDate());
+			endDate = Functions.getCurrentDate();
+		}
+		tBTransferList = TB_service.ByDateRange(startDate, endDate, Constants.isTransfer);
+		for (TrailBalance TB : tBTransferList) {
+			if (TB.getType() == Constants.isTransfer) {
+				transferSum += TB.getTotal();
+			}
+
+		}
+		msg = "From " + startDate + " to " + endDate;
+		model.addAttribute("label", msg);
+		model.addAttribute("selectedValue", value);
+		model.addAttribute("tBTransferList", tBTransferList);
+		model.addAttribute("transferSum", transferSum);
+		return "CustomTransfers";
 	}
 
+	// ------------------ Utility functions ------------------------
+	
 	public List<TrailBalance> getAllTransfers(int num) {
 		List<TrailBalance> result = new ArrayList<>();
 		populateTransferList(num);
@@ -159,20 +203,5 @@ public class TransferContoller {
 		}
 
 		return result;
-	}
-
-	public void populateAccountGroupList() {
-		AG_List = new ArrayList<>();
-		AG_List = AG_service.getAll();
-
-	}
-
-	public AccountGroup getAccountGroup(int ID) {
-		for (AccountGroup val : AG_List) {
-			if (val.getAcc_ID() == ID) {
-				return val;
-			}
-		}
-		return null;
 	}
 }

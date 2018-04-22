@@ -23,7 +23,8 @@ import javax.persistence.TableGenerator;
 				+ "WHERE t.date BETWEEN :startDate and :endDate "),
 		@NamedQuery(name = "Account_Payable.DueDateBetween", query = "select t from AccountPayable t "
 				+ "WHERE t.dueDate BETWEEN :startDate and :endDate "),
-
+		@NamedQuery(name = "Account_Payable.ByDateRange", query = "select a from Account_Payable a "
+				+ "WHERE a.date BETWEEN :startDate and :endDate"),
 		@NamedQuery(name = "Account_Payable.DateAndStatus", query = "select t from AccountPayable t "
 				+ "WHERE t.date BETWEEN :startDate and :endDate and t.status=:status") })
 
@@ -88,9 +89,9 @@ public class Account_Payable implements Serializable {
 
 	// --------------- Getter & Setters ---------------
 
-	public Account_Payable(String status, double total) {
+	public Account_Payable(String Status, double total) {
+		this.status = Status;
 		this.total = total;
-		this.status = status;
 	}
 
 	public String getstatus() {
@@ -152,14 +153,6 @@ public class Account_Payable implements Serializable {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-
-	// public AccountGroup getbankSourceID() {
-	// return bankSourceID;
-	// }
-	//
-	// public void setbankSourceID(AccountGroup bankSourceID) {
-	// this.bankSourceID = bankSourceID;
-	// }
 
 	public Person getPerson_ID() {
 		return person_ID;

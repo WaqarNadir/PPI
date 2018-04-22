@@ -12,14 +12,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 @Entity(name = "AccountReceivable")
+@NamedQueries({
+		@NamedQuery(name = "Account_Receivable.DateBetween", query = "select t from AccountReceivable t "
+				+ "WHERE t.date BETWEEN :startDate and :endDate "),
+		@NamedQuery(name = "Account_Receivable.ByDateRange", query = "select r from Account_Receivable r "
+				+ "WHERE r.date BETWEEN :startDate and :endDate") })
 
-@NamedQuery(name = "Account_Receivable.DateBetween", query = "select t from AccountReceivable t "
-		+ "WHERE t.date BETWEEN :startDate and :endDate ")
 public class Account_Receivable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
