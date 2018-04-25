@@ -56,42 +56,43 @@ public class TransferContoller {
 
 	@PostMapping("/Transfer/Save")
 	public String saveTransfer(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
-		data.setType(Constants.isTransfer);
 		data.setTotal(data.getTB_DetailList().get(0).getSubTotal());
-
+		data.setType(Constants.isTransfer);
 		TB_service.save(data);
+
 		data.getTB_DetailList().get(0).setTB_ID(data);
 		TBD_Service.save(data.getTB_DetailList().get(0));
 		return "redirect:/Transfer/Add";
 	}
 
-//	private Boolean updateParent(double BillAmount) {
-//		boolean result = false;
-//		AccountGroup item = expense;
-//		try {
-//			while (item.getIsParent() != null) {
-//				double amount = 0.0;
-//				amount = BillAmount + item.getAmount();
-//				item.setAmount(amount);
-//				AG_service.save(item);
-//				item = item.getIsParent();
-//			}
-//
-//			result = true;
-//		} catch (Exception e) {
-//			result = false;
-//			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
-//		}
-//		return result;
-//
-//	}
+	// private Boolean updateParent(double BillAmount) {
+	// boolean result = false;
+	// AccountGroup item = expense;
+	// try {
+	// while (item.getIsParent() != null) {
+	// double amount = 0.0;
+	// amount = BillAmount + item.getAmount();
+	// item.setAmount(amount);
+	// AG_service.save(item);
+	// item = item.getIsParent();
+	// }
+	//
+	// result = true;
+	// } catch (Exception e) {
+	// result = false;
+	// System.err.println("=> Error while update Account group Parent: " +
+	// e.getMessage());
+	// }
+	// return result;
+	//
+	// }
 
 	@GetMapping("ViewTransfers")
 	public String ViewExpenseHome(Model model) {
 		model.addAttribute("TransferList", getAllTransfers(Constants.isTransfer));
 		return "ViewTransfers";
 	}
-	
+
 	@GetMapping("Transfer/CustomTransfers")
 	public String CustomTransfers(Model model) {
 		double transferSum = 0;
@@ -115,7 +116,7 @@ public class TransferContoller {
 		// model.addAttribute("netEquity", (incomeSum + expenseSum));
 		return "CustomTransfers";
 	}
-	
+
 	@PostMapping("Transfer/DateWiseTransfer")
 	public String dateWiseTransfer(HttpServletRequest request, Model model) {
 		double transferSum = 0;
@@ -157,7 +158,7 @@ public class TransferContoller {
 	}
 
 	// ------------------ Utility functions ------------------------
-	
+
 	public List<TrailBalance> getAllTransfers(int num) {
 		List<TrailBalance> result = new ArrayList<>();
 		populateTransferList(num);

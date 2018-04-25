@@ -556,10 +556,24 @@ public class ReportController {
 				currentAsset.put(TB.getbankSourceID(), amount);
 			}
 
-			else {
+			else if ((TB.getType() == Constants.isIncome)) {
 				netIncome = netIncome + TB.getTotal();
 				Double amount = currentAsset.getOrDefault(TB.getbankSourceID(), 0.0) + TB.getTotal();
 				currentAsset.put(TB.getbankSourceID(), amount);
+			} else {
+				Double transferAmount = TB.getTotal();
+				Double bankSource = currentAsset.getOrDefault(TB.getbankSourceID(), 0.0);
+				Double depositAccount = currentAsset.getOrDefault(TB.getTB_DetailList().get(0).getSubGroup_ID(), 0.0);
+				System.out.println("Transfer amount: " + transferAmount + "\t bankSource:" + bankSource
+						+ "\tdepositAccount:" + depositAccount);
+				bankSource = bankSource - transferAmount;
+				System.out.println("bankSource: " + bankSource);
+				depositAccount += transferAmount;
+				System.out.println("depositAccount: " + depositAccount);
+
+				currentAsset.put(TB.getbankSourceID(), bankSource);
+				currentAsset.put(TB.getTB_DetailList().get(0).getSubGroup_ID(), depositAccount);
+
 			}
 		}
 
