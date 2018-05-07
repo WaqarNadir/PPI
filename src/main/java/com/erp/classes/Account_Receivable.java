@@ -22,7 +22,7 @@ import javax.persistence.TableGenerator;
 @NamedQueries({
 		@NamedQuery(name = "Account_Receivable.DateBetween", query = "select t from AccountReceivable t "
 				+ "WHERE t.date BETWEEN :startDate and :endDate "),
-		@NamedQuery(name = "Account_Receivable.ByDateRange", query = "select r from Account_Receivable r "
+		@NamedQuery(name = "Account_Receivable.ByDateRange", query = "select r from AccountReceivable r "
 				+ "WHERE r.date BETWEEN :startDate and :endDate") })
 
 public class Account_Receivable implements Serializable {

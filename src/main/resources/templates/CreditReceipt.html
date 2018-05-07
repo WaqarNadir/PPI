@@ -63,8 +63,8 @@
 									<label for="accPay" class="control-label input-lg">Payment
 										Account</label> <select type="text" class="form-control input-lg"
 										id="cash" onchange="getBalance(this.value)" name="bankSource"
-										th:field="${arReciept.BankSourceID}">
-										<option value="0">Please Select</option>
+										th:field="${arReciept.BankSourceID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
@@ -88,8 +88,8 @@
 								<div class="col-sm-3">
 									<label>Payment Method</label> <select
 										th:field="${arReciept.PM_ID}" type="text"
-										class="form-control input-lg" name="paymentMethod">
-										<option th:value="0">Please Select</option>
+										class="form-control input-lg" name="paymentMethod" required="required">
+										<option th:value="">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>
@@ -97,7 +97,7 @@
 								<div class="col-sm-3">
 									<label>Received Date</label> <input type="date"
 										class="form-control input-lg" id="recievedDate"
-										th:field="${arReciept.Date}" />
+										th:field="${arReciept.Date}" required="required"/>
 								</div>
 								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.

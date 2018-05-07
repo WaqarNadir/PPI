@@ -35,6 +35,12 @@ public class PersonController {
 
 		return "NewPerson";
 	}
+	
+	@GetMapping(value = "ViewAllPerson")
+	public String ViewPersonPage(Model model) {	
+		model.addAttribute("personList",getAll());
+		return "ViewAllPerson";
+	}
 
 	@PostMapping(value = "SavePerson")
 	public String SaveDetails(@ModelAttribute Person person, @ModelAttribute Phone phone,

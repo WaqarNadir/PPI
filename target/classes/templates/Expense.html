@@ -6,11 +6,13 @@
 
 <script th:inline="javascript">
 	function updateTotal(value) {
-		var total = 0;
+		var total = 0.0;
+		var bal = $("#balance").val();
 		$('.subTotal').each(function() {
 			val = parseFloat($(this).val()) | 0;
 			total = val ? (parseFloat(total + val)) : total;
 		});
+
 		$("#total").text(total);
 		$("#total").val(total);
 	};
@@ -30,6 +32,16 @@
 				console.log("ERROR:" + xhr.responseText);
 			}
 		});
+	};
+	function checkBalance(theForm) {
+		var tot = parseFloat(theForm.total.value);
+		var bal = parseFloat(theForm.balance.value);
+		if (tot > bal) {
+			alert('The Account Balance is less than Expense!');
+			return false;
+		} else {
+			return true;
+		}
 	};
 	function getSubType(index, value) {
 		fieldName = "#subType" + index;
@@ -75,13 +87,15 @@
 					<div class="box box-info">
 						<!-- form start -->
 						<form class="form-horizontal" th:object="${TrailBalance}"
-							th:action="@{/Expense/Save}" method="post">
+							th:action="@{/Expense/Save}" method="post"
+							onsubmit="return
+							checkBalance(this);">
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">To</label>
 									<select class="form-control input-lg"
-										th:field="${TrailBalance.person_ID}">
-										<option value="0">Please Select</option>
+										th:field="${TrailBalance.person_ID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="person : ${personList}"
 											th:value="${person.PersonID}"
 											th:text="${person.Fname +' '+person.Lname}"></option>
@@ -91,36 +105,37 @@
 									<label for="inputPassword3" class="control-label input-lg">Bank/Credit
 										Account</label> <select type="text" class="form-control input-lg"
 										id="cash" name="bankSource" onchange="getBalance(this.value)"
-										th:field="${TrailBalance.bankSourceID}">
-										<option value="0">Please Select</option>
+										th:field="${TrailBalance.bankSourceID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
 								</div>
 								<div class="col-sm-2">
 									<label for="balanceVal" class="control-label input-lg">Balance</label>
-									<input id="balance" readonly="readonly" class="label-total" />
+									<input id="balance" readonly="readonly" th:name="balance"
+										class="label-total" />
 								</div>
 								<div class="col-sm-3 pull-right text-center">
 									<label for="inputPassword3" class="control-label input-lg"
 										align="center">Total</label> <input th:id="total"
-										th:field="${TrailBalance.total}" readonly="readonly"
-										class="label-total" />
+										th:name="total" th:field="${TrailBalance.total}"
+										readonly="readonly" class="label-total" />
 								</div>
 							</div>
 							<div class="box-body">
 								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input class="form-control input-lg" type="text" id="refNo"
-										th:field="${TrailBalance.diaryNo}" />
+										th:field="${TrailBalance.diaryNo}" required="required"/>
 								</div>
 								<div class="col-sm-3">
 									<label for="total" class="control-label input-lg"
 										align="center">Payment Method</label> <select type="text"
 										class="form-control input-lg"
 										th:field="${TrailBalance.paymentDetail[0].PM_ID}"
-										name="paymentMethod">
-										<option th:value="0">Please Select</option>
+										name="paymentMethod" required="required">
+										<option value="">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>
@@ -128,7 +143,7 @@
 								<div class="col-sm-3">
 									<label for="date" class="control-label input-lg" align="center">
 										Date</label> <input type="date" class="form-control input-lg"
-										id="myDate" th:field="${TrailBalance.date}" />
+										id="myDate" th:field="${TrailBalance.date}" required="required"/>
 								</div>
 								<div class="col-sm-3">
 									<label for="refNo" class="control-label input-lg">Payment

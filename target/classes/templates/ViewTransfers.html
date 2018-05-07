@@ -2,25 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
+<script>
+		function getReport(value) {
+			if (value == '0') {
+				return;
+			}
+			if (value == '3') {
+				$("#customDates").show();
+			} else {
+				$("#customDates").hide();
+				$("#TransferForm").submit();
+			}
+		}
+	</script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
 
 
-
-	<div class="content-wrapper">
-		<div class="content-header">
-			<h1 align="center">Transfers</h1>
-		</div>
-		<!-- Main content -->
-		<section class="content">
-			<div class="row">
-				<!-- left column -->
-				<div class="col-md-12">
-					<!-- general form elements -->
-					<div class="box box-info">
+<div class="content-wrapper">
+		<div class="content">
+			<div class="box box-danger center">
+				<div class="box-header with-border text-center">
+					<h2>Transfers Report</h2>
+					<p>
+						<strong th:text="${label}"></strong>
+					</p>
+				</div>
+				<div>
 						<!-- form start -->
-						<form class="form-horizontal">
+						<form action="/Transfer/DateWiseTransfer" method="post"
+							class="form-horizontal" id="TransferForm">
+							<div class="box-body">
+								<div class="col-sm-3 pull-right">
+									<select class="form-control" onchange="getReport(this.value)"
+										th:selected="${selectedValue}" name="selectValue">
+										<option value="0"
+											th:selected="${selectedValue} == null ? 'selected'">Please
+											Select</option>
+										<option value="1"
+											th:selected="${selectedValue} == '1' ? 'selected'">This
+											Month</option>
+										<option value="2"
+											th:selected="${selectedValue} == '2' ? 'selected'">This
+											Year</option>
+										<option value="3"
+											th:selected="${selectedValue} == '3' ? 'selected'">Custom
+											Dates</option>
+									</select>
+								</div>
+								<div class="col-sm-3 " id="customDates"
+									th:hidden="${selectedValue} != '3' ? hidden">
+									<label>Start Date : </label> <input type="date"
+										class="form-control" placeholder="Enter Start Date"
+										name="startDate" required="required" /> <label>End
+										Date :</label> <input class="form-control" type="date" name="endDate"
+										required="required" placeholder="Enter End Date" />
+									<button type="submit" class="btn-primary">Search</button>
+								</div>
+							</div>
+						</form>
 							<div class="box-body">
 								<table id="table1" class="table table-bordered table-hover">
 									<thead>
@@ -34,7 +75,6 @@
 										</tr>
 									</thead>
 									<tbody>
-
 										<tr th:each="Detail,row : ${TransferList}">
 											<td th:value="${row.index}" th:text="${row.index+1}"></td>
 											<td><input class="form-control input-lg"
@@ -48,15 +88,11 @@
 											<td><button>View Details</button></td>
 										</tr>
 									</tbody>
-
 								</table>
 							</div>
-						</form>
-
 					</div>
 				</div>
 			</div>
-		</section>
 	</div>
 
 

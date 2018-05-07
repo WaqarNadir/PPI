@@ -2,35 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
-<script>
-	function getReport(value) {
-		if (value == '0') {
-			return;
-		}
-		if (value == '3') {
-			$("#customDates").show();
-		} else {
-			$("#customDates").hide();
-			$("#IncomeForm").submit();
-		}
-	}
-</script>
-
 <body class="hold-transition skin-blue sidebar-mini">
+	<script>
+		function getReport(value) {
+			if (value == '0') {
+				return;
+			}
+			if (value == '3') {
+				$("#customDates").show();
+			} else {
+				$("#customDates").hide();
+				$("#ExpenseForm").submit();
+			}
+
+		}
+	</script>
+
 	<div th:replace="template:: wrapper"></div>
 	<div class="content-wrapper">
 		<div class="content">
 			<div class="box box-danger center">
 				<div class="box-header with-border text-center">
-					<h2>Income Report</h2>
+					<h2>Expenses Report</h2>
 					<p>
 						<strong th:text="${label}"></strong>
 					</p>
 				</div>
 				<div>
-
-					<form th:action="@{/Income/DateWiseIncome}" method="post"
-						id="IncomeForm">
+					<form action="/Expense/DateWiseExpense" method="post"
+						id="ExpenseForm">
 						<div class="box-body">
 							<div class="col-sm-3 pull-right">
 								<select class="form-control" onchange="getReport(this.value)"
@@ -48,6 +48,7 @@
 										th:selected="${selectedValue} == '3' ? 'selected'">Custom
 										Dates</option>
 								</select>
+
 							</div>
 							<div class="col-sm-3 " id="customDates"
 								th:hidden="${selectedValue} != '3' ? hidden">
@@ -57,7 +58,6 @@
 									Date :</label> <input class="form-control" type="date" name="endDate"
 									required="required" placeholder="Enter End Date" />
 								<button type="submit" class="btn-primary">Search</button>
-								>>>>>>> 7ca7751ded057f189f8ad8009658f886ef90ed3a
 
 							</div>
 						</div>
@@ -67,7 +67,7 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Income ID</th>
+									<th>Bill ID</th>
 									<th>Diary NO.</th>
 									<th>Date</th>
 									<th>Amount</th>
@@ -75,7 +75,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="Detail,row : ${tBIncomeList}">
+								<tr th:each="Detail,row : ${tBExpenseList}">
 									<td th:value="${row.index}" th:text="${row.index+1}"></td>
 									<td><input class="form-control input-lg"
 										th:value="${Detail.TB_ID}" readonly="readonly" /></td>
@@ -86,13 +86,14 @@
 									<td><input class="form-control input-lg"
 										th:value="${Detail.total}" readonly="readonly" /></td>
 									<td><button>View Details</button></td>
+
 								</tr>
 								<tr>
 									<td></td>
 									<td></td>
 									<td></td>
-									<td><strong>Total Income</strong></td>
-									<td><input th:value="${incomeSum}"
+									<td><strong>Total Expenses</strong></td>
+									<td><input th:value="${expenseSum}"
 										class="form-control input-lg" readonly="readonly" /></td>
 									<td></td>
 								</tr>
@@ -101,11 +102,9 @@
 					</div>
 				</div>
 			</div>
-
-
 		</div>
-	</div>
 
+	</div>
 
 	<div th:replace="template:: footer"></div>
 </body>

@@ -23,7 +23,7 @@ import javax.persistence.TableGenerator;
 				+ "WHERE t.date BETWEEN :startDate and :endDate "),
 		@NamedQuery(name = "Account_Payable.DueDateBetween", query = "select t from AccountPayable t "
 				+ "WHERE t.dueDate BETWEEN :startDate and :endDate "),
-		@NamedQuery(name = "Account_Payable.ByDateRange", query = "select a from Account_Payable a "
+		@NamedQuery(name = "Account_Payable.ByDateRange", query = "select a from AccountPayable a "
 				+ "WHERE a.date BETWEEN :startDate and :endDate"),
 		@NamedQuery(name = "Account_Payable.DateAndStatus", query = "select t from AccountPayable t "
 				+ "WHERE t.date BETWEEN :startDate and :endDate and t.status=:status") })
