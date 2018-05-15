@@ -2,6 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
+
+
+
+<script th:inline="javascript">
+	function getBalance(value, index) {
+		contextPath = /*[[@{/}]]*/'';
+		if (index == 1) {
+			fieldName = "#balanceFrom";
+		} else {
+			fieldName = "#balanceTo";
+		}
+		$.ajax({
+			url : contextPath + "/getBalance",
+			contentType : "application/json; charset=utf-8",
+			data : value,
+			type : "POST",
+			success : function(data) {
+				$(fieldName).val(data);
+			},
+			error : function(xhr, status, error) {
+				alert("ERROR:" + xhr.responseText);
+				console.log("ERROR:" + xhr.responseText);
+			}
+		});
+	}
+</script>
+
+
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
@@ -36,7 +64,6 @@
 										th:field="${TB.diaryNo}" />
 								</div>
 							</div>
-
 							<table id="table1" class="table table-bordered table-hover">
 								<thead>
 									<tr>
@@ -48,60 +75,46 @@
 									</tr>
 								</thead>
 								<tbody>
-
 									<tr>
 										<td class="text-bold">From</td>
-
 										<td><select class="form-control"
-											th:field="${TB.bankSourceID}">
+											th:field="${TB.bankSourceID}"
+											onchange="getBalance(this.value,1)">
 												<option value="0">Please Select</option>
-
 												<th:block th:each="parent : ${AssetList}">
-
 													<option th:value="${parent.Acc_ID}" disabled="disabled"
-														th:text="${parent.accName}" class="custom-bold">Cash In hand</option>
-
+														th:text="${parent.accName}" class="custom-bold">Cash
+														In hand</option>
 													<th:block th:each="child : ${parent.childList}">
-
 														<option th:value="${child.Acc_ID}"
 															th:text=" ${child.accName}">Cash In hand</option>
-
 													</th:block>
 												</th:block>
-
-
 										</select></td>
-
 										<td>Balance:</td>
-										<td><input class="label-total" disabled="disabled" /></td>
-
+										<td><input id="balanceFrom" readonly="readonly"
+											class="label-total" align="center" /></td>
 									</tr>
 									<tr>
 										<td class="text-bold">To</td>
-
 										<td><select class="form-control"
+											onchange="getBalance(this.value,2)"
 											th:field="${TB.TB_DetailList[0].subGroup_ID}">
 												<option value="0">Please Select</option>
-
 												<th:block th:each="parent : ${AssetList}">
-
 													<option th:value="${parent.Acc_ID}" disabled="disabled"
-														th:text="${parent.accName}" class="custom-bold">Cash In hand</option>
-
+														th:text="${parent.accName}" class="custom-bold">Cash
+														In hand</option>
 													<th:block th:each="child : ${parent.childList}">
 
 														<option th:value="${child.Acc_ID}"
 															th:text=" ${child.accName}">Cash In hand</option>
-
 													</th:block>
 												</th:block>
-
-
 										</select></td>
-
 										<td>Balance:</td>
-										<td><input class="label-total" disabled="disabled" /></td>
-
+										<td><input id="balanceTo" readonly="readonly"
+											class="label-total" align="center" /></td>
 									</tr>
 									<tr>
 										<td class="text-bold">Transfer Amount</td>
@@ -111,10 +124,8 @@
 											type="text" class="form-control" /></td>
 									</tr>
 								</tbody>
-
 							</table>
 							<div class="form-group">
-
 								<label class="col-sm-2 control-label">Remarks:</label>
 								<div class="col-sm-10">
 									<textarea class="form-control" rows="4" cols="4"
@@ -127,7 +138,6 @@
 								<button type="submit" class="btn btn-info pull-right">Save</button>
 							</div>
 						</form>
-
 					</div>
 				</div>
 			</div>

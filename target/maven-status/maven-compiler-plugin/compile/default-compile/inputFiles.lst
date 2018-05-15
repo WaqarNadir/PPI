@@ -1,69 +1,71 @@
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\OrderDetailController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\DeptOperationService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Person.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\WorkType.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\example\demo\Greeting.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\DailyProduction.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\LossReasonController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\AdditionalResource.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\LossReasonService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\PersonController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\PersonRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\ProductDetailController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\example\demo\GreetingController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\ProductDetailRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\ConfirmOrderController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\DepartmentRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\ProductDetailService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\DailyProductionService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\example\demo\Demo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\AdditionalResourceRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\example\demo\service.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\DailyProductionRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\DeptOperationRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Email.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Product.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Order.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\OrderController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\LossReasonRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\OperationInProgress.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\DeptOperationDetails.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Constants.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\AdditionalResourceController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Phone.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\OrderRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\AdditionalResourceService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\OperationInProgessService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\WorkTypeService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\DPController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\example\demo\repository.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Department.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\WorktypeController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\OperationInProgressRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\EmailRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\DemoApplication.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\Address.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\WorkTypeRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\AddressRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\DepartmentService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\ProductController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\BOMController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\ProductService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\OrderDetail.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\OrderDetailRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\PhoneRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\BillOfMaterial.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\ProductDetail.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\ProductRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\OIPController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\PersonDetialService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\OrderDetailWrapperClass.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\BOMService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\PersonService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\LossReason.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\OrderDetailService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\services\OrderService.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\DeptOperationController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\repo\BOMRepo.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\controllers\DeptController.java
-D:\Data\USB\com.erp.orderTracking\src\main\java\com\erp\classes\functions.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\PersonDetialService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\APReciept.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\PaymentMethodRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\APRecieptService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\ARRecieptService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\AccountGroupRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\AddressRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Person.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\JournalDetailRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\AR_DetailsService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\APRecieptRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\TransferContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\AccountGroupService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\JournalDetailService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\Dashboard.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\PersonService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\JournalRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Phone.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\TrailBalanceWrapper.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\AccountGroup.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\ReportController.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Address.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\AP_Details.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\ExpenseWrapper.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\ExpenseContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\ReportsRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\PaymentMethods.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\JournalDetails.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\PersonRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Functions.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\IncomeContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\ARRecieptRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\Account_ReceivableService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\Account_Receivable_DetailsRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\TrailBalanceDetailsRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\PhoneRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\GroupController.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\Account_Payable_DetailsRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\PaymentDetailService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\TrailBalanceService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\AP_DetailsService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Account_Receivable.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\AR_Details.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\JournalWrapper.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\ReconsileContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\TB_DetailService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Account_Payable.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Journal.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\ReportsService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\Account_PayableService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\ProfitLoss.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\Account_ReceivableRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\Report_AgingReports.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\Account_PayableRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\BillContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\JournalService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\services\PaymentMethodService.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\PersonController.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\CreditNoteContoller.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Email.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\TrailBalance.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\PaymentDetails.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\EmailRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Constants.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\JournalController.java
+D:\STS\New folder\PPI\src\main\java\com\erp\controllers\DemoApplication.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\PaymentDetailRepo.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\Reports.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\ARReciept.java
+D:\STS\New folder\PPI\src\main\java\com\erp\classes\TB_Details.java
+D:\STS\New folder\PPI\src\main\java\com\erp\repo\TrailBalanceRepo.java

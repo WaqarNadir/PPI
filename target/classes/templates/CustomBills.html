@@ -23,61 +23,83 @@
 		<div class="content">
 			<div class="box box-danger center">
 				<div class="box-header with-border text-center">
-					<h2>Expenses Report</h2>
+					<h2>Bills Report</h2>
 					<p>
 						<strong th:text="${label}"></strong>
 					</p>
 				</div>
 				<div>
-					<form th:action="@{/Expense/DateWiseExpense}" method="post"
-						id="BillForm">
-						<div class="col-sm-3 pull-right">
-							<select class="form-control" onchange="getReport(this.value)"
-								th:selected="${selectedValue}" name="selectValue">
-								<option value="0"
-									th:selected="${selectedValue} == null ? 'selected'">Please Select</option>
-								<option value="1"
-									th:selected="${selectedValue} == '1' ? 'selected'">This Month</option>
-								<option value="2"
-									th:selected="${selectedValue} == '2' ? 'selected'">This Year</option>
-								<option value="3"
-									th:selected="${selectedValue} == '3' ? 'selected'">Custom Dates</option>
-							</select>
 
-						</div>
-						<div class="col-sm-3 " id="customDates"
-							th:hidden="${selectedValue} != '3' ? hidden">
-							<label>Start Date : </label> <input type="date"
-								class="form-control" placeholder="Enter Start Date"
-								name="startDate" required="required" /> <label>End Date
-								:</label> <input class="form-control" type="date" name="endDate"
-								required="required" placeholder="Enter End Date" />
-							<button type="submit" class="btn-primary">Search</button>
+					<form th:action="@{/Bill/DateWiseBill}" method="post" id="BillForm">
+						<div class="box-body">
+							<div class="col-sm-3 pull-right">
+								<select class="form-control" onchange="getReport(this.value)"
+									th:selected="${selectedValue}" name="selectValue">
+									<option value="0"
+										th:selected="${selectedValue} == null ? 'selected'">Please
+										Select</option>
+									<option value="1"
+										th:selected="${selectedValue} == '1' ? 'selected'">This
+										Month</option>
+									<option value="2"
+										th:selected="${selectedValue} == '2' ? 'selected'">This
+										Year</option>
+									<option value="3"
+										th:selected="${selectedValue} == '3' ? 'selected'">Custom
+										Dates</option>
+								</select>
 
+							</div>
+							<div class="col-sm-3 " id="customDates"
+								th:hidden="${selectedValue} != '3' ? hidden">
+								<label>Start Date : </label> <input type="date"
+									class="form-control" placeholder="Enter Start Date"
+									name="startDate" required="required" /> <label>End
+									Date :</label> <input class="form-control" type="date" name="endDate"
+									required="required" placeholder="Enter End Date" />
+								<button type="submit" class="btn-primary">Search</button>
+
+							</div>
 						</div>
 					</form>
-					<table class="table stripped">
-						<tr>
-							<td>
-								<h3>Expense</h3>
-							</td>
-						</tr>
-
-						<tr th:each="TE : ${tBExpenseList}">
-							<td th:text="${TE.TB_ID}"></td>
-							<td th:text="${TE.total}"></td>
-						</tr>
-						<tr>
-							<td></td>
-						</tr>
-						<tr>
-							<td><strong>Total Expense</strong></td>
-							<td th:text="${expenseSum}"></td>
-						</tr>
-					</table>
+					<div class="box-body">
+						<table id="table1" class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Bill ID</th>
+									<th>Diary NO.</th>
+									<th>Date</th>
+									<th>Amount</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="Detail,row : ${aPayableList}">
+									<td th:value="${row.index}" th:text="${row.index+1}"></td>
+									<td><input class="form-control input-lg"
+										th:value="${Detail.AP_ID}" readonly="readonly" /></td>
+									<td><input class="form-control input-lg"
+										th:value="${Detail.diary_No}" readonly="readonly" /></td>
+									<td><input class="form-control input-lg"
+										th:value="${Detail.date}" readonly="readonly" /></td>
+									<td><input class="form-control input-lg"
+										th:value="${Detail.total}" readonly="readonly" /></td>
+									<td><button>View Details</button></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><strong>Total Bills</strong></td>
+									<td><input th:value="${billSum}"
+										class="form-control input-lg" readonly="readonly" /></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-
-
 			</div>
 		</div>
 
