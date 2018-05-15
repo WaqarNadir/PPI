@@ -61,8 +61,8 @@
 									<label for="accPay" class="control-label input-lg">Payment
 										Account</label> <select type="text" class="form-control input-lg"
 										id="cash" onchange="getBalance(this.value)" name="bankSource"
-										th:field="${apReciept.BankSourceID}">
-										<option value="0">Please Select</option>
+										th:field="${apReciept.BankSourceID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="asset : ${currentAsset.childList}"
 											th:value="${asset.Acc_ID}" th:text="${asset.accName}">Bank</option>
 									</select>
@@ -84,13 +84,13 @@
 								<div class="col-sm-3">
 									<label for="payDate" class="control-label input-lg">Payment
 										Date</label><input type="date" class="form-control input-lg"
-										id="paidDate" th:field="${apReciept.Date}" />
+										id="paidDate" th:field="${apReciept.Date}" required="required"/>
 								</div>
 								<div class="col-sm-3">
 									<label for="method" class="control-label input-lg">Payment
 										Method</label> <select th:field="${apReciept.PM_ID}" type="text"
-										class="form-control input-lg" name="paymentMethod">
-										<option th:value="0">Please Select</option>
+										class="form-control input-lg" name="paymentMethod" required="required">
+										<option th:value="">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>

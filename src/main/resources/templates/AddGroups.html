@@ -90,7 +90,7 @@
 									<option value='999'>Please Select</option>
 									<option th:each="parent : ${parentList}"
 										th:value="${parent.Acc_ID}" th:text="${parent.accName}">Cash
-														In hand</option>
+										In hand</option>
 								</select>
 							</div>
 						</div>
@@ -116,7 +116,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Account Name: </label>
 							<div class="col-sm-10">
-								<input class="form-control" type="text" th:field="*{accName}"
+								<input class="form-control input-lg" type="text" th:field="*{accName}"
 									placeholder="Account Name" />
 							</div>
 						</div>
@@ -125,8 +125,16 @@
 
 							<label class="col-sm-2 control-label">Reference No. </label>
 							<div class="col-sm-10">
-								<input class="form-control" type="text" th:field="*{refNo}"
+								<input class="form-control input-lg" type="text" th:field="*{refNo}"
 									disabled="disabled" id="RefNo" placeholder="Reference No. " />
+							</div>
+						</div>
+						<div class="form-group">
+
+							<label class="col-sm-2 control-label">Initial Amount. </label>
+							<div class="col-sm-5">
+								<input class="form-control input-lg" type="text" th:field="*{amount}"
+									id="InAmount" placeholder="Initial Amount " />
 							</div>
 						</div>
 
@@ -134,7 +142,7 @@
 
 							<label class="col-sm-2 control-label">Remarks:</label>
 							<div class="col-sm-10">
-								<textarea class="form-control" rows="4" cols="4"
+								<textarea class="form-control input-lg" rows="4" cols="4"
 									th:field="*{remarks}" placeholder="Enter Any details if needed"></textarea>
 							</div>
 						</div>

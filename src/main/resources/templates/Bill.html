@@ -66,8 +66,8 @@
 								<div class="col-sm-3">
 									<label for="inputPassword3" class="control-label input-lg">To</label>
 									<select class="form-control input-lg"
-										th:field="${AccountPayable.person_ID}">
-										<option value="0">Please Select</option>
+										th:field="${AccountPayable.person_ID}" required="required">
+										<option value="">Please Select</option>
 										<option th:each="person : ${personList}"
 											th:value="${person.PersonID}"
 											th:text="${person.Fname +' '+person.Lname}"></option>
@@ -86,18 +86,18 @@
 								<div class="col-sm-3">
 									<label for="date" class="control-label input-lg" align="center">Date</label>
 									<input type="date" class="form-control input-lg" id="myDate"
-										th:field="${AccountPayable.date}" />
+										th:field="${AccountPayable.date}" required="required"/>
 								</div>
 								<div class="col-sm-3">
 									<label for="duedate" class="control-label input-lg"
 										align="center">Due Date</label> <input type="date"
 										class="form-control input-lg" id="myDate"
-										th:field="${AccountPayable.dueDate}" />
+										th:field="${AccountPayable.dueDate}" required="required"/>
 								</div>
 								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.
 										No</label> <input type="text" class="form-control input-lg" id="refNo"
-										th:field="${AccountPayable.diary_No}" />
+										th:field="${AccountPayable.diary_No}" required="required"/>
 								</div>
 
 							</div>
