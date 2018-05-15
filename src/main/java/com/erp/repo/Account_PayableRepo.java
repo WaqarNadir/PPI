@@ -13,11 +13,8 @@ import com.erp.classes.Account_Payable;
 @Repository
 public interface Account_PayableRepo extends JpaRepository<Account_Payable, Integer> {
 
-<<<<<<< HEAD
 	List<Account_Payable> ByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-=======
->>>>>>> a922fb73805ece6cc483a007edb3b54fb3a020c6
 	@Query("SELECT " + "    new com.erp.classes.Account_Payable(p.status, sum(p.total)) " + "from AccountPayable p "
 			+ "where p.date BETWEEN :startDate and :endDate and p.status = :status" + " GROUP BY p.status")
 	Account_Payable SumTotal(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
