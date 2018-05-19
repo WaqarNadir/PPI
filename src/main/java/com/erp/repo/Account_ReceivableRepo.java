@@ -12,8 +12,8 @@ import com.erp.classes.Account_Receivable;
 
 @Repository
 public interface Account_ReceivableRepo extends JpaRepository<Account_Receivable, Integer> {
-	
-	List<Account_Receivable> ByDateRange(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+
+	List<Account_Receivable> ByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Query("SELECT " + "    new com.erp.classes.Account_Receivable(p.status, sum(p.total)) "
 			+ "from AccountReceivable p " + "where p.date BETWEEN :startDate and :endDate and p.status = :status"

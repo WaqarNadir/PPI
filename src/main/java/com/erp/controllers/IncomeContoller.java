@@ -95,6 +95,10 @@ public class IncomeContoller {
 
 	}
 
+	public void delete(int id) {
+		
+	}
+
 	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
 		boolean result = false;
 		try {
