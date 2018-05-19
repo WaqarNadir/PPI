@@ -2,6 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="template:: head"></div>
+<script>
+	$(document).ready(function() {
+		$('#id').DataTable();
+	});
+</script>
+<script th:src="@{/dist/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/dist/js/dataTables.bootstrap.min.js}"></script>
+<link rel="stylesheet"
+	th:href="@{/dist/css/dataTables.bootstrap.min.css}" />
+
+
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
@@ -37,27 +48,31 @@
  -->
 				</div>
 				<div>
-					<table class="table stripped">
-						<th>Account</th>
-						<th>Group</th>
-						<th>Head</th>
-						<th>Amount</th>
-
-						<th:block th:each="asset : ${list}">
-							<th:block th:each="child : ${asset.childList}">
-								<tr th:each="item : ${child.childList}">
-									<td th:text="${item.accName}"></td>
-									<td th:text="${child.accName}"></td>
-									<td th:text="${asset.accName}"></td>
-									<td th:text="${item.amount}"
-										th:if="${asset.accName} != 'INCOME'"
-										th:unless="${asset.accName} == 'EXPENSES'"></td>
-								</tr>
+					<table class="table stripped" id="id">
+						<thead>
+							<tr>
+								<th>Account</th>
+								<th>Group</th>
+								<th>Head</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="asset : ${list}"
+								th:if="${asset.accName} != 'INCOME'"
+								th:unless="${asset.accName} == 'EXPENSES'">
+								<th:block th:each="child : ${asset.childList}">
+									<tr th:each="item : ${child.childList}">
+										<td th:text="${item.accName}"></td>
+										<td th:text="${child.accName}"></td>
+										<td th:text="${asset.accName}"></td>
+										<td th:text="${item.amount}"
+											th:if="${asset.accName} != 'INCOME'"
+											th:unless="${asset.accName} == 'EXPENSES'"></td>
+									</tr>
+								</th:block>
 							</th:block>
-						</th:block>
-						<tr>
-							<td></td>
-						</tr>
+						</tbody>
 					</table>
 				</div>
 

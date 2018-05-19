@@ -5,15 +5,16 @@
 
 
 
-<script>
+<script th:inline="javascript">
 	function getBalance(value, index) {
+		contextPath = /*[[@{/}]]*/'';
 		if (index == 1) {
 			fieldName = "#balanceFrom";
 		} else {
 			fieldName = "#balanceTo";
 		}
 		$.ajax({
-			url : "/getBalance",
+			url : contextPath + "/getBalance",
 			contentType : "application/json; charset=utf-8",
 			data : value,
 			type : "POST",
