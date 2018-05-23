@@ -22,6 +22,7 @@ import com.erp.classes.Journal;
 import com.erp.classes.JournalDetails;
 import com.erp.classes.ProfitLoss;
 import com.erp.classes.TrailBalance;
+import com.erp.services.APRecieptService;
 import com.erp.services.AccountGroupService;
 import com.erp.services.Account_PayableService;
 import com.erp.services.Account_ReceivableService;
@@ -43,7 +44,6 @@ public class ReportController {
 	private Account_PayableService APService;
 	@Autowired
 	private TrailBalanceService TBService;
-
 	@Autowired
 	private JournalService journalService;
 
@@ -54,6 +54,7 @@ public class ReportController {
 	@GetMapping("Reports/ProfitLoss")
 	public String ProfitLossReport(Model model) {
 		profitLossDetail(model);
+
 		return "Report-ProfitLoss";
 	}
 
@@ -67,7 +68,7 @@ public class ReportController {
 				"This Month: " + Functions.thisMonth(currentDate) + "\n this Year: " + Functions.thisYear(currentDate));
 		System.out.println("current Date: " + currentDate + "\n Last Month: " + lastMonth);
 
-		List<ProfitLoss> profitLossList = service.profitLossReport(lastMonth, currentDate);
+		List<ProfitLoss> profitLossList = service.profitLossReport(lastMonth, currentDate, Constants.OPEN);
 		HashMap<String, Double> incomeMap = new HashMap<>();
 		HashMap<String, Double> expenseMap = new HashMap<>();
 		for (ProfitLoss PL : profitLossList) {
@@ -139,7 +140,7 @@ public class ReportController {
 			startDate = Functions.thisMonth(Functions.getCurrentDate());
 			endDate = Functions.getCurrentDate();
 		}
-		profitLossList = service.profitLossReport(startDate, endDate);
+		profitLossList = service.profitLossReport(startDate, endDate, Constants.OPEN);
 		HashMap<String, Double> incomeMap = new HashMap<>();
 		HashMap<String, Double> expenseMap = new HashMap<>();
 		for (ProfitLoss PL : profitLossList) {
@@ -462,7 +463,7 @@ public class ReportController {
 		AccountGroup netEquity = new AccountGroup();
 		netEquity.setAccName("Net Income");
 
-		profitLossList.addAll(service.profitLossReport(startDate, endDate));
+		profitLossList.addAll(service.profitLossReport(startDate, endDate, Constants.OPEN));
 		for (ProfitLoss pf : profitLossList) {
 			if (pf.getType() == Constants.isExpense)
 				netEquity.setAmount(netEquity.getAmount() - pf.getSubTotal());

@@ -12,6 +12,7 @@ import com.erp.classes.Reports;
 
 @Repository
 public interface ReportsRepo extends JpaRepository<Reports, Integer> {
-	List<ProfitLoss> ProfitLossReport(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	List<ProfitLoss> ProfitLossReport(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("statusNotLike") String statusNotLike);
 
 }

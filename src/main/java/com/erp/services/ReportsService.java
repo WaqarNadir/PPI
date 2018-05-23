@@ -14,7 +14,7 @@ public class ReportsService {
 	@Autowired
 	public ReportsRepo repo;
 
-	public List<ProfitLoss> profitLossReport(Date startDate, Date endDate) {
-		return repo.ProfitLossReport(startDate, endDate);
+	public List<ProfitLoss> profitLossReport(Date startDate, Date endDate, String statusNotLike) {
+		return repo.ProfitLossReport(startDate, endDate, statusNotLike);
 	}
 }

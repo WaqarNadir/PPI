@@ -89,7 +89,7 @@
 									<label>Payment Method</label> <select
 										th:field="${arReciept.PM_ID}" type="text"
 										class="form-control input-lg" name="paymentMethod" required="required">
-										<option th:value="">Please Select</option>
+										<option th:value="999">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
 									</select>

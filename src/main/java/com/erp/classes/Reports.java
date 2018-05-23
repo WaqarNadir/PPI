@@ -8,19 +8,19 @@ import javax.persistence.NamedNativeQuery;
 import javax.persistence.SqlResultSetMapping;
 
 @Entity(name = "ID_GEN")
-@NamedNativeQuery(name = "Reports.ProfitLossReport", query = "select Name,sum(subTotal) as subTotal,TYPE \r\n"
-		+ "from (\r\n" + "select a.accName as Name, sum(tbd.subTotal) as subTotal,t.Type as TYPE \r\n"
-		+ "from accountgroup a \r\n" + " join TrailBalanceDetails tbd on tbd.Acc_ID = a.acc_id\r\n"
-		+ " join TrailBalance t on t.tb_ID = tbd.TB_ID  \r\n"
-		+ "where t.type = 1 or t.Type= 2 and  t.date BETWEEN    :startDate AND :endDate   group by a.accName,t.Type\r\n"
-		+ "union all\r\n" + "select a.accName as Name, SUM(APD.amount_Paid) as subTotal,'1' AS type\r\n"
-		+ "from AccountGroup a\r\n" + "JOIN AccountPayableDetails APD on APD.Acc_ID=a.Acc_ID\r\n"
-		+ "join AccountPayable AP on AP.AP_ID= APD.AP_ID\r\n" + "where AP.[date] BETWEEN  :startDate AND :endDate  \r\n"
-		+ "group by a.accName\r\n" + "\r\n" + "UNION ALL\r\n"
-		+ "select  a.accName as Name ,SUM(ARD.amountReceivable ) as subTotal,'2' AS type\r\n"
-		+ "from AccountGroup a\r\n" + "JOIN AccountReceivableDetails ARD on ARD.Acc_ID=a.Acc_ID\r\n"
-		+ "join AccountReceivable AR on AR.AR_ID= ARD.AR_ID\r\n"
-		+ "where AR.[date] BETWEEN  :startDate AND :endDate  \r\n" + "group by a.accName) X\r\n"
+@NamedNativeQuery(name = "Reports.ProfitLossReport", query = "select Name,sum(subTotal) as subTotal,TYPE  " + "from ( "
+		+ "select a.accName as Name, sum(tbd.subTotal) as subTotal,t.Type as TYPE  " + "from accountgroup a  "
+		+ " join TrailBalanceDetails tbd on tbd.Acc_ID = a.acc_id " + " join TrailBalance t on t.tb_ID = tbd.TB_ID   "
+		+ "where t.type = 1 or t.Type= 2 and  t.date BETWEEN    :startDate AND :endDate   group by a.accName,t.Type "
+
+		+ "union all " + "select 'Account Payable' As Name, COALESCE(SUM(APR.AmountPaid),0) as subTotal,'1' AS type  "
+		+ "		FROM AccountPayable AP  " + "join APReciept APR on APR.AP_ID= AP.AP_ID  "
+		+ "		where APR.[date] BETWEEN  :startDate AND :endDate and not AP.status =:statusNotLike   "
+		
+		+ "UNION ALL "
+		+ "select 'Account Recievable' As Name, COALESCE(SUM(ARR.AmountRecieved),0) as subTotal,'2' AS type\r\n"
+		+ "FROM AccountReceivable AR\r\n" + "join ARReciept ARR on ARR.AR_ID= AR.AR_ID\r\n"
+		+ "		where ARR.[date]  BETWEEN  :startDate AND :endDate and not AR.status =:statusNotLike  " + ") X "
 		+ "group by X.Name ,X.TYPE", resultSetMapping = "ProfitLossReport")
 
 @SqlResultSetMapping(name = "ProfitLossReport", classes = {

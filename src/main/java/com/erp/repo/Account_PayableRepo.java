@@ -27,6 +27,11 @@ public interface Account_PayableRepo extends JpaRepository<Account_Payable, Inte
 	List<Account_Payable> DateAndStatus(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
 			@Param("status") String status);
 
+	List<Account_Payable> DateAndStatusNotLike(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("status") String statusNotLike);
+
 	List<Account_Payable> findByStatus(String status);
+
+	List<Account_Payable> findByStatusNotLike(String statusNotLike);
 
 }

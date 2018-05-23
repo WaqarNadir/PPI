@@ -41,10 +41,14 @@ public class Account_PayableService {
 		return repo.findByStatus(status);
 	}
 
+	public List<Account_Payable> findByStatusNotLike(String statusNotLike) {
+		return repo.findByStatusNotLike(statusNotLike);
+	}
+
 	public Account_Payable SumTotal(Date startDate, Date endDate, String status) {
 		return repo.SumTotal(startDate, endDate, status);
 	}
-	
+
 	public List<Account_Payable> ByDateRange(Date startDate, Date endDate) {
 		return repo.ByDateRange(startDate, endDate);
 	}
@@ -55,6 +59,10 @@ public class Account_PayableService {
 
 	public List<Account_Payable> DueDateBetween(Date startDate, Date endDate) {
 		return repo.DueDateBetween(startDate, endDate);
+	}
+
+	public List<Account_Payable> DateAndStatusNotLike(Date startDate, Date endDate, String statusNotLike) {
+		return repo.DateAndStatus(startDate, endDate, statusNotLike);
 	}
 
 	public List<Account_Payable> DateAndStatus(Date startDate, Date endDate, String status) {

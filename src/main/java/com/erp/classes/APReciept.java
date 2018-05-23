@@ -94,7 +94,7 @@ public class APReciept implements Serializable {
 		return AmountPaid;
 	}
 
-	public void setAmountPaid(double amountPaid) {
+	public void setAmountPaid(Double amountPaid) {
 		this.AmountPaid = amountPaid;
 	}
 }

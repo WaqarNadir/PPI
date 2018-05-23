@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,7 +52,9 @@ public class BillContoller {
 	private APRecieptService APRecieptService;
 	// ---- Variables -------------
 	private List<Account_Payable> AP_List;
+	Double remaining = 0.0;
 
+	// ----------------------- Bill ---------------------------------------------
 	@GetMapping("Bill/Add")
 	public String BillHome(Model model) {
 		Account_Payable AP = new Account_Payable();
@@ -76,38 +79,46 @@ public class BillContoller {
 		return "redirect:/BillReceipt/" + data.getAP_ID();
 	}
 
+	// --------------------------- Bill Reciept-------------------------------------
+
 	@GetMapping(value = "/BillReceipt/{billID}")
 	public String BillPaymentHome(@PathVariable("billID") int billID, Model model) {
 		Account_Payable AP = AP_Service.find(billID);
 		APReciept APR = new APReciept();
 		APR.setAP_ID(AP);
+
+		APR.setDate(Functions.getCurrentDate());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("apReciept", APR);
+		remaining = AP.getTotal() - APRecieptService.SumTotal(AP);
+		model.addAttribute("remaining", remaining);
+
 		return "BillReceipt";
 	}
 
 	@PostMapping("/BillReciept/Save")
 	public String saveBillReieptNote(@ModelAttribute APReciept data, Errors errors, HttpServletRequest request,
 			Model model) {
-		if(data.getAmountPaid() == data.getAP_ID().getTotal()) {
+		Double totalPaid = remaining - data.getAmountPaid();
+		if (totalPaid == 0) { // amounts are equal
 			data.getAP_ID().setstatus(Constants.CLOSED);
-		}
-		else {
+		} else {
 			data.getAP_ID().setstatus(Constants.PARTIAL);
 		}
 		saveBill(data);
 		model.addAttribute("AccountPayable", new Account_Payable());
-		return "redirect:/Bill/Add";
+		return "redirect:/ViewBills";
 	}
+
+	// --------------- View Bills --------------------------
 
 	@GetMapping("ViewBills")
 	public String ViewExpenseHome(Model model) {
 		model.addAttribute("BillsList", getAllBills());
 		return "ViewBills";
 	}
-	
-	
+
 	@GetMapping("Bill/CustomBills")
 	public String CustomBills(Model model) {
 		double incomeSum = 0;
@@ -122,9 +133,7 @@ public class BillContoller {
 		List<Account_Payable> bBalance = AP_Service.ByDateRange(lastMonth, currentDate);
 		for (Account_Payable BB : bBalance) {
 
-			
-				expenseSum += BB.getTotal();
-			
+			expenseSum += BB.getTotal();
 
 		}
 		model.addAttribute("profitLossList", bBalance);
@@ -132,7 +141,7 @@ public class BillContoller {
 		model.addAttribute("netEquity", (incomeSum + expenseSum));
 		return "CustomBills";
 	}
-	
+
 	@PostMapping("Bill/DateWiseBill")
 	public String dateWiseBill(HttpServletRequest request, Model model) {
 		double billSum = 0;
@@ -160,7 +169,7 @@ public class BillContoller {
 		}
 		aPayableList = AP_Service.ByDateRange(startDate, endDate);
 		for (Account_Payable AP : aPayableList) {
-				billSum += AP.getTotal();
+			billSum += AP.getTotal();
 		}
 		msg = "From " + startDate + " to " + endDate;
 		model.addAttribute("label", msg);
@@ -210,26 +219,28 @@ public class BillContoller {
 		return result;
 	}
 
-	private Boolean updatePaidParent(double paidAmount) {
-		boolean result = false;
-		AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
-		try {
-			while (item.getIsParent() != null) {
-				double amount = 0.0;
-				amount = item.getAmount() - paidAmount;
-				System.out.println("Subtracting " + paidAmount + " from " + item.getAccName() + " having balance: "
-						+ item.getAmount());
-				item.setAmount(amount);
-				AG_service.save(item);
-				item = item.getIsParent();
-			}
-			result = true;
-		} catch (Exception e) {
-			result = false;
-			System.err.println("=> Error while update Account group Parent: " + e.getMessage());
-		}
-		return result;
-	}
+	// private Boolean updatePaidParent(double paidAmount) {
+	// boolean result = false;
+	// AccountGroup item = AG_service.findByName(Constants.ACCOUNT_PAYABLE);
+	// try {
+	// while (item.getIsParent() != null) {
+	// double amount = 0.0;
+	// amount = item.getAmount() - paidAmount;
+	// System.out.println("Subtracting " + paidAmount + " from " + item.getAccName()
+	// + " having balance: "
+	// + item.getAmount());
+	// item.setAmount(amount);
+	// AG_service.save(item);
+	// item = item.getIsParent();
+	// }
+	// result = true;
+	// } catch (Exception e) {
+	// result = false;
+	// System.err.println("=> Error while update Account group Parent: " +
+	// e.getMessage());
+	// }
+	// return result;
+	// }
 
 	@PostMapping("/getBalance")
 	public @ResponseBody String getBalance(@RequestBody String data) {
@@ -254,6 +265,7 @@ public class BillContoller {
 
 	private void saveBill(APReciept apReciept) {
 		APRecieptService.save(apReciept);
+		updateBankSource(apReciept.getBankSourceID(), apReciept.getAmountPaid());
 	}
 
 	private void savePayable(Account_Payable data, String status) {
