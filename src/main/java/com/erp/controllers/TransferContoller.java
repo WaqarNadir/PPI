@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.erp.classes.AccountGroup;
-import com.erp.classes.Account_Payable;
 import com.erp.classes.Constants;
 import com.erp.classes.Functions;
 import com.erp.classes.PaymentMethods;
@@ -62,30 +61,53 @@ public class TransferContoller {
 
 		data.getTB_DetailList().get(0).setTB_ID(data);
 		TBD_Service.save(data.getTB_DetailList().get(0));
+		updateBankSource(data.getbankSourceID(), data.getTB_DetailList().get(0).getSubTotal());
+		updateParent(data.getTB_DetailList().get(0).getSubGroup_ID(),data.getTB_DetailList().get(0).getSubTotal());
 		return "redirect:/Transfer/Add";
 	}
+	
+	
+	private Boolean updateBankSource(AccountGroup bankSource, double Amount) {
+		boolean result = false;
+		try {
+			while (bankSource.getIsParent() != null) {
+				double amount = 0.0;
+				amount = bankSource.getAmount() - Amount;
+				bankSource.setAmount(amount);
+				AG_service.save(bankSource);
+				bankSource = bankSource.getIsParent();
+			}
 
-	// private Boolean updateParent(double BillAmount) {
-	// boolean result = false;
-	// AccountGroup item = expense;
-	// try {
-	// while (item.getIsParent() != null) {
-	// double amount = 0.0;
-	// amount = BillAmount + item.getAmount();
-	// item.setAmount(amount);
-	// AG_service.save(item);
-	// item = item.getIsParent();
-	// }
-	//
-	// result = true;
-	// } catch (Exception e) {
-	// result = false;
-	// System.err.println("=> Error while update Account group Parent: " +
-	// e.getMessage());
-	// }
-	// return result;
-	//
-	// }
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
+		}
+		return result;
+
+	}
+
+
+	 private Boolean updateParent(AccountGroup item , double BillAmount) {
+	 boolean result = false;
+	 try {
+	 while (item.getIsParent() != null) {
+	 double amount = 0.0;
+	 amount = BillAmount + item.getAmount();
+	 item.setAmount(amount);
+	 AG_service.save(item);
+	 item = item.getIsParent();
+	 }
+	
+	 result = true;
+	 } catch (Exception e) {
+	 result = false;
+	 System.err.println("=> Error while update Account group Parent: " +
+	 e.getMessage());
+	 }
+	 return result;
+	
+	 }
 
 	@GetMapping("ViewTransfers")
 	public String ViewExpenseHome(Model model) {
