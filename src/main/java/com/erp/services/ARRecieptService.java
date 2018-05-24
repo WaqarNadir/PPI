@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.erp.classes.ARReciept;
+import com.erp.classes.Account_Receivable;
 import com.erp.repo.ARRecieptRepo;
 
 @Service
@@ -15,7 +16,7 @@ public class ARRecieptService {
 
 	public void save(ARReciept arReciept) {
 		repo.save(arReciept);
-		}
+	}
 
 	public void delete(int id) {
 		repo.delete(id);
@@ -37,7 +38,7 @@ public class ARRecieptService {
 
 	}
 
+	public Double SumTotal(Account_Receivable AR) {
+		return repo.SumTotal(AR);
+	}
 }
-
-
-

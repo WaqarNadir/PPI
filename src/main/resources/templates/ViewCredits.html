@@ -5,19 +5,19 @@
 
 
 <script>
-		function getReport(value) {
-			if (value == '0') {
-				return;
-			}
-			if (value == '3') {
-				$("#customDates").show();
-			} else {
-				$("#customDates").hide();
-				$("#CreditForm").submit();
-			}
-
+	function getReport(value) {
+		if (value == '0') {
+			return;
 		}
-	</script>
+		if (value == '3') {
+			$("#customDates").show();
+		} else {
+			$("#customDates").hide();
+			$("#CreditForm").submit();
+		}
+
+	}
+</script>
 <body class="hold-transition skin-blue sidebar-mini">
 
 	<div th:replace="template:: wrapper"></div>
@@ -77,6 +77,7 @@
 									<th>Credit Note ID</th>
 									<th>Diary NO.</th>
 									<th>Date</th>
+									<th>Status</th>
 									<th>Amount</th>
 									<th></th>
 								</tr>
@@ -91,8 +92,12 @@
 									<td><input class="form-control input-lg"
 										th:value="${Detail.date}" readonly="readonly" /></td>
 									<td><input class="form-control input-lg"
+										th:value="${Detail.status}" readonly="readonly" /></td>
+									<td><input class="form-control input-lg"
 										th:value="${Detail.total}" readonly="readonly" /></td>
-									<td><button>View Details</button></td>
+									<td><a th:href="'CreditReceipt/'+ ${Detail.AR_ID}"><button
+												class="btn btn-info">View Details</button></a></td>
+
 								</tr>
 							</tbody>
 						</table>

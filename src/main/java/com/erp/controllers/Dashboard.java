@@ -1,8 +1,6 @@
 package com.erp.controllers;
 
-import java.sql.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Constants;
-import com.erp.classes.Functions;
-import com.erp.classes.Journal;
-import com.erp.classes.JournalDetails;
-import com.erp.classes.ProfitLoss;
 import com.erp.services.AccountGroupService;
 import com.erp.services.JournalService;
 import com.erp.services.ReportsService;

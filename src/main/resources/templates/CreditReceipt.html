@@ -37,6 +37,17 @@
 		$("#balance2").val(remain);
 
 	}
+	function validate(value) {
+		var remaining = $("#remaining").val();
+		var remainingValue = parseInt(remaining);
+		var amountPaid = parseInt(value);
+		if (amountPaid > remainingValue) {
+			$("#save").prop("disabled", true);
+		} else {
+			$("#save").prop("disabled", false);
+		}
+
+	}
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -47,6 +58,7 @@
 	<div class="content-wrapper">
 		<div class="content-header">
 			<h1 align="center">Receive Credit</h1>
+
 		</div>
 		<!-- Main content -->
 		<section class="content">
@@ -58,6 +70,8 @@
 						<!-- form start -->
 						<form class="form-horizontal" th:action="@{/CreditReceipt/Save}"
 							method="post">
+							<input th:field="*{arReciept.AR_ID}" hidden="true" />
+
 							<div class="box-body">
 								<div class="col-sm-3">
 									<label for="accPay" class="control-label input-lg">Payment
@@ -75,7 +89,7 @@
 										id="balance" readonly="readonly" class="label-total"
 										align="center" />
 								</div>
-								<div class="col-sm-2 pull-right">
+								<div class="col-sm-3 pull-right">
 
 									<label for="date" class="control-label input-lg" align="center">Expected
 										Date</label> <input type="date" readonly="readonly"
@@ -88,7 +102,8 @@
 								<div class="col-sm-3">
 									<label>Payment Method</label> <select
 										th:field="${arReciept.PM_ID}" type="text"
-										class="form-control input-lg" name="paymentMethod" required="required">
+										class="form-control input-lg" name="paymentMethod"
+										required="required">
 										<option th:value="999">Please Select</option>
 										<option th:each="method: ${methodList}"
 											th:value="${method.PM_ID}" th:text="${method.name}">Cheque</option>
@@ -97,7 +112,7 @@
 								<div class="col-sm-3">
 									<label>Received Date</label> <input type="date"
 										class="form-control input-lg" id="recievedDate"
-										th:field="${arReciept.Date}" required="required"/>
+										th:field="${arReciept.Date}" required="required" />
 								</div>
 								<div class="col-sm-2 pull-right">
 									<label for="refNo" class="control-label input-lg">Ref.
@@ -144,52 +159,39 @@
 
 										</tr>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td colspan="5" rowspan="3">
+												<div class="col-sm-8">
+													<label class="control-label input-lg">Remarks:</label>
+													<textarea class="form-control input-lg" cols="4" rows="3"
+														th:field="${arReciept.remarks}" style="resize: none"
+														placeholder="Enter Any details if needed"></textarea>
+												</div>
+											</td>
+
 											<td><label class="text-center">Total:</label> <input
 												type="text" class="label-total" id="total"
 												readonly="readonly" th:value="${arReciept.AR_ID.total}" /></td>
 										</tr>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><label>Amount Received</label> <input type="text"
-												class="label-total" id="amountReceived"
-												onchange="updateBalance(this.value)"
-												th:field="${arReciept.amountReceived}" /></td>
-											<td></td>
+											<td><label>Remaining</label> <input type="text"
+												class="label-total" id="remaining" th:value="${remaining}" /></td>
+
 										</tr>
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><label>Balance</label> <input type="text"
-												class="label-total" id="balance2" /></td>
-											<td></td>
+
+											<td><label>Amount</label> <input type="text"
+												class="form-control text-center" id="amountPaid"
+												th:field="${arReciept.amountReceived}"
+												onchange="validate(this.value)" /></td>
+
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							<div class="form-group">
 
-								<label class="col-sm-2 control-label input-lg">Remarks:</label>
-								<div class="col-sm-5">
-									<textarea class="form-control input-lg" rows="4" cols="4"
-										th:field="${arReciept.remarks}"
-										placeholder="Enter Any details if needed"></textarea>
-								</div>
-							</div>
 							<div class="box-footer">
 								<button type="reset" class="btn btn-default">Cancel</button>
-								<button type="submit" class="btn btn-info pull-right">Save</button>
+								<button type="submit" id="save" class="btn btn-info pull-right">Save</button>
 							</div>
 						</form>
 

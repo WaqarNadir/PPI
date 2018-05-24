@@ -50,6 +50,7 @@ public class CreditNoteContoller {
 	private List<AccountGroup> AG_List;
 	AccountGroup income = null;
 	AccountGroup currentAsset = null;
+	Double remaining = 0.0;
 
 	@GetMapping("CreditNote/Add")
 	public String CreditNoteHome(Model model) {
@@ -57,7 +58,7 @@ public class CreditNoteContoller {
 		Date cDate = new Date(System.currentTimeMillis());
 		AR.setDate(cDate);
 		Date dueDate = Functions.addDays(30, cDate);
-		AR.setDue_Date(dueDate);	
+		AR.setDue_Date(dueDate);
 		income = AG_service.findByName(Constants.INCOME);
 		currentAsset = AG_service.findByName(Constants.CURRENT_ASSETS);
 		model.addAttribute("personList", getPerson());
@@ -103,22 +104,30 @@ public class CreditNoteContoller {
 		Account_Receivable AR = AR_Service.find(creditID);
 		ARReciept ARR = new ARReciept();
 		ARR.setAR_ID(AR);
-
+		ARR.setDate(Functions.getCurrentDate());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
 		model.addAttribute("AssetList", getCurrentAsset());
 		model.addAttribute("arReciept", ARR);
 		// model.addAttribute("wrapper", APR);
+		remaining = AR.getTotal() - ARRecieptService.SumTotal(AR);
+		model.addAttribute("remaining", remaining);
+
 		return "CreditReceipt";
 	}
 
 	@PostMapping("/CreditReceipt/Save")
 	public String saveBillReieptNote(@ModelAttribute ARReciept data, Errors errors, HttpServletRequest request,
 			Model model) {
+		Double totalRecieved = remaining - data.getAmountReceived();
+		if (totalRecieved == 0) { // amounts are equal
+			data.getAR_ID().setstatus(Constants.CLOSED);
+		} else {
+			data.getAR_ID().setstatus(Constants.PARTIAL);
+		}
+
 		saveCredit(data);
-		// model.addAttribute("wrapper", data);
-		model.addAttribute("AccountRecievable", new Account_Receivable());
-		return "redirect:/CreditNote/Add";
+		return "redirect:/ViewCredits";
 	}
 
 	@GetMapping("ViewCredits")
@@ -126,8 +135,7 @@ public class CreditNoteContoller {
 		model.addAttribute("CreditList", getAllCredits());
 		return "ViewCredits";
 	}
-	
-	
+
 	@GetMapping("Credit/CustomCredit")
 	public String CustomBills(Model model) {
 		double incomeSum = 0;
@@ -142,9 +150,7 @@ public class CreditNoteContoller {
 		List<Account_Receivable> cBalance = AR_Service.ByDateRange(lastMonth, currentDate);
 		for (Account_Receivable CB : cBalance) {
 
-			
 			creditSum += CB.getTotal();
-			
 
 		}
 		model.addAttribute("profitLossList", cBalance);
@@ -152,7 +158,7 @@ public class CreditNoteContoller {
 		model.addAttribute("netEquity", (incomeSum + creditSum));
 		return "CustomCredit";
 	}
-	
+
 	@PostMapping("Credit/DateWiseCredit")
 	public String dateWiseBill(HttpServletRequest request, Model model) {
 		double creditSum = 0;
@@ -180,7 +186,7 @@ public class CreditNoteContoller {
 		}
 		aRList = AR_Service.ByDateRange(startDate, endDate);
 		for (Account_Receivable AR : aRList) {
-				creditSum += AR.getTotal();
+			creditSum += AR.getTotal();
 		}
 		msg = "From " + startDate + " to " + endDate;
 		model.addAttribute("label", msg);
@@ -189,8 +195,6 @@ public class CreditNoteContoller {
 		model.addAttribute("creditSum", creditSum);
 		return "CustomCredit";
 	}
-	
-	
 
 	// ------------------ Utility functions ------------------------
 
@@ -226,6 +230,26 @@ public class CreditNoteContoller {
 
 	private void saveCredit(ARReciept arReciept) {
 		ARRecieptService.save(arReciept);
+		updateBankSource(arReciept.getBankSourceID(), arReciept.getAmountReceived());
+
+	}
+
+	private Boolean updateBankSource(AccountGroup bankSource, double amountRecieved) {
+		boolean result = false;
+		try {
+			while (bankSource.getIsParent() != null) {
+				double amount = 0.0;
+				amount = bankSource.getAmount() + amountRecieved;
+				bankSource.setAmount(amount);
+				AG_service.save(bankSource);
+				bankSource = bankSource.getIsParent();
+			}
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			System.err.println("=> Error while update bank source Parent: " + e.getMessage());
+		}
+		return result;
 	}
 
 	public List<Person> getPerson() {

@@ -12,7 +12,10 @@ import com.erp.classes.Account_Receivable;
 
 @Repository
 public interface ARRecieptRepo extends JpaRepository<ARReciept, Integer> {
-	@Query("SELECT p.AmountReceived " + "from ARReciept p " + "where p.date =:date and p.AR_ID =:AR_ID")
+	@Query("SELECT COALESCE(p.AmountReceived,0) " + "from ARReciept p " + "where p.date =:date and p.AR_ID =:AR_ID")
 	Double SumTotal(@Param("date") Date date, @Param("AR_ID") Account_Receivable AR);
+
+	@Query("SELECT COALESCE(sum(p.AmountReceived),0) " + "from ARReciept p " + "where p.AR_ID =:AR")
+	Double SumTotal(@Param("AR") Account_Receivable AP);
 
 }
