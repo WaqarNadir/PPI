@@ -1,5 +1,4 @@
+*.class
+*.class
+*/target/**
 
-*.class
-*.class
-src/main/java/com/erp/controllers/BillContoller.java
-src/main/java/com/erp/controllers/BillContoller.java
