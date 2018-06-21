@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,6 +76,17 @@ public class ExpenseContoller {
 		return "redirect:/Expense/Add";
 	}
 
+	@GetMapping("Expense/ExpenseDetail/{id}")
+	public String IncomeDetail(Model model, @PathVariable("id") int id) {
+		TrailBalance tb = TB_service.find(id);
+		if (tb == null)
+			return "redirect:/Expense/Add";
+
+		model.addAttribute("TrailBalance", tb);
+
+		return "ExpenseDetail";
+	}
+
 	private Boolean updateParent(double BillAmount) {
 		boolean result = false;
 		AccountGroup item = expense;
@@ -118,11 +130,11 @@ public class ExpenseContoller {
 
 	@GetMapping("ViewExpenses")
 	public String ViewExpenseHome(Model model) {
-		
+
 		List<TrailBalance> expenses = new ArrayList<>();
 		expenses = getAllExpenses(Constants.isExpense);
 		int gTotal = getExpense(expenses);
-		
+
 		model.addAttribute("ExpenseList", expenses);
 		model.addAttribute("expenseSum", gTotal);
 		return "ViewExpenses";
@@ -260,7 +272,7 @@ public class ExpenseContoller {
 		model.addAttribute("expenseSum", expenseSum);
 		return "CustomExpenses";
 	}
-	
+
 	public int getExpense(List<TrailBalance> incomeList) {
 		int expenseSum = 0;
 		for (TrailBalance TB : incomeList) {

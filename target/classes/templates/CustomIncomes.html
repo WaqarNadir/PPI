@@ -57,7 +57,7 @@
 									Date :</label> <input class="form-control" type="date" name="endDate"
 									required="required" placeholder="Enter End Date" />
 								<button type="submit" class="btn-primary">Search</button>
-								>>>>>>> 7ca7751ded057f189f8ad8009658f886ef90ed3a
+
 
 							</div>
 						</div>
@@ -85,7 +85,9 @@
 										th:value="${Detail.date}" readonly="readonly" /></td>
 									<td><input class="form-control input-lg"
 										th:value="${Detail.total}" readonly="readonly" /></td>
-									<td><button>View Details</button></td>
+									<td><a
+										th:href="@{'/Income/IncomeDetail/'+ ${Detail.TB_ID}}"><button
+												class="btn btn-info">View Details</button></a></td>
 								</tr>
 								<tr>
 									<td></td>

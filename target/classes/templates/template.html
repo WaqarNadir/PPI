@@ -142,6 +142,16 @@
 
 							</ul></li>
 						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
+								<span>Donation &amp; Funds</span> <span
+								class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+								<li><a th:href="@{/Income/Funds}">Add Funds</a></li>
+								<li><a th:href="@{/ViewExpenses}">View All</a></li>
+
+							</ul></li>
+						<li class="treeview"><a href="#"><i class="fa fa-link"></i>
 								<span>Bills</span> <span class="pull-right-container"> <i
 									class="fa fa-angle-left pull-right"></i>
 							</span> </a>
@@ -180,11 +190,13 @@
 									<i class="fa fa-angle-left pull-right"></i>
 							</span> </a>
 							<ul class="treeview-menu">
-								<li><a th:href="@{/Reports/BalanceSheet}">Balance Sheet</a></li>
+								<!-- 	<li><a th:href="@{/Reports/BalanceSheet}">Balance Sheet</a></li> -->
 								<li><a th:href="@{/Reports/ChartsOfAccount}">Chart of
 										Account</a></li>
-								<li><a th:href="@{/Reports/ProfitLoss}">Profit and Loss
-										Statement</a></li>
+								<li><a th:href="@{/Reports/ProfitLoss}">Income and
+										Expenditure Account</a></li>
+								<li><a th:href="@{/Reports/FundsDetails}"> Funds Detail
+										Summary</a></li>
 								<li><a th:href="@{/Reports/APSummary}"> AP Aging
 										Summary</a></li>
 								<li><a th:href="@{/Reports/ARSummary}"> AR Aging

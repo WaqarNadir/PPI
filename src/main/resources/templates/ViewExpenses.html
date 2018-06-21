@@ -29,7 +29,7 @@
 				</div>
 				<div>
 					<!-- form start -->
-					<form action="/Expense/DateWiseExpense" method="post"
+					<form th:action="@{/Expense/DateWiseExpense}" method="post"
 						class="form-horizontal" id="ExpenseForm">
 						<div class="box-body">
 							<div class="col-sm-3 pull-right">
@@ -87,7 +87,8 @@
 										th:value="${Detail.date}" readonly="readonly" /></td>
 									<td><input class="form-control input-lg"
 										th:value="${Detail.total}" readonly="readonly" /></td>
-									<td><button>View Details</button></td>
+									<td><a th:href="'Expense/ExpenseDetail/'+ ${Detail.TB_ID}"><button
+												class="btn btn-info">View Details</button></a></td>
 								</tr>
 								<tr>
 									<td></td>

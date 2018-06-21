@@ -85,7 +85,9 @@
 										th:value="${Detail.date}" readonly="readonly" /></td>
 									<td><input class="form-control input-lg"
 										th:value="${Detail.total}" readonly="readonly" /></td>
-									<td><button>View Details</button></td>
+									<td><a
+										th:href="@{'/Expense/ExpenseDetail/'+ ${Detail.TB_ID}}"><button
+												class="btn btn-info">View Details</button></a></td>
 
 								</tr>
 								<tr>

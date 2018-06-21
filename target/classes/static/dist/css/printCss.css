@@ -16,7 +16,8 @@
 	background-color: #f9f9f9;
 }
 
-.table-print>thead>tr>td, .table-print-striped>thead>tr>th {
+.table-print>thead>tr>td, .table-print>thead>tr>th, .table-print-striped>thead>tr>th
+	{
 	text-align: left;
 }
 

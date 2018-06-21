@@ -18,6 +18,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 @Entity(name = "TrailBalance")
 @NamedQueries({
 		@NamedQuery(name = "TrailBalance.ByDateRange", query = "select t from TrailBalance t "
@@ -34,7 +37,9 @@ public class TrailBalance implements Serializable {
 
 	@Column(name = "TB_ID")
 	private int TB_ID;
+
 	private Date date;
+
 	private double total;
 	private String diaryNo;
 	private String remarks;
@@ -57,6 +62,12 @@ public class TrailBalance implements Serializable {
 	private List<PaymentDetails> PaymentDetail;
 
 	// --------------- Getter & Setters ---------------
+
+	public TrailBalance(int year, Double total) {
+
+		this.setRemarks(year + "");
+		this.setTotal(total);
+	}
 
 	public List<PaymentDetails> getPaymentDetail() {
 		return PaymentDetail;

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.erp.classes.AccountGroup;
@@ -55,7 +56,7 @@ public class IncomeContoller {
 		income = AG_service.findByName(Constants.INCOME);
 		income.getChildList();
 		TrailBalance TB = new TrailBalance();
-		TB.setDate(new Date(System.currentTimeMillis()));
+		TB.setDate(Functions.getCurrentDate());
 		model.addAttribute("personList", getPerson());
 		model.addAttribute("methodList", getMethods());
 		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
@@ -68,6 +69,43 @@ public class IncomeContoller {
 	@PostMapping("/Income/Save")
 	public String saveIncome(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
 		save(data, Constants.isIncome);
+		updateParent(data.getTotal());
+		updateBankSource(data.getbankSourceID(), data.getTotal());
+
+		return "redirect:/Income/Add";
+	}
+
+	@GetMapping("Income/IncomeDetail/{id}")
+	public String IncomeDetail(Model model, @PathVariable("id") int id) {
+		TrailBalance tb = TB_service.find(id);
+		if (tb == null)
+			return "redirect:/Income/Add";
+
+		model.addAttribute("TrailBalance", tb);
+
+		return "IncomeDetail";
+	}
+
+	@GetMapping("Income/Funds")
+	public String NewFunds(Model model) {
+		AccountGroup equity = new AccountGroup();
+		equity = AG_service.findByName(Constants.EQUITY);
+		equity.getChildList();
+		TrailBalance TB = new TrailBalance();
+		TB.setDate(Functions.getCurrentDate());
+
+		model.addAttribute("personList", getPerson());
+		model.addAttribute("methodList", getMethods());
+		model.addAttribute("currentAsset", AG_service.findByName(Constants.CURRENT_ASSETS));
+		model.addAttribute("equity", equity);
+		model.addAttribute("TrailBalance", TB);
+
+		return "NewFunds";
+	}
+
+	@PostMapping("/Income/Funds/Save")
+	public String saveFunds(@ModelAttribute TrailBalance data, Errors errors, HttpServletRequest request) {
+		saveTrailBalance(data, Constants.isEquity);
 		updateParent(data.getTotal());
 		updateBankSource(data.getbankSourceID(), data.getTotal());
 
@@ -96,7 +134,7 @@ public class IncomeContoller {
 	}
 
 	public void delete(int id) {
-		
+
 	}
 
 	private Boolean updateBankSource(AccountGroup bankSource, double BillAmount) {
@@ -120,7 +158,7 @@ public class IncomeContoller {
 	}
 
 	@GetMapping("ViewIncomes")
-	public String ViewExpenseHome(Model model) {
+	public String ViewIncomeHome(Model model) {
 		List<TrailBalance> incomes = new ArrayList<>();
 		incomes = getAllIncomes(Constants.isIncome);
 		int gTotal = getIncome(incomes);
@@ -154,13 +192,13 @@ public class IncomeContoller {
 	}
 
 	@PostMapping("Income/DateWiseIncome")
-	public String dateWiseIncome(HttpServletRequest request, Model model) {
+	public String dateWiseIncome(HttpServletRequest request, Model model ) {
 		double incomeSum = 0;
 		Date startDate = null, endDate = null;
 		List<TrailBalance> tBIncomeList = null;
 		String msg = "";
 		String value = request.getParameter("selectValue");
-
+		String isFunds = request.getParameter("isFunds");
 		if (value.equals("3")) {
 			System.out.println("Displaying Custom Report");
 			startDate = Functions.getSQLDate(request.getParameter("startDate"));
@@ -178,11 +216,11 @@ public class IncomeContoller {
 			startDate = Functions.thisMonth(Functions.getCurrentDate());
 			endDate = Functions.getCurrentDate();
 		}
-		;
-		;
-		;
-		;
-		tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isIncome);
+
+		if (isFunds != null)
+			tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isEquity);
+		else
+			tBIncomeList = TB_service.ByDateRange(startDate, endDate, Constants.isIncome);
 		for (TrailBalance TB : tBIncomeList) {
 			if (TB.getType() == Constants.isIncome) {
 				incomeSum += TB.getTotal();
@@ -215,6 +253,13 @@ public class IncomeContoller {
 	// ------------------ Utility functions ------------------------
 
 	private void save(TrailBalance data, int type) {
+		saveTrailBalance(data, type);
+		data.getPaymentDetail().get(0).setTB_ID(data);
+		PD_Service.save(data.getPaymentDetail().get(0));
+
+	}
+
+	private void saveTrailBalance(TrailBalance data, int type) {
 		data.setType(type);
 		TB_service.save(data);
 		for (TB_Details TBD : data.getTB_DetailList()) {
@@ -223,8 +268,6 @@ public class IncomeContoller {
 				TBD_Service.save(TBD);
 			}
 		}
-		data.getPaymentDetail().get(0).setTB_ID(data);
-		PD_Service.save(data.getPaymentDetail().get(0));
 
 	}
 

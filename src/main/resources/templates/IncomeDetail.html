@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="template:: head"></div>
+
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+	<div th:replace="template:: wrapper"></div>
+
+
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<h1 align="center">Income Detail</h1>
+		</div>
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-info">
+						<!-- form start -->
+						<form class="form-horizontal" method="post">
+							<div class="box-body">
+								<div class="col-sm-3">
+									<label for="inputPassword3" class="control-label input-lg">From</label>
+									<select class="form-control input-lg" disabled="disabled">
+
+										<option th:if="${TrailBalance.person_ID}!=null"
+											th:text="${TrailBalance.person_ID.Fname +' '+TrailBalance.person_ID.Lname}"></option>
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<label for="inputPassword3" class="control-label input-lg">Bank/Credit
+										Account</label> <select type="text" class="form-control input-lg"
+										id="cash" name="bankSource" onchange="getBalance(this.value)"
+										disabled="disabled">
+
+										<option th:text="${TrailBalance.getbankSourceID().accName}">Bank</option>
+									</select>
+								</div>
+								<div class="col-sm-2">
+									<label for="balanceVal" class="control-label input-lg">Balance</label>
+									<input id="balance" readonly="readonly" class="label-total" />
+								</div>
+								<div class="col-sm-3 pull-right text-center">
+									<label for="inputPassword3" class="control-label input-lg"
+										align="center">Total</label> <input th:id="total"
+										class="label-total" th:field="*{TrailBalance.total}"
+										readonly="readonly" />
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="col-sm-2 pull-right">
+									<label for="refNo" class="control-label input-lg">Ref.
+										No</label> <input type="text" class="form-control input-lg" id="refNo"
+										th:field="*{TrailBalance.diaryNo}" disabled="disabled" />
+								</div>
+								<div class="col-sm-3">
+									<label for="total" class="control-label input-lg"
+										align="center">Payment Method</label> <select type="text"
+										class="form-control input-lg" name="paymentMethod"
+										disabled="disabled">
+
+										<option th:if="${TrailBalance.paymentDetail[0].PM_ID !=null }"
+											th:text="${TrailBalance.paymentDetail[0].PM_ID.name}">Cheque</option>
+
+									</select>
+								</div>
+								<div class="col-sm-3">
+									<label for="date" class="control-label input-lg" align="center">Date
+									</label> <input type="date" class="form-control input-lg" id="myDate"
+										th:value="${TrailBalance.date}" disabled="disabled" />
+								</div>
+
+								<div class="col-sm-3">
+									<label for="refNo" class="control-label input-lg">Payment
+										Details</label> <input type="text" class="form-control input-lg"
+										id="paymentDetials"
+										th:field="*{TrailBalance.paymentDetail[0].paymentDetail}" />
+								</div>
+
+
+							</div>
+							<div class="box-body">
+								<table id="table1" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th width="230px">Account</th>
+											<th width="310px">Sub Account</th>
+											<th>Description</th>
+											<th width="150px">Amount</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr
+											th:each="item, iterStat: ${TrailBalance.getTB_DetailList()}">
+											<td th:text="${iterStat.index} +1"></td>
+
+
+											<td><select class="form-control input-lg">
+													<option th:text="${item.subGroup_ID.isParent.accName}"></option>
+											</select></td>
+
+											<td><select class="form-control input-lg">
+													<option th:text="${item.subGroup_ID.accName}"></option>
+											</select></td>
+
+											<td><input class="form-control input-lg"
+												th:value="${item.remarks}" type="text" /></td>
+											<td><input th:value="${item.subTotal}"
+												disabled="disabled" class="subTotal form-control input-lg" /></td>
+
+										</tr>
+
+									</tbody>
+
+								</table>
+							</div>
+							<div class="form-group">
+
+								<label class="col-sm-2 control-label input-lg">Remarks:</label>
+								<div class="col-sm-5">
+									<textarea class="form-control input-lg" rows="4" cols="4"
+										th:field="*{TrailBalance.remarks}"
+										placeholder="Enter Any details if needed"></textarea>
+								</div>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+
+	<div th:replace="template:: footer"></div>
+</body>
+</html>

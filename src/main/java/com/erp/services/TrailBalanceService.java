@@ -50,4 +50,9 @@ public class TrailBalanceService {
 	public List<TrailBalance> DateBetween(Date startDate, Date endDate) {
 		return repo.DateBetween(startDate, endDate);
 	}
+
+	public List<TrailBalance> YearlyReport(int type) {
+		return repo.YearlyReport(type);
+	}
+
 }
