@@ -63,7 +63,7 @@ public class Account_PayableService {
 	}
 
 	public List<Account_Payable> DateAndStatusNotLike(Date startDate, Date endDate, String statusNotLike) {
-		return repo.DateAndStatus(startDate, endDate, statusNotLike);
+		return repo.DateAndStatusNotLike(startDate, endDate, statusNotLike);
 	}
 
 	public List<Account_Payable> DateAndStatus(Date startDate, Date endDate, String status) {

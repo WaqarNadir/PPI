@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.erp.classes.Account_Payable;
 import com.erp.classes.Account_Receivable;
 import com.erp.repo.Account_ReceivableRepo;
 
@@ -41,7 +42,7 @@ public class Account_ReceivableService {
 	public Account_Receivable SumTotal(Date startDate, Date endDate, String status) {
 		return repo.sumTotal(startDate, endDate, status);
 	}
-	
+
 	public List<Account_Receivable> ByDateRange(Date startDate, Date endDate) {
 		return repo.ByDateRange(startDate, endDate);
 	}
@@ -49,9 +50,17 @@ public class Account_ReceivableService {
 	public List<Account_Receivable> DateBetween(Date startDate, Date endDate) {
 		return repo.DateBetween(startDate, endDate);
 	}
+
 	public List<Account_Receivable> findByStatus(String status) {
 		return repo.findByStatus(status);
 	}
 
+	public List<Account_Receivable> DateAndStatus(Date startDate, Date endDate, String status) {
+		return repo.DateAndStatus(startDate, endDate, status);
+	}
+
+	public List<Account_Receivable> DateAndStatusNotLike(Date startDate, Date endDate, String statusNotLike) {
+		return repo.DateAndStatusNotLike(startDate, endDate, statusNotLike);
+	}
 
 }

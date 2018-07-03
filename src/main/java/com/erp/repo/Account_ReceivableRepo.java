@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.erp.classes.Account_Payable;
 import com.erp.classes.Account_Receivable;
 
 @Repository
@@ -25,5 +26,11 @@ public interface Account_ReceivableRepo extends JpaRepository<Account_Receivable
 	List<Account_Receivable> DateBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	List<Account_Receivable> findByStatus(String status);
+
+	List<Account_Receivable> DateAndStatus(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("status") String status);
+
+	List<Account_Receivable> DateAndStatusNotLike(@Param("startDate") Date startDate, @Param("endDate") Date endDate,
+			@Param("status") String statusNotLike);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.erp.classes.APReciept;
 import com.erp.classes.AccountGroup;
 import com.erp.classes.Account_Payable;
 import com.erp.classes.Account_Receivable;
@@ -22,6 +23,8 @@ import com.erp.classes.Journal;
 import com.erp.classes.JournalDetails;
 import com.erp.classes.ProfitLoss;
 import com.erp.classes.TrailBalance;
+import com.erp.services.APRecieptService;
+import com.erp.services.ARRecieptService;
 import com.erp.services.AccountGroupService;
 import com.erp.services.Account_PayableService;
 import com.erp.services.Account_ReceivableService;
@@ -45,6 +48,10 @@ public class ReportController {
 	private TrailBalanceService TBService;
 	@Autowired
 	private JournalService journalService;
+	@Autowired
+	APRecieptService aprService;
+	@Autowired
+	ARRecieptService arrService;
 
 	AccountGroup assets = null;
 	AccountGroup liability = null;
@@ -522,8 +529,18 @@ public class ReportController {
 		List<Journal> JournalList = journalService.ByDateRange(startDate, endDate);
 		// List<AccountGroup> JournalList = AGService.BalanceSheetReport(startDate,
 		// endDate);
-		List<Account_Payable> APList = APService.DateBetween(startDate, endDate);
-		List<Account_Receivable> ARList = ARService.DateBetween(startDate, endDate);
+
+		// List<Account_Payable> APList = APService.DateBetween(startDate, endDate);
+
+		List<Account_Payable> APList = APService.DateAndStatusNotLike(startDate, endDate, Constants.CLOSED);
+		List<Account_Receivable> ARList = ARService.DateAndStatusNotLike(startDate, endDate, Constants.CLOSED);
+		// Partial
+
+		// for (Account_Receivable account_Receivable : ARList) {
+		// if (account_Receivable.getStatus().equals(Constants.PARTIAL))
+		// account_Receivable.setTotal(account_Receivable.getTotal() +
+		// arrService.SumTotal(account_Receivable));
+		// }
 
 		double netIncome = 0.0;
 		HashMap<AccountGroup, Double> currentAsset = new HashMap<>();
@@ -594,22 +611,27 @@ public class ReportController {
 		// ----------------------- Account Payable ------------------
 
 		Account_Payable payable = new Account_Payable();
-
+		Double ApTotal = 0.0;
 		for (Account_Payable AP : APList) {
-			if (!AP.getstatus().equals(Constants.CLOSED)) {
-				payable.setTotal(payable.getTotal() + AP.getTotal());
-			} else {
-				Asset.getChildList().forEach(child -> {
-					if (child.getAccName().equalsIgnoreCase(Constants.CURRENT_ASSETS)) {
-						AP.getReciptList().forEach(reciept -> {
-							if (reciept.getBankSourceID().equals(child)) {
-								child.setAmount(child.getAmount() + reciept.getAmountPaid());
-								Asset.setAmount(child.getAmount() + reciept.getAmountPaid());
-							}
-						});
-					}
-				});
-			}
+
+			// if (AP.getStatus().equals(Constants.PARTIAL))
+			// totalAmountPaid += aprService.SumTotal(AP);
+			ApTotal += AP.getTotal();
+			payable.setTotal(payable.getTotal() + AP.getTotal());
+
+			Asset.getChildList().forEach(child -> {
+				if (child.getAccName().equalsIgnoreCase(Constants.CURRENT_ASSETS)) {
+					AP.getReciptList().forEach(reciept -> {
+						if (reciept.getBankSourceID().getIsParent().equals(child)) {
+							currentAsset.put(reciept.getBankSourceID(),
+									currentAsset.getOrDefault(reciept.getBankSourceID(), 0.0)
+											- reciept.getAmountPaid());
+
+							payable.setTotal(payable.getTotal() - reciept.getAmountPaid());
+						}
+					});
+				}
+			});
 
 		}
 
@@ -637,8 +659,12 @@ public class ReportController {
 					if (child.getAccName().equalsIgnoreCase(Constants.CURRENT_ASSETS)) {
 						AP.getRecieptList().forEach(reciept -> {
 							if (reciept.getBankSourceID().equals(child)) {
-								child.setAmount(child.getAmount() + reciept.getAmountReceived());
-								Asset.setAmount(child.getAmount() + reciept.getAmountReceived());
+								currentAsset.put(reciept.getBankSourceID(),
+										currentAsset.getOrDefault(reciept.getBankSourceID(), 0.0)
+												+ reciept.getAmountReceived());
+
+								// child.setAmount(child.getAmount() + reciept.getAmountReceived());
+								// Asset.setAmount(Asset.getAmount() + reciept.getAmountReceived());
 							}
 						});
 					}
@@ -717,7 +743,7 @@ public class ReportController {
 
 		// -------------- balance Profit and loss -------------
 		netIncome += receivable.getTotal();
-		netIncome -= payable.getTotal();
+		netIncome -= ApTotal;
 		equity.setAmount(equity.getAmount() + netIncome);
 		// -----------------------------------------------
 
